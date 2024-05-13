@@ -1,0 +1,43 @@
+TITLE:: GMXYUserView
+summary:: An abstract class that contains private methods for canvas utilities
+categories:: GUI>Graphical Module
+related:: Classes/GMUserView
+
+DESCRIPTION::
+link::Classes/GMXYUserView:: is an abstract class used to centralize methods that some link::Classes/Class:: from the Graphical Module are using.
+
+It makes no sense instanciating this class, as it won't display anything, and it is not possible to interact with it.
+
+Internal methods defined within this class are either coordinates mapping utilities or drawing functions.
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of link::Classes/GMXYUserView::.
+
+INSTANCEMETHODS::
+
+subsection:: Internal Methods
+
+METHOD:: getXMousePos
+METHOD:: getYMousePos
+METHOD:: getXMouseMapping
+METHOD:: getYMouseMapping
+METHOD:: getXMouseMappingBipolar
+METHOD:: getYMouseMappingBipolar
+METHOD:: getXIndex
+METHOD:: getYIndex
+METHOD:: getCase
+
+METHOD:: getXValueMapping
+METHOD:: getYValueMapping
+METHOD:: getXValueMappingBipolar
+METHOD:: getYValueMappingBipolar
+
+METHOD:: drawCircle
+METHOD:: drawRect
+METHOD:: drawDiamond
+
+METHOD:: drawLineHelpers
+METHOD:: drawDotHelpers
+METHOD:: drawMultiDotHelpers

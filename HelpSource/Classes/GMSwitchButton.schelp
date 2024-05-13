@@ -1,0 +1,133 @@
+TITLE:: GMSwitchButton
+summary:: A simple multi states button for creating graphical interfaces
+categories:: GUI>Graphical Module
+related:: Classes/GMUserView, Classes/GMStyle
+
+DESCRIPTION::
+link::Classes/GMSwitchButton:: is an easy to use customisable button.
+
+It allows to switch between multiple states, behaving like a looping counter.
+
+It only responds to mouse down clicks, and does not discriminate button identifiers.
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of link::Classes/GMSwitchButton::.
+
+By default, its graphical properties are defined by its associated link::Classes/GMStyle::.
+
+returns:: a link::Classes/GMSwitchButton:: instance.
+
+INSTANCEMETHODS::
+
+subsection::Interaction
+
+METHOD:: action
+Sets or gets the link::Classes/Function:: to be triggered when the button is pressed down. This link::Classes/Function:: takes the current index of the button as argument, i.e. pressing it down from its first state to its second state will call the link::Classes/Function:: passing 1 as argument.
+ARGUMENT:: aFunction
+A link::Classes/Function:: with one argument, the current index of the button as an link::Classes/Integer::. The case control structure allows to easily define what actions it should trigger (see example below).
+
+METHOD:: mouseDownAction
+Sets or gets the link::Classes/Function:: to be triggered when the button is pressed down. This link::Classes/Function:: takes the current index of the button as argument, i.e. pressing it down from its first state to its second state will call the link::Classes/Function:: passing 1 as argument. Equivalent to code::.action:: .
+ARGUMENT:: aFunction
+A link::Classes/Function:: with one argument, the current index of the button as an link::Classes/Integer::. The case control structure allows to easily define what actions it should trigger (see example below).
+
+METHOD:: states
+Sets or gets the link::Classes/View::'s states array, and refreshes the link::Classes/View::. Resets the current index to 0.
+ARGUMENT:: anArray
+An link::Classes/Array:: containing an arbitrary number of link::Classes/IdentityDictionary::, each containing a code::\string:: key and a code::\color:: key (see example below).
+
+It is also possible to only provide an link::Classes/Array:: of strings. In this case, the link::Classes/GMStyle:: main color will be used for the state background (see example below).
+
+METHOD:: state
+Sets or gets the link::Classes/View::'s current index, and refreshes the link::Classes/View::. This doesn't trigger the associated action.
+
+subsection::Internal Methods
+
+METHOD:: draw
+The function associated to the link::Classes/View::'s code::drawFunc::. Shouldn't be modified.
+
+EXAMPLES::
+
+code::
+(
+var win = Window.new(
+	"",
+	Rect(0, 400, 200, 100)
+);
+
+var switchButton = GMSwitchButton();
+
+// Assigning states :
+var states = [
+	(
+		string: "red",
+		color: Color.red
+	),
+	(
+		string: "green",
+		color: Color.green
+	),
+	(
+		string: "blue",
+		color: Color.blue
+	),
+	(
+		string: "yellow",
+		color: Color.yellow
+	),
+	(
+		string: "magenta",
+		color: Color.magenta
+	),
+	(
+		string: "cyan",
+		color: Color.cyan
+	)
+];
+
+switchButton.states_(states);
+
+// Assign a custom action,
+// Case is useful here
+switchButton.action_({ |index|
+	case
+	{ index == 0 } { "Red is amazing".postln; }
+	{ index == 1 } { "Green is awesome".postln; }
+	{ index == 2 } { "Blue is beautiful".postln; }
+	{ index == 3 } { "Yellow is astonishing".postln; }
+	{ index == 4 } { "Magenta is wonderful".postln; }
+	{ index == 5 } { "Cyan is marvellous".postln; };
+});
+
+// Assign a state
+switchButton.state_(3);
+
+// Nest it inside a Layout
+win.layout_(
+	HLayout(
+		switchButton,
+).margins_(0));
+
+win.front;
+
+// Useful when developping
+CmdPeriod.doOnce({ win.close; });
+)
+::
+
+Assigning states without specifying colors :
+
+code::
+(
+var win = Window.new("", Rect(0, 400, 200, 100));
+
+var switchButton = GMSwitchButton()
+.states_(["A", "B", "C", "D", "E", "F", "G"]);
+
+win.layout_(HLayout(switchButton).margins_(0));
+win.front;
+CmdPeriod.doOnce({ win.close; });
+)
+::

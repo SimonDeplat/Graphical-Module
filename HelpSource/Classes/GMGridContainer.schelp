@@ -1,0 +1,60 @@
+TITLE:: GMGridContainer
+summary:: A simple UserView container that automatically arranges its children into a grid
+categories:: GUI>Graphical Module
+related:: Classes/UserView
+
+DESCRIPTION::
+link::Classes/GMGridContainer:: is a layout utility class that will arrange its children according to a grid, trying to allocate an even space to every widget.
+
+Contrary to most Graphical Module classes, it does not inherit from link::Classes/GMUserView::.
+
+subsection::Usage
+
+To use this class, one must instanciate it, then use the code::insertView:: to insert views inside it :
+
+code::
+(
+var gC = GMGridContainer();
+
+12.do({ gC.insertView(
+	UserView().background_(Color.rand)
+);
+});
+
+gC.front;
+)
+::
+
+code::insertView:: takes the view as mandatory argument, then an optionnal index argument. If none is provided, the view will be inserted last in the grid. When the view is inserted, the link::Classes/GMGridContainer:: will be set as its parent.
+
+subsection::Removing views
+
+One can use the code::removeView:: method to remove a view from the grid. However, this only removes the view from the link::Classes/GMGridContainer:: internal view list : the view will be removed from the display calculation, but will continue to exist as a child of the link::Classes/GMGridContainer::. Depending on your needs, you also need to either remove the widget using its code::destroy:: method, or assign a new parent to it using code::setParent::.
+
+subsection::onResize function
+Since link::Classes/GMGridContainer:: uses the code::onResize:: action internally, the associated function has been replaced with a code::FunctionList::. One should use code::addFunc:: to assign new actions to be performed when a link::Classes/GMGridContainer:: is resized.
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of link::Classes/GMGridContainer::.
+returns:: a link::Classes/GMGridContainer:: instance.
+
+INSTANCEMETHODS::
+
+METHOD:: insertView
+Insert a new view inside this class layout. Every child view will be rearranged automatically into an even spaced grid.
+
+METHOD:: removeView
+Remove a view from the internal view list. The view needs either needs to be destroyed, or reassigned a new parent in order to disappear from the link::Classes/GMGridContainer::.
+
+METHOD:: orientation
+Sets or gets the orientation of the grid. Can be either \horizontal or \vertical.abs
+
+METHOD:: margins
+Sets or gets the margin value between each views, in pixels.
+
+Subsection::Internal methods
+
+METHOD:: prArrangeViews
+METHOD:: prGetGridOrga

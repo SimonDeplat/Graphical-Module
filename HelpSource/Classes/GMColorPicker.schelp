@@ -1,0 +1,73 @@
+TITLE:: GMColorPicker
+summary:: A color picker for creating graphical interfaces
+categories:: GUI>Graphical Module
+related:: Classes/GMUserView, Classes/GMStyle
+
+DESCRIPTION::
+link::Classes/GMColorPicker:: is a graphical interface that allows to select a color .
+
+It is not optimized and might respond slowly depending on your hardware capacities. This can be mitigated by reducing the view size.
+
+It only responds to mouse down clicks, and does not discriminate button identifiers.
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of link::Classes/GMColorPicker::.
+
+Its graphical properties are defined by its associated link::Classes/GMStyle::.
+returns:: a link::Classes/GMColorPicker:: instance.
+
+INSTANCEMETHODS::
+
+METHOD:: action
+Sets or gets the link::Classes/Function:: to be triggered when the color is changed. This link::Classes/Function:: takes the new color as argument.
+ARGUMENT:: aFunction
+A link::Classes/Function:: with one argument, the newly picked color.
+
+METHOD:: setColor
+Sets the currently selected color. This doesn't evaluate the associated action.
+
+subsection::Internal Methods
+
+METHOD:: draw
+The function associated to the link::Classes/View::'s code::drawFunc::. Shouldn't be modified.
+
+METHOD:: hsvToColor
+METHOD:: prGetInput
+METHOD:: prDrawAlphaHelper
+METHOD:: prDrawAlphaPicker
+METHOD:: prDrawColorHelper
+METHOD:: prDrawHueHelper
+METHOD:: prDrawHuePicker
+METHOD:: prDrawSVGradient
+METHOD:: prDrawSaturationHelper
+
+EXAMPLES::
+
+code::
+(
+var win = Window.new(
+	"",
+	Rect(0, 400, 400, 400)
+);
+
+var colorPicker = GMColorPicker()
+.action_({ |aColor|
+	aColor.post;
+	" is my favorite color !".postln;
+	"".postln;
+});
+
+// Nest it inside a Layout
+win.layout_(
+	HLayout(
+		colorPicker,
+).margins_(0));
+
+win.front;
+
+// Useful when developping
+CmdPeriod.doOnce({ win.close; });
+)
+::

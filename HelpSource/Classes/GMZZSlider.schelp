@@ -1,0 +1,318 @@
+TITLE:: GMZZSlider
+summary:: An abstract class for single value sliders (Graphical Module)
+categories:: GUI>Graphical Module
+related:: Classes/GMFaderSlider, Classes/GMSymbolSlider, Classes/GMUserView, Classes/GMStyle
+
+DESCRIPTION::
+
+subsection::A note on this class hierarchy
+
+link::Classes/GMZZSlider:: is an abstract class that defines single value sliders behavior within the scope of the Graphical Module. The class name begins with "GMZZ" so it is displayed last in the autocompletion API.
+
+This abstract class strong::only defines the interaction methods::, that other slider classes inherits. Those other classes are responsible for the code::drawFunc:: definition of the slider. As such, link::Classes/GMZZSlider:: shouldn't be instanciated, as it doesn't display anything by itself.
+
+subsection::Basic setup
+
+link::Classes/GMZZSlider:: requires you to provide a min, a max, a scale, a default value and a function to be usable :
+
+code::
+(
+GMFaderSlider()
+.min_(110)
+.max_(1760)
+.value_(440)
+.scale_(\exp)
+.action_({ |aNumber|
+	aNumber.post;
+	" was selected.".postln;
+})
+.front
+)
+::
+
+The link::Classes/Function:: associated to the code::action:: will be evaluated every time the value changes, with the value as argument.
+
+The code::min:: and code::max:: values can only be positive, and code::max:: should be greater than code::min::. The code::displayFunction:: method of this class child classes provide a workaround to this limitation.
+
+subsection::Scale argument
+
+The provided scale must be either code::\lin::, code::\exp::, code::\log:: or a number :
+
+If code::\lin:: is specified, the mapping will be performed using the code::linlin:: function.
+
+If code::\exp:: or code::\log:: is specified, the mapping will be performed using the code::linexp:: function. It is still possible to set code::min:: equals to 0 when using those scales. In this special case, you should also specify an code::expMin:: value to allow the correct mapping (slider will return 0 at minimum position, a mapping between code::expMin:: and code::max:: otherwise) :
+
+code::
+(
+GMFaderSlider()
+.min_(0)
+.expMin_(0.01)
+.max_(1)
+.value_(0.5)
+.scale_(\exp)
+.action_({ |aNumber|
+	aNumber.post;
+	" was selected.".postln;
+})
+.front
+)
+::
+
+If a number is specified, the mapping will be performed using the code::lincurve:: function.
+
+subsection::Orientation
+
+The slider can be turned horizontally if needed :
+
+code::
+(
+GMFaderSlider()
+.orientation_(\horizontal)
+.front
+)
+::
+
+subsection::Polarity
+
+By default, the slider ranges from code::min:: to code::max::. It can be toggled to range from code::max.neg:: to code::max::, excluding the code::min.neg:: to code::min:: region :
+
+code::
+(
+GMFaderSlider()
+.orientation_(\horizontal)
+.min_(0.2)
+.max_(1.0)
+.polarity_(\bi)
+.front
+)
+::
+
+subsection::Key modifier ALT
+
+When clicking the slider down while pressing ALT, the current slider value will be stored, then the slider will be set to the new value. When releasing the mouse button, if ALT is pressed, the slider will jump back to the stored value. The intention is to provide a 'live instrument' feel to the slider.
+
+subsection::Helpers and key modifier SHIFT
+
+This is easier to explain starting from a visual example :
+
+code::
+(
+GMFaderSlider()
+.drawHelpers_(true)
+.front
+)
+::
+
+Wether they are displayed or not, the slider comes with 'helpers' that subdivide its range equally. The code::helpersNumber:: property will set the number of 'big helpers', the code::helperSubdivisions:: property will set how much 'small helpers' there are between 'big ones' :
+
+code::
+(
+GMFaderSlider()
+.drawHelpers_(true)
+.helpersNumber_(4)
+.helperSubdivisions_(1)
+.front
+)
+::
+
+If the slider range is bipolar, the specified number of helpers still only applies to only one pole of the scale :
+
+code::
+(
+GMFaderSlider()
+.drawHelpers_(true)
+.orientation_(\horizontal)
+.helpersNumber_(2)
+.helperSubdivisions_(3)
+.polarity_(\bi)
+.front
+)
+::
+
+When interacting with the slider while pressing the SHIFT key (but not the CTRL key, see below), the selected value will automatically stick to the closest helper :
+
+code::
+(
+GMFaderSlider()
+.drawHelpers_(true)
+.min_(1)
+.max_(16)
+.value_(2)
+.scale_(\exp)
+.helpersNumber_(2)
+.helperSubdivisions_(3)
+.front
+)
+::
+
+As you can see in this example, this can allow to automatically select some discrete key values, as one would in a multi state button, without losing the slider continuous ability.
+
+Pressing ALT + SHIFT mixes both associated behavior, and can allow you, for example, to jump back and forth in octaves.
+
+subsection::Mod Steps and key modifier CTRL
+
+Pressing and holding CTRL or CTRL + SHIFT will modify the way the mouse cursor interacts with the widget. When CTRL is held and the slider is clicked down, or the slider is allready clicked and CTRL is pressed, the cursor position will be stored, and further mouse movement will modify the value using three parameters :
+
+list::
+## an operator
+## a step value
+## a pixel range
+::
+
+The operator can be either code::\add:: or code::mul::.
+
+Let's take an example :
+code::
+(
+GMFaderSlider()
+.modStepOperator_(\add)
+.modStep_(0.2)
+.modStepPixelRange_(10)
+.front
+)
+::
+
+Here, when CTRL is held, everytime the cursor moves up by 10 pixels, the current value will be incremented by 0.2. Everytime the cursor moves down by 10 pixels, the current value will be decremented by 0.2.
+
+The main usage of the code::\add:: operator is to fine tune the sliders value.
+
+code::
+(
+GMFaderSlider()
+.min_(55)
+.max_(1760)
+.value_(440)
+.scale_(\exp)
+.modStepOperator_(\mul)
+.modStep_(2)
+.modStepPixelRange_(25)
+.front
+)
+::
+
+Here, when CTRL is held, everytime the cursor moves up by 25 pixels, the current value will be multiplied by 2. Everytime the cursor moves down by 25 pixels, the current value will be divided by 2.
+
+In this example, this allows to jump by octave. This could also be used to double a tempo. A smaller step value, like 1.1, could also be used to increase or decrease the tempo smoothly as the cursor moves.
+
+On bipolar scales, by nature, the code::\mul:: operator doesn't allow to cross the code::min:: value.
+
+You can specify up to two 'mod steps' : one when CTRl only is pressed, an other when CTRL + SHIFT is pressed :
+
+code::
+(
+GMFaderSlider()
+.min_(55)
+.max_(1760)
+.value_(440)
+
+.modStepOperator_(\add)
+.modStep_(1)
+.modStepPixelRange_(5)
+
+.modStep2Operator_(\mul)
+.modStep2_(2)
+.modStep2PixelRange_(25)
+
+.front
+)
+::
+
+Due to the implementation of this algorithm, switching directly between CTRL and CTRL + SHIFT without releasing the mouse button is likely to introduce unwanted behavior.
+
+When pressing ALT and a 'mod step' at the same time, the anchor point will be the value at the cursor position.
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of link::Classes/GMZZSlider::.
+
+returns:: a link::Classes/GMZZSlider:: instance. This method is implicitely internal.
+
+INSTANCEMETHODS::
+
+subsection::Interaction
+
+METHOD:: action
+Sets or gets the link::Classes/Function:: to be triggered when interacting with the slider changes its value. This link::Classes/Function:: takes the current slider value as argument.
+ARGUMENT:: aFunction
+A link::Classes/Function:: with an argument, a link::Classes/Float:: which correspond to the sliders current value.
+
+METHOD:: mouseDownAction
+Sets or gets the link::Classes/Function:: to be triggered when interacting with the slider changes its value. This link::Classes/Function:: takes the current slider value as argument. Equivalent to code::.action::.
+ARGUMENT:: aFunction
+A link::Classes/Function:: with an argument, a link::Classes/Float:: which correspond to the sliders current value.
+
+METHOD:: value
+Sets or gets the current slider value. It will be clipped between code::min:: and code::max:: values.
+
+METHOD:: min
+Sets or gets the slider minimum value.
+
+METHOD:: max
+Sets or gets the slider maximum value.
+
+METHOD:: scale
+Sets or gets the slider scale. Can be either code::\lin::, code::\exp:: or code::\log::, or a number.
+ARGUMENT:: aScale
+A link::Classes/Symbol:: or a link::Classes/SimpleNumber::.
+
+METHOD:: expMin
+Sets or gets safety value the slider will use to perform mapping in the special case where scale is either code::\exp:: or code::\log::, and code::min:: equals 0.
+
+METHOD:: orientation
+Sets the link::Classes/View:: direction.
+ARGUMENT:: aSymbol
+The link::Classes/View:: will be distributed horizontally if set as code::\horizontal::, vertically otherwise.
+
+METHOD:: polarity
+Sets the polarity of the scale. Slider will range from code::min:: to code::max:: if set as code::\uni::, or from code::max.neg:: to code::max::, excluding code::min.neg:: to code::min::, if set as code::\bi::.
+ARGUMENT:: aSymbol
+Either code::\uni:: or code::\bi::.
+
+METHOD:: helpersNumber
+Sets or gets the slider 'big helpers' number.
+
+METHOD:: helperSubdivisions
+Sets or gets the number of 'small helpers' between each 'big helpers' pair.
+
+METHOD:: modStep
+Sets or gets the step value to use when CTRL is pressed.
+
+METHOD:: modStepOperator
+Sets or gets the operator to use when CTRL is pressed.
+ARGUMENT:: aSymbol
+Either code::\add:: or code::\mul::.
+
+METHOD:: modStepPixelRange
+Sets or gets the pixel range to use when CTRL is pressed.
+
+METHOD:: modStep2
+Sets or gets the step value to use when CTRL + SHIFT is pressed.
+
+METHOD:: modStep2Operator
+Sets or gets the operator to use when CTRL + SHIFT is pressed.
+ARGUMENT:: aSymbol
+Either code::\add:: or code::\mul::.
+
+METHOD:: modStep2PixelRange
+Sets or gets the pixel range to use when CTRL + SHIFT is pressed.
+
+METHOD:: modSteps
+Sets or gets both mod steps values.
+
+METHOD:: modStepsOperators
+Sets or gets both mod steps operators.
+
+METHOD:: modStepsPixelRanges
+Sets or gets both mod steps pixel ranges.
+
+subsection::Internal Methods
+
+METHOD:: prCheckMod
+METHOD:: prGetClosestHelper
+METHOD:: prGetModStepValue
+METHOD:: prUpdateValue
+
+EXAMPLES::
+
+See the link::Classes/GMFaderSlider:: documentation for examples and templates.

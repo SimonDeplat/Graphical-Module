@@ -1,0 +1,110 @@
+TITLE:: GMButton
+summary:: A simple button for creating graphical interfaces
+categories:: GUI>Graphical Module
+related:: Classes/GMUserView, Classes/GMStyle
+
+DESCRIPTION::
+link::Classes/GMButton:: is an easy to use customisable button.
+
+It responds to mouse down and up clicks, but does not discriminate button identifiers.
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of link::Classes/GMButton::.
+
+Its graphical properties are defined by its associated link::Classes/GMStyle::.
+returns:: a link::Classes/GMButton:: instance.
+
+INSTANCEMETHODS::
+
+subsection::Interaction
+
+METHOD:: mouseDownAction
+Sets or gets the link::Classes/Function:: to be triggered when the button is pressed down. This link::Classes/Function:: doesn't take arguments.
+
+ARGUMENT:: aFunction
+A link::Classes/Function:: without argument.
+
+METHOD:: mouseUpAction
+Sets or gets the link::Classes/Function:: to be triggered when the button has been pressed, and is released. This link::Classes/Function:: doesn't take arguments.
+
+ARGUMENT:: aFunction
+A link::Classes/Function:: without argument.
+
+METHOD:: action
+Sets or gets the link::Classes/Function:: to be triggered when the button is pressed down. Doesn't take arguments. Equivalent to code::.mouseDownAction:: .
+
+ARGUMENT:: aFunction
+A link::Classes/Function:: without argument.
+
+subsection::Graphical settings
+
+METHOD:: string
+Sets or gets the button displayed text, and refreshes the link::Classes/View::.
+
+METHOD:: stringRatio
+Sets or gets the widget displayed text ratio, relative to the smallest axis of the widget, and refreshes the link::Classes/View::. You'll need to reduce this value if the displayed text is larger than the size of the widget.
+
+METHOD:: orientation
+Sets or gets the button displayed text orientation, and refreshes the link::Classes/View::. Valid values are : code::\right::, code::\top::, code::\left:: or code::\bottom::. This doesn't affect the displayed svg if any.
+
+METHOD:: svg
+Sets or gets the button displayed svg, and refreshes the link::Classes/View::. Takes a link::Classes/String:: indicating the path to the svg file as argument.
+
+METHOD:: svgRatio
+Sets or gets the widget displayed svg ratio, relative to the smallest axis of the widget, and refreshes the link::Classes/View::.
+
+METHOD:: free
+Removes the svg and frees its ressources. Refreshes the link::Classes/View::.
+
+subsection::Internal Methods
+
+METHOD:: draw
+The function associated to the link::Classes/View::'s code::drawFunc::. Shouldn't be modified.
+
+METHOD:: resizeSVG
+The function that rescales the svg when needed.
+
+EXAMPLES::
+
+code::
+(
+s.waitForBoot({
+	var win = Window.new(
+		"",
+		Rect(0, 400, 200, 100)
+	);
+
+	var button;
+
+	SynthDef(\GMhelp, {
+		|out = 0, amp = 0.1, freq = 440|
+		var snd = SinOsc.ar(freq, mul: amp);
+		snd = snd * EnvGen.kr(Env.perc);
+		Out.ar(0, snd!2);
+	}).add;
+
+	// Instanciate the View, and assign a string
+	button = GMButton();
+	button.string_("beep");
+
+	// Assign custom actions
+	button.mouseDownAction_(
+		{ Synth(\GMhelp, [\freq, 300]) });
+	button.mouseUpAction_(
+		{ Synth(\GMhelp, [\freq, 450]) });
+
+	// Nest it inside a Layout
+	win.layout_(
+		HLayout(
+			button,
+	).margins_(0));
+
+	win.front;
+
+	// Useful when developping
+	CmdPeriod.doOnce({ win.close; });
+});
+)
+::

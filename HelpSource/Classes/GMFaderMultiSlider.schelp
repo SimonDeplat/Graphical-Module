@@ -1,0 +1,338 @@
+TITLE:: GMFaderMultiSlider
+summary:: A multi slider class that supports sequencer utilities
+categories:: GUI>Graphical Module
+related:: Classes/GMZZSlider, Classes/GMZZMultiSlider, Classes/GMSymbolMultiSlider, Classes/GMLineMultiSlider, Classes/GMUserView, Classes/GMStyle
+
+DESCRIPTION::
+
+link::Classes/GMFaderMultiSlider:: is an easy to use customisable multi slider.
+
+It inherits from the link::Classes/GMZZMultiSlider:: class, and is only responsible for graphical specifications. See link::Classes/GMZZSlider:: and link::Classes/GMZZMultiSlider:: for non-graphical properties settings.
+
+subsection::A note about this documentation
+
+This class is an extension of the link::Classes/GMFaderSlider:: class. It retains the same principle, but for several values instead of one. As such, you should read the link::Classes/GMFaderSlider:: class documentation first, as only differences between those two classes are documented here.
+
+subsection::Sequencer interface
+
+This class has been designed to be used, if needed, as a sequencer control.
+
+First, it is possible to highlight some values so one can distinguish important times at first glance. Those highlights are specified using an array of float between 0 and 1, that should be the size of the values. The higher the value is, the bigger and opaque the highlight will be.
+
+A 4/4 signature highlight :
+
+code::
+(
+GMFaderMultiSlider()
+.values_([
+	0, 0, 0, 0,
+	0, 0, 0, 0
+])
+.highlights_([
+	1, 0, 0.333, 0,
+	0.666, 0, 0.333, 0
+])
+.drawHighlights_(true)
+.front
+)
+::
+
+A 6/8 signature highlight :
+
+code::
+(
+GMFaderMultiSlider()
+.values_([
+	0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0
+])
+.highlights_([
+	1, 0, 0.333, 0, 0.333, 0,
+	0.666, 0, 0.333, 0, 0.333, 0
+])
+.drawHighlights_(true)
+.front
+)
+::
+
+In addition, specifying a code::beat:: property will also highlight the associated slider. One can use a link::Classes/Routine:: (or any link::Classes/TempoClock:: based algorithm) to dynamically display the current beat. The graphical update is internally deferred.
+
+code::
+(
+var currentBeat = 0;
+
+var multiSlider = GMFaderMultiSlider()
+.values_([
+	0, 0, 0, 0,
+	0, 0, 0, 0
+])
+.highlights_([
+	1, 0, 0.333, 0,
+	0.666, 0, 0.333, 0
+])
+.drawHighlights_(true)
+.beat_(currentBeat);
+
+var routine = Routine({
+
+	loop {
+		// Do something here
+		(0.25).wait;
+		currentBeat = currentBeat + 1;
+		if(currentBeat == multiSlider.values.size)
+		{ currentBeat = 0; };
+		multiSlider.beat_(currentBeat);
+	}
+
+}).play(TempoClock.default);
+
+multiSlider.front;
+)
+::
+
+See the examples below for a complete sequencer setup.
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of link::Classes/GMFaderMultiSlider::.
+
+By default, its graphical properties are defined by its associated link::Classes/GMStyle::. This means that creating multi sliders with different colors implies creating multiples link::Classes/GMStyle::. The sliders color corresponds to the code::mainColor:: property.  The font color of the displayed value corresponds to the code::valueFontColor:: property.
+
+returns:: a link::Classes/GMFaderMultiSlider:: instance.
+
+INSTANCEMETHODS::
+
+METHOD:: beat
+Sets or gets the displayed beat. Set to code::-1:: to disable. This will internally
+defer the graphical update.
+
+METHOD:: drawHighlights
+Sets or gets wether the highlights should be displayed.
+
+METHOD:: highlightRatio
+Sets or gets the highlights maximum ratio relative to the sliders available space.
+
+METHOD:: highlights
+Sets or gets the highlights weights. A weight of 1 will cause the highlight to be drawn at the maximum ratio, using the link::Classes/GMStyle:: code::highlightColor:: alpha value. Lower values will linearily decrease both the ratio and the alpha values (see examples).
+
+subsection::GMFaderSlider Methods
+
+See the link::Classes/GMFaderSlider:: class documentation for those methods.
+
+METHOD:: minAlpha
+METHOD:: slidersRatio
+METHOD:: displayValues
+METHOD:: centerValues
+METHOD:: roundValue
+METHOD:: displayFunction
+METHOD:: fontRatio
+METHOD:: drawHelpers
+METHOD:: helpersStyle
+METHOD:: helpersRatio
+METHOD:: centerHelpers
+
+subsection::Internal Methods
+
+METHOD:: draw
+METHOD:: prDrawSliders
+METHOD:: prDrawHighlights
+METHOD:: prDrawValues
+
+EXAMPLES::
+
+A simple interface that allows to shape the harmonics value of a continuous sound :
+
+code::
+(
+s.waitForBoot({
+	var nHarmo = 8;
+	var amp = 0;
+	var freq = 220;
+	var synths = Array.newClear(nHarmo);
+	var harmoAmps = Array.fill(nHarmo, { 0 });
+	var synthsFree = false;
+
+	var win = Window(
+		"Harmos",
+		Rect(
+			0, 0,
+			600, 400
+		)
+	).background_(Color.black);
+
+	var ampSlider = GMFaderSlider()
+	.centerValue_(false)
+	.action_({ |value|
+		amp = value / nHarmo;
+
+		synths.do({ |synth, index|
+			synth.set(\amp, amp * harmoAmps[index]);
+		});
+	});
+
+	var harmoSliders = GMFaderMultiSlider()
+	.centerValues_(false)
+	.values_(harmoAmps)
+	.actionMode_(\index)
+	.action_({ |index, value|
+		harmoAmps[index] = value;
+		synths[index].set(\amp, amp * value);
+	});
+
+	nHarmo.do({ |index|
+		synths[index] = SynthDef(\GMHarmo, { |freq, amp|
+			var snd = SinOsc.ar(freq, mul: amp);
+			Out.ar(0, snd!2);
+		}).play(s, [\amp, amp * harmoAmps[index], \freq, freq * (index + 1)]);
+	});
+
+	win.layout_(
+		HLayout()
+		.margins_(0)
+
+		.add(
+			VLayout()
+			.margins_(0)
+			.add(GMTextView().string_("amp"), 1)
+			.add(ampSlider, 9),
+			2
+		)
+		.add(
+			VLayout()
+			.margins_(0)
+			.add(GMTextView().string_("harmos"), 1)
+			.add(harmoSliders, 9),
+			(nHarmo)
+		)
+	);
+
+	win.onClose_({
+		if(synthsFree.not)
+		{ synths.do({ |synth| synth.free; }); };
+	});
+	CmdPeriod.doOnce({
+		synthsFree = true;
+		win.close;
+	});
+
+	win.front;
+});
+)
+::
+
+Used as a sequencer parameter :
+
+code::
+(
+s.waitForBoot({
+	var nBeats = 8;
+	var highlights = [1, 0, 0.333, 0, 0.666, 0, 0.333, 0];
+	var freq = 220;
+	var freqs = Array.fill(nBeats, { |index| freq * [1, 2, 3, 4, 5, 6, 7, 8][index] });
+	var amp = 0.25;
+	var currentBeat = 0;
+
+	var win = Window(
+		"",
+		Rect(
+			0, 0,
+			600, 400
+		)
+	).background_(Color.black);
+
+	var routine;
+
+	var playButton = GMPlayButton()
+	.maxWidth_(256)
+	.maxHeight_(256)
+	.action_({ |state|
+
+		if(state) {
+			routine = Routine({
+				loop {
+					Synth(\GMPercSine, [\amp, amp, \freq, freqs[currentBeat]]);
+					0.25.wait;
+					currentBeat = currentBeat + 1;
+					if(currentBeat == nBeats)
+					{ currentBeat = 0; };
+					freqMultiSlider.beat_(currentBeat);
+				}
+			}).play(TempoClock.default);
+		} {
+			routine.stop;
+			currentBeat = 0;
+			freqMultiSlider.beat_(currentBeat);
+		};
+	});
+
+	var ampSlider = GMFaderSlider()
+	.value_(amp)
+	.centerValue_(false)
+	.maxWidth_(256)
+	.action_({ |value| amp = value; });
+
+	var freqMultiSlider = GMFaderMultiSlider()
+	.min_(freq)
+	.max_(freq * 8)
+	.scale_(\exp)
+	.values_(freqs)
+	.centerValues_(false)
+	.roundValue_(1)
+	.helperSubdivisions_(2)
+	.drawHighlights_(true)
+	.highlights_(highlights)
+	.beat_(0)
+	.actionMode_(\index)
+	.action_({ |index, value|
+		freqs[index] = value;
+	});
+
+	SynthDef(\GMPercSine, { |freq, amp|
+		var snd = SinOsc.ar(freq, mul: amp);
+		snd = snd * EnvGen.kr(Env.perc, doneAction: Done.freeSelf);
+		Out.ar(0, snd!2);
+	}).add;
+
+	win.layout_(
+		HLayout()
+		.margins_(0)
+		.spacing_(10)
+
+		.add(
+			VLayout()
+			.margins_(0)
+			.add(playButton, 9),
+			2
+		)
+		.add(
+			VLayout()
+			.margins_(0)
+			.add(
+				GMTextView()
+				.displayBackground_(true)
+				.string_("amp"), 1)
+			.add(ampSlider, 9),
+			2
+		)
+		.add(
+			VLayout()
+			.margins_(0)
+			.add(
+				GMTextView()
+				.displayBackground_(true)
+				.string_("freq"), 1)
+			.add(freqMultiSlider, 9),
+			nBeats
+		)
+	);
+
+	win.view.onResize_({
+		playButton.maxHeight_(win.bounds.height / 4);
+	});
+
+	CmdPeriod.doOnce({ win.close; });
+	win.front;
+});
+)
+::

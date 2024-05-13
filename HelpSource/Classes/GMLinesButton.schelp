@@ -1,0 +1,138 @@
+TITLE:: GMLinesButton
+summary:: A simple multi states button for creating graphical interfaces
+categories:: GUI>Graphical Module
+related:: Classes/GMMultiButton, Classes/GMUserView, Classes/GMStyle
+
+DESCRIPTION::
+link::Classes/GMLinesButton:: is an easy to use customisable multi states button. It allows to order its buttons on multipe lines.
+
+It does not discriminate button identifiers.
+
+subsection::A note about this documentation
+
+This class is an extension of link::Classes/GMMultiButton::. The only difference between those two classes are their code::states:: specification, and the way their code::action:: is evaluated. Only those differences are documented here.
+
+See link::Classes/GMMultiButton:: documentation for others methods documentation.
+
+subsection:: States and action arguments
+
+Instead of taking an array of states as argument, link::Classes/GMLinesButton:: takes an array containing arrays of states as argument. This allows to arrange the buttons into several layers, which can ease the location of the desired button :
+
+code::
+(
+GMLinesButton()
+.states_([
+	["A", "B", "C", "D", "E"],
+	["I", "II", "III"],
+	["a", "b", "c", "d"],
+	["1", "2", "3", "4", "5"]
+])
+.front
+)
+::
+
+The link::Classes/Function:: associated to the code::action:: will be evaluated with two arguments : first, the index of the selected array, then the index of the button within this array. In the previous example, clicking the "b" button would call the function with code::2, 1:: as arguments.
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of link::Classes/GMLinesButton::.
+
+Its graphical properties are defined by its associated link::Classes/GMStyle::.
+returns:: a link::Classes/GMLinesButton:: instance.
+
+INSTANCEMETHODS::
+
+subsection::GMMultiButton methods
+
+See the link::Classes/GMMultiButton:: class documentation for those methods.
+
+METHOD:: action
+METHOD:: mouseDownAction
+METHOD:: mouseMoveAction
+METHOD:: states
+METHOD:: state
+METHOD:: allowRetrigger
+METHOD:: allowMouseMove
+METHOD:: free
+METHOD:: orientation
+METHOD:: desindex
+METHOD:: direction
+METHOD:: drawSelected
+METHOD:: fontRatio
+METHOD:: unselectedRatio
+METHOD:: setColorAll
+METHOD:: setFontColorAll
+METHOD:: displayAltValue
+METHOD:: svgRatio
+
+subsection::Internal Methods
+
+METHOD:: draw
+The function associated to the link::Classes/View::'s code::drawFunc::. Shouldn't be modified
+
+METHOD:: prResizeSVGs
+
+EXAMPLES::
+
+code::
+(
+s.waitForBoot({
+	var states = [
+		["Major", "Minor", "Pentatonic"],
+		["Dorian", "Phrygian", "Lydian", "Mixolydian", "Locrian"],
+		["Spanish", "Diminished", "Augmented", "Chromatic"]
+	];
+
+	var scales = [
+		[\major, \minor, \minorPentatonic],
+		[\dorian, \phrygian, \lydian, \mixolydian, \locrian],
+		[\spanish, \diminished, \augmented, \chromatic]
+	];
+
+	var win = Window(
+		"",
+		Rect(
+			100, 100,
+			800, 300
+		)
+	);
+
+	var lButton = GMLinesButton()
+	.states_(states)
+	.allowRetrigger_(true)
+	.fontRatio_(0.3)
+	.action_({ |x, y|
+		var routine;
+		var scale = Scale.at(scales[x][y]).ratios;
+		scale = scale ++ [2];
+
+		routine = Routine({
+			scale.do({ |ratio|
+				Synth(\GMPercSine, [\freq, 440 * ratio]);
+				0.25.wait;
+			});
+			routine.stop;
+		}).play(TempoClock.default);
+	});
+
+	SynthDef(\GMPercSine, { |amp = 0.25, freq = 440|
+		var snd = SinOsc.ar(freq, mul: amp);
+		snd = snd * EnvGen.kr(
+			Env.perc,
+			doneAction: Done.freeSelf
+		);
+		Out.ar(0, snd!2);
+	}).add;
+
+	win.layout_(
+		VLayout()
+		.margins_(0)
+		.add(lButton)
+	);
+
+	CmdPeriod.doOnce({ win.close; });
+	win.front;
+});
+)
+::

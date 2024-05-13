@@ -1,0 +1,105 @@
+TITLE:: GMZZ2DSlider
+summary:: An abstract class for 2D sliders (Graphical Module)
+categories:: GUI>Graphical Module
+related:: Classes/GMZZSlider, Classes/GMSymbol2DSlider, Classes/GMUserView, Classes/GMStyle
+
+DESCRIPTION::
+
+link::Classes/GMZZ2DSlider:: is an abstract class that defines 2D sliders behavior within the scope of the Graphical Module. The class name begins with "GMZZ" so it is displayed last in the autocompletion API.
+
+subsection::A note about this documentation
+
+This class is an extension of the link::Classes/GMZZSlider:: class. It retains the same principle, but for two axis at once instead of one. As such, you should read the link::Classes/GMZZSlider:: class documentation first, as only differences between those two classes are documented here.
+
+subsection::2D logic
+
+A 2D slider is the concatenation of an horizontal and a vertical slider. As such, most of its properties must be set using an array of two values. The first value defines the horizontal property, the second value defines the vertical property :
+
+code::
+(
+GMSymbol2DSlider()
+.min_([55, 0])
+.max_([1760, 1])
+.scales_([\exp, \lin])
+.values_([440, 0])
+.roundValues_([1, 0.01])
+.front
+)
+::
+
+One of the exceptions are code::displayFunctions:: which are configured using either code::.xDisplayFunction:: or code::.yDisplayFunction:: (please note that those methods are not defined in link::Classes/GMZZ2DSlider::, but within its child classes).
+
+subsection::Key modifiers
+
+The way ALT, CTRL and SHIFT will alter the interaction with the widget differs from link::Classes/GMZZSlider::.
+
+The ALT modifier behaves the same, storing the current values, allowing to jump back to them when the mouse button is released.
+
+When CTRL is held and SHIFT is not, interactions with the slider will only affect the horizontal axis (but the action will still be evaluated with the two values as argument).
+
+When SHIFT is held and CTRL is not, interactions with the slider will only affect the vertical axis (but the action will still be evaluated with the two values as argument).
+
+Therefore, the only available key modifier left is CTRL + SHIFT. This modifier can be set to snap values to closest helpers, or to modify the values using code::modSteps::, but not both :
+
+code::
+(
+GMSymbol2DSlider()
+.ctrlShiftBehavior_(\helper)
+.front
+)
+::
+
+code::
+(
+GMSymbol2DSlider()
+.ctrlShiftBehavior_(\modStep)
+.modSteps_([0.01, 0.02])
+.modStepsOperators_([\add, \add])
+.modStepsPixelRanges_([3, 3])
+.front
+)
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of link::Classes/GMZZMultiSlider::.
+
+returns:: a link::Classes/GMZZMultiSlider:: instance. This method is implicitely internal.
+
+INSTANCEMETHODS::
+
+METHOD:: action
+Sets or gets the link::Classes/Function:: to be evaluated when at least one of the values has been changed. This function will be passed two arguments : the value associated to the horizontal axis, and the value associated to the vertical axis.
+
+METHOD:: ctrlShiftBehavior
+Sets or gets how the widget should behave when both CTRL and SHIFT are held down. Can be either code::\helper:: or code::\modStep::. See the documentation above for further explanations.
+
+subsection::GMZZSlider Methods
+
+See the link::Classes/GMZZSlider:: class documentation for those methods.
+
+Those methods takes an array of two values as argument in the context of link::Classes/GMZZ2DSlider::.
+
+METHOD:: values
+METHOD:: min
+METHOD:: max
+METHOD:: scales
+METHOD:: expMins
+METHOD:: polarities
+METHOD:: modSteps
+METHOD:: modStepsOperators
+METHOD:: modStepsPixelRanges
+METHOD:: helpersNumbers
+METHOD:: helperSubdivisions
+
+subsection::Internal Methods
+
+METHOD:: prUpdateValue
+METHOD:: prCheckMod
+METHOD:: prGetClosestHelpers
+METHOD:: prGetModStepValues
+
+EXAMPLES::
+
+See the link::Classes/GMSymbol2DSlider:: documentation for examples.

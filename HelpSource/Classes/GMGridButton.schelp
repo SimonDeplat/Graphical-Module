@@ -1,0 +1,118 @@
+TITLE:: GMGridButton
+summary:: A simple multi states button for creating graphical interfaces
+categories:: GUI>Graphical Module
+related:: Classes/GMMultiButton, Classes/GMUserView, Classes/GMStyle
+
+DESCRIPTION::
+link::Classes/GMGridButton:: is an easy to use customisable multi states button. It will automatically arrange its buttons according to a grid.
+
+It does not discriminate button identifiers.
+
+subsection::A note about this documentation
+
+This class is an extension of link::Classes/GMMultiButton::. The only difference between those two classes is their code::drawFunc::. See link::Classes/GMMultiButton:: documentation for methods documentation.
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of link::Classes/GMGridButton::.
+
+Its graphical properties are defined by its associated link::Classes/GMStyle::.
+returns:: a link::Classes/GMGridButton:: instance.
+
+INSTANCEMETHODS::
+
+subsection::GMMultiButton methods
+
+See the link::Classes/GMMultiButton:: class documentation for those methods.
+
+METHOD:: action
+METHOD:: mouseDownAction
+METHOD:: mouseMoveAction
+METHOD:: states
+METHOD:: state
+METHOD:: allowRetrigger
+METHOD:: allowMouseMove
+METHOD:: free
+METHOD:: orientation
+METHOD:: desindex
+METHOD:: direction
+METHOD:: drawSelected
+METHOD:: fontRatio
+METHOD:: unselectedRatio
+METHOD:: setColorAll
+METHOD:: setFontColorAll
+METHOD:: displayAltValue
+METHOD:: svgRatio
+
+subsection::Internal Methods
+
+METHOD:: draw
+The function associated to the link::Classes/View::'s code::drawFunc::. Shouldn't be modified
+
+METHOD:: prResizeSVGs
+METHOD:: prGetGridOrga
+
+EXAMPLES::
+
+Used as a rudimentary keyboard :
+
+code::
+(
+s.waitForBoot({
+	var freqs = [45, 47, 48, 50, 52, 53, 55];
+	var allFreqs = [];
+	var names = ["A", "B", "C", "D", "E", "F", "G"];
+	var states = List(0);
+
+	var win = Window(
+		"",
+		Rect(100, 100, 700, 700)
+	);
+
+	var keyboard;
+
+	7.do({ |index|
+		allFreqs = allFreqs
+		++ (freqs + ((index + 1) * 12)); });
+	allFreqs = allFreqs.midicps;
+
+	7.do({ |octave|
+		var octaveColor = Color.rand;
+		7.do({ |note|
+			states.add((
+				string: names[note] ++ (octave + 1).asString,
+				color: octaveColor,
+				fontColor: Color.black
+			));
+		});
+	});
+
+	keyboard = GMGridButton()
+	.states_(states)
+	.drawSelected_(false)
+	.unselectedRatio_(0.9)
+	.allowRetrigger_(true)
+	.action_({ |index|
+		Synth(\GMPercSine, [\freq, allFreqs[index]]);
+	});
+
+	SynthDef(\GMPercSine, { |amp = 0.25, freq = 440|
+		var snd = SinOsc.ar(freq, mul: amp);
+		snd = snd * EnvGen.kr(
+			Env.perc,
+			doneAction: Done.freeSelf
+		);
+		Out.ar(0, snd!2);
+	}).add;
+
+	win.layout_(
+		VLayout()
+		.margins_(0)
+		.add(keyboard)
+	);
+	CmdPeriod.doOnce({ win.close; });
+	win.front;
+});
+)
+::

@@ -1,0 +1,301 @@
+TITLE:: GMMultiButton
+summary:: A simple multi states button for creating graphical interfaces
+categories:: GUI>Graphical Module
+related:: Classes/GMUserView, Classes/GMStyle
+
+DESCRIPTION::
+link::Classes/GMMultiButton:: is an easy to use customisable button.
+
+It allows to chose between multiple states.
+
+It does not discriminate button identifiers.
+
+subsection::ALT modifier
+
+When holding ALT while clicking the mouse down, the previous index will be stored. Releasing the mouse button while holding ALT will cause the multibutton to jump back to its stored state (see example below).
+
+subsection::SVG
+
+Specifying a code::\svg:: key with a path to a svg file when declaring the states allows to add a custom drawing to the button :
+
+code::
+GMMultiButton()
+.states_([
+	(
+		string: "",
+		color: Color.rand,
+		fontColor: Color.black,
+		svg: "path/to/a/file.svg"
+	),
+	(
+		string: "",
+		color: Color.rand,
+		fontColor: Color.black,
+		svg: "path/to/another/file.svg"
+	)
+]);
+::
+
+subsection::onResize and onClose
+
+Due to the possibility to assign svgs images to the button, the code::onResize:: and code::onClose:: functions of the view are natively modified. Overidding those functions isn't a good idea. Since they've been replaced by link::Classes/FunctionList:: instances, you can use the code::addFunc:: method to append functions to them instead :
+
+code::
+(
+var mButton = GMMultiButton();
+mButton.onResize.addFunc({ "Resized".postln; });
+mButton.onClose.addFunc({ "Closed".postln; });
+mButton.front;
+)
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of link::Classes/GMMultiButton::.
+
+Its graphical properties are defined by its associated link::Classes/GMStyle::.
+returns:: a link::Classes/GMMultiButton:: instance.
+
+INSTANCEMETHODS::
+
+subsection::Interaction
+
+METHOD:: action
+Sets or gets the link::Classes/Function:: to be triggered when the button is pressed. This link::Classes/Function:: takes the current index of the button as argument, i.e. pressing the first button on the left (or the top if set as vertical) will call the link::Classes/Function:: passing 0 as argument. Reclicking a previously selected button will call the link::Classes/Function:: again if the code::retrigger:: parameter has been set to code::true::.
+
+ARGUMENT:: aFunction
+A link::Classes/Function:: with one argument, the current index of the button as an link::Classes/Integer::. The case control structure allows to easily define what actions it should trigger (see example below).
+
+METHOD:: mouseDownAction
+Equivalent to code::.action::.
+
+METHOD:: mouseMoveAction
+Equivalent to code::.action::.
+
+METHOD:: states
+Sets or gets the link::Classes/View:: states array, and refreshes the link::Classes/View::. Resets the current index to 0.
+
+ARGUMENT:: anArray
+An link::Classes/Array::. By default, this method is expecting an array filled with dictionaries, each containing a code::\string::, a code::\color:: and a code::\fontColor:: values. This allows to make the differents buttons easier to distinguish.
+It is also possible to pass an array of strings as arguments. In this case, the link::Classes/GMStyle:: code::backgroundColor:: and code::valueFontColor:: parameters will be used.
+
+METHOD:: state
+Sets or gets the link::Classes/View:: current selected index.
+
+METHOD:: allowRetrigger
+Sets or gets wether the code::action:: should be evaluated again it the selected button is pressed down again.
+
+METHOD:: allowMouseMove
+Sets or gets wether moving the mouse while the multibutton is pressed down should update its state.
+
+METHOD:: free
+Frees the svg files currently used by the view.
+
+subsection::Graphical settings
+
+METHOD:: orientation
+Sets the link::Classes/View:: direction. The link::Classes/View:: will be distributed horizontally if set as code::\horizontal::, vertically otherwise.
+
+METHOD:: desindex
+Sets the button state equal to code::-1::, which will display the multibutton as if no button was selected.
+
+METHOD:: direction
+Sets or gets the direction of the displayed strings. Valid values are : code::\right::, code::\top::, code::\left:: and code::\bottom::.
+
+METHOD:: drawSelected
+Sets or gets whether the selected button should be highlighted.
+
+METHOD:: fontRatio
+Sets or gets the font ratio relative to the height of its case size.
+
+METHOD:: unselectedRatio
+Sets or gets the ratio of unselected buttons. If this value is less than one, they'll be smaller than the selected button.
+
+METHOD:: setColorAll
+Sets the background color of every widget at once, when they are unselected.
+
+METHOD:: setFontColorAll
+Sets the font color of every widget at once, when they are unselected.
+
+METHOD:: displayAltValue
+Sets or gets wether the stored value should be highlighted when using the ALT key modifier. The color used is the link::Classes/GMStyle:: code::secondColor:: parameter.
+
+METHOD:: svgRatio
+Sets or gets the svg ratio relative to the height of its case size.
+
+subsection::Internal Methods
+
+METHOD:: draw
+The function associated to the link::Classes/View::'s code::drawFunc::. Shouldn't be modified
+
+METHOD:: prResizeSVGs
+
+EXAMPLES::
+
+Used as a rudimentary keyboard :
+
+code::
+(
+s.waitForBoot({
+	var freqs = [57, 59, 60, 62, 64, 65, 67, 69].midicps;
+	var names = ["A", "B", "C", "D", "E", "F", "G", "A"];
+
+	var win = Window(
+		"",
+		Rect(100, 100, 700, 128)
+	);
+
+	var keyboard = GMMultiButton()
+	.states_(names)
+	.setColorAll_(Color.rand)
+	.setFontColorAll_(Color.black)
+	.drawSelected_(false)
+	.unselectedRatio_(0.9)
+	.allowRetrigger_(true)
+	.action_({ |index|
+		Synth(\GMPercSine, [\freq, freqs[index]]);
+	});
+
+	SynthDef(\GMPercSine, { |amp = 0.25, freq = 440|
+		var snd = SinOsc.ar(freq, mul: amp);
+		snd = snd * EnvGen.kr(
+			Env.perc,
+			doneAction: Done.freeSelf
+		);
+		Out.ar(0, snd!2);
+	}).add;
+
+	win.layout_(
+		VLayout()
+		.margins_(0)
+		.add(keyboard)
+	);
+	CmdPeriod.doOnce({ win.close; });
+	win.front;
+});
+)
+::
+
+When holding the ALT key down, modifying the value by pressing and releasing the mouse button gives a 'live instrument feel' on certain parameters :
+
+code::
+(
+s.waitForBoot({
+	var rates = [0.25, 0.5, 1, 2, 4, 8];
+
+	var win = Window(
+		"",
+		Rect(100, 100, 700, 128)
+	);
+
+	var synthFree = false;
+	var synth = SynthDef(\GMLFO, { |amp = 0.25, rate = 1|
+		var snd = Saw.ar(220, mul: amp * SinOsc.kr(rate));
+		snd = LPF.ar(snd, 880);
+		Out.ar(0, snd!2);
+	}).play;
+
+	var keyboard = GMMultiButton()
+	.states_(rates.collect({ |item| item.asString }))
+	.state_(2)
+	.action_({ |index|
+		synth.set(\rate, rates[index]);
+	});
+
+	win.layout_(
+		VLayout()
+		.margins_(0)
+		.add(keyboard)
+	);
+	win.onClose_({
+		if(synthFree.not)
+		{ synth.free; };
+	});
+	CmdPeriod.doOnce({
+		synthFree = true;
+		win.close;
+	});
+	win.front;
+});
+)
+::
+
+link::Classes/GMMultiButton:: can be used in conjonction with a link::Classes/StackLayout::, to display a top menu allowing to switch between several views :
+
+code::
+(
+var menus = ["instrument", "drumkit", "settings"];
+var colors = Array.fill(3, { Color.rand });
+
+var win = Window(
+	"Top Menu Demo",
+	Rect(100, 100, 700, 700)
+);
+
+var mainView = UserView()
+.layout_(StackLayout());
+
+var topMenu = GMMultiButton()
+.states_(
+	menus.collect({ |item, index|
+		(
+			string: item,
+			color: colors[index],
+			fontColor: Color.black
+		)
+}))
+.action_({ |index| mainView.layout.index = index; });
+
+var instrumentView = UserView()
+.background_(colors[0])
+.layout_(
+	VLayout()
+	.margins_(0)
+	.add(
+		GMTextView()
+		.string_("This is the instrument view !")
+		.fontRatio_(0.05)
+	)
+);
+
+var drumkitView = UserView()
+.background_(colors[1])
+.layout_(
+	VLayout()
+	.margins_(0)
+	.add(
+		GMTextView()
+		.string_("This is the drumkit view !")
+		.fontRatio_(0.05)
+	)
+);
+
+var settingsView = UserView()
+.background_(colors[0])
+.layout_(
+	VLayout()
+	.margins_(0)
+	.add(
+		GMTextView()
+		.string_("This is the settings view !")
+		.fontRatio_(0.05)
+	)
+);
+
+mainView.layout.add(instrumentView);
+mainView.layout.add(drumkitView);
+mainView.layout.add(settingsView);
+
+win.layout_(
+	VLayout()
+	.margins_(0)
+	.spacing_(0)
+	.add(topMenu, stretch: 1)
+	.add(mainView, stretch: 9)
+);
+
+CmdPeriod.doOnce({ win.close; });
+win.front;
+)
+::

@@ -1,0 +1,88 @@
+TITLE:: GMCycleView
+summary:: A simple visual display to keep track of the current beat
+categories:: GUI>Graphical Module
+related:: Classes/GMUserView, Classes/GMStyle
+
+DESCRIPTION::
+
+Numerous musical styles subdivide time in several layers, which are also sudbivided by a certain numerical value.
+
+For example, most jazz songs loop over a single chord progression.
+list::
+## the chord progression is usually divided into 4 sections (AABA).
+## those sections are usually divided into 4 cycles.
+## those cycles are usually divided into 4 bars.
+## those bars are usually divided into 4 times.
+::
+
+In this particular example, however, we usually tend to merge the 2nd and 3rd steps :
+list::
+## the chord progression is usually divided into 4 sections (AABA).
+## those sections are usually divided into 16 bars.
+## those bars are usually divided into 4 times.
+::
+
+link::Classes/GMCycleView:: allows you to specifiy such subdivisions and to regularly update it so it displays the current position of the beat within each of those defined layers :
+
+code::
+(
+var cycleView = GMCycleView()
+.cycles_([4, 4, 4, 4]);
+
+Routine({
+	loop {
+		0.25.wait;
+		cycleView.advance;
+	}
+}).play(TempoClock.default);
+
+cycleView.front;
+)
+::
+
+In this example, we can see 'times' advance on the bottom of the view. Once they reach their max, they'll start again while incrementing the 'bars' value, which is directly above. The 'bars' value will do the same to the 'cycles' value, and the 'cycles' value will do the same to the 'sections' value.
+
+As an other example, we can imagine a waltz, that would consists of 8 musical phrases, with each phrase consisting of 4 bars, with each bar consisting of 6 times (please note that the method code::cycles:: takes those arguments from the lower subdivision to the highest) :
+
+code::
+(
+var cycleView = GMCycleView()
+.cycles_([6, 4, 8]);
+
+Routine({
+	loop {
+		0.25.wait;
+		cycleView.advance;
+	}
+}).play(TempoClock.default);
+
+cycleView.front;
+)
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of link::Classes/GMCycleView::.
+
+Its graphical properties are defined by its associated link::Classes/GMStyle::.
+returns:: a link::Classes/GMCycleView:: instance.
+
+INSTANCEMETHODS::
+
+METHOD:: cycles
+Sets or gets the number of cycles, and theirs subdivisions (see example above). This will code::reset:: the view.
+
+METHOD:: advance
+Advances the link::Classes/GMCycleView:: by one beat. Internally defers the code::refresh:: call.
+
+METHOD:: reset
+Resets the link::Classes/GMCycleView:: backs to the very first beat. Internally defers the code::refresh:: call.
+
+METHOD:: states
+Sets or gets the current beat position in every cycle. Can be used to advance manually. Internally defers the code::refresh:: call.
+
+subsection::Internal Methods
+
+METHOD:: draw
+The function associated to the link::Classes/View::'s code::drawFunc::. Shouldn't be modified.

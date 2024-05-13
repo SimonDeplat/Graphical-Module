@@ -1,0 +1,251 @@
+TITLE:: GMSymbol2DSlider
+summary:: A simple 2D slider for creating graphical interfaces.
+categories:: GUI>Graphical Module
+related:: Classes/GMZZ2DSlider, Classes/GMUserView, Classes/GMStyle
+
+DESCRIPTION::
+link::Classes/GMSymbol2DSlider:: is an easy to use customisable slider.
+
+It inherits from the link::Classes/GMZZ2DSlider:: class, and is only responsible for graphical specifications. See link::Classes/GMZZSlider:: and link::Classes/GMZZ2DSlider:: for non-graphical properties settings.
+
+subsection::A note about this documentation
+
+This class is an extension of the link::Classes/GMSymbolSlider:: class. It retains the same principle, but for two axis at once instead of one. As such, you should read the link::Classes/GMSymbolSlider:: class documentation first, as only differences between those two classes are documented here.
+
+subsection::Helpers style
+
+The code::\dot:: helper style is pretty straightforward and will display a grid composed of dots on the view. The code::\centerValues:: parameter is ignored in this case :
+
+code::
+(
+GMSymbol2DSlider()
+.drawLine_(true)
+.drawHelpers_(true)
+.helpersStyle_(\dot)
+.front
+)
+::
+
+The code::\line:: helper style allows several configurations.
+
+If the code::helpersRatio:: parameter is set to code::1::, it will then display a grid on the view, and render the code::\centerValues:: parameter useless :
+
+code::
+(
+GMSymbol2DSlider()
+.drawLine_(true)
+.drawHelpers_(true)
+.helpersStyle_(\line)
+.helpersRatio_(1)
+.front
+)
+::
+
+Otherwise, it becomes possible to center the helpers on the view :
+
+code::
+(
+GMSymbol2DSlider()
+.drawLine_(true)
+.drawHelpers_(true)
+.helpersStyle_(\line)
+.helperSubdivisions_([9, 9])
+.centerHelpers_([true, true])
+.front
+)
+::
+
+code::
+(
+GMSymbol2DSlider()
+.drawLine_(true)
+.drawHelpers_(true)
+.helpersStyle_(\line)
+.helperSubdivisions_([9, 9])
+.centerHelpers_([false, false])
+.front
+)
+::
+
+This can be used to differentiate the scales polarities :
+
+code::
+(
+GMSymbol2DSlider()
+.drawLine_(true)
+.polarities_([\uni, \bi])
+.drawHelpers_(true)
+.helpersStyle_(\line)
+.helperSubdivisions_([9, 9])
+.centerHelpers_([false, true])
+.front
+)
+::
+
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of link::Classes/GMSymbol2DSlider::.
+
+By default, its graphical properties are defined by its associated link::Classes/GMStyle::. This means that creating sliders with different colors implies creating multiples link::Classes/GMStyle::. The font color of the displayed value corresponds to the code::valueFontColor:: property.
+
+returns:: a link::Classes/GMSymbol2DSlider:: instance.
+
+INSTANCEMETHODS::
+
+METHOD:: drawLine
+Sets or gets wether the handle position should be highlighted with lines on each view axis.
+
+METHOD:: xDisplayFunction
+Sets or gets the link::Classes/Function:: that will be used to adapt the value displayed on the horizontal axis if needed. Set to code::nil:: to disable.
+
+METHOD:: yDisplayFunction
+Sets or gets the link::Classes/Function:: that will be used to adapt the value displayed on the vertical axis if needed. Set to code::nil:: to disable.
+
+subsection::GMSymbolSlider Methods
+
+See the link::Classes/GMSymbolSlider:: class documentation for those methods.
+
+METHOD:: symbol
+METHOD:: symbolMinSize
+METHOD:: symbolMaxSize
+METHOD:: symbolRatio
+METHOD:: displayValues
+METHOD:: roundValues
+METHOD:: fontRatio
+METHOD:: drawHelpers
+METHOD:: centerHelpers
+METHOD:: helpersRatio
+METHOD:: helpersStyle
+
+subsection::Internal Methods
+
+METHOD:: draw
+METHOD:: prDrawSlider
+METHOD:: prDrawValues
+METHOD:: prDrawLineHelpers
+METHOD:: prDrawDotHelpers
+
+EXAMPLES::
+
+2D sliders are amazing to create simple drone instruments :
+
+code::
+(
+s.waitForBoot({
+	var synthFree = false;
+	var synth = SynthDef(\GMWindy, { |amp = 0, bpFreq = 440|
+		var snd = [
+			WhiteNoise.ar(amp),
+			WhiteNoise.ar(amp)
+		];
+		snd = BPF.ar(snd, bpFreq);
+		Out.ar(0, snd);
+	}).play;
+
+	var win = Window(
+		"GMWindy",
+		Rect(100, 100, 600, 400)
+	);
+
+	var multiSlider = GMSymbol2DSlider()
+	.min_([55, 0])
+	.max_([1760, 1])
+	.scales_([\exp, \exp])
+	.values_([440, 0])
+	.roundValues_([1, 0.01])
+	.action_({ |x, y|
+		synth.set(\bpFreq, x);
+		synth.set(\amp, y);
+	});
+
+	win.layout_(
+		VLayout()
+		.margins_(0)
+		.add(multiSlider)
+	);
+
+	win.onClose_({
+		if(synthFree.not)
+		{ synth.free; };
+	});
+
+	CmdPeriod.doOnce({
+		synthFree = true;
+		win.close;
+	});
+
+	win.front;
+});
+)
+::
+
+In the context of Frequency Modulation, using a 2D slider allows to control the two parameters at once : the modulators frequency ratio, and the modulators index.
+
+In this example, helpers are configured so that if one holds CTRL + SHIFT, the frequency ratio (on the vertical axis) will snap to a 'natural' ratio (0.25, 0.5, 1, 2, etc), thus producing an harmonic sound.
+
+Once the desired ratio has been set, one can hold the CTRL key (but not the SHIFT key) to modify the index value without modifying the ratio value :
+
+code::
+(
+s.waitForBoot({
+	var synthFree = false;
+	var synth = SynthDef(\GMFM, { |amp = 0.25, freq = 220,
+		modFreq = 1, modIndex = 0|
+		var carrier, mod;
+		mod = SinOsc.ar(
+			freq * modFreq,
+			mul: modIndex);
+		carrier = SinOsc.ar(
+			freq,
+			mul: amp / 2
+		);
+		carrier = Mix.ar([
+			carrier,
+			SinOsc.ar(freq * mod, mul: amp / 2)
+		]);
+		carrier = LeakDC.ar(carrier);
+		carrier = carrier!2;
+		Out.ar(0, carrier);
+	}).play;
+
+	var win = Window(
+		"GMFM",
+		Rect(100, 100, 600, 400)
+	);
+
+	var multiSlider = GMSymbol2DSlider()
+	.min_([0, 1/8])
+	.max_([20, 1*8])
+	.scales_([\lin, \exp])
+	.values_([0, 1])
+	.helpersNumbers_([2, 3])
+	.helperSubdivisions_([9, 2])
+	.drawHelpers_(true)
+	.helpersStyle_(\dot)
+	.action_({ |x, y|
+		synth.set(\modIndex, x);
+		synth.set(\modFreq, y);
+	});
+
+	win.layout_(
+		VLayout()
+		.margins_(0)
+		.add(multiSlider)
+	);
+
+	win.onClose_({
+		if(synthFree.not)
+		{ synth.free; };
+	});
+
+	CmdPeriod.doOnce({
+		synthFree = true;
+		win.close;
+	});
+
+	win.front;
+});
+)
+::

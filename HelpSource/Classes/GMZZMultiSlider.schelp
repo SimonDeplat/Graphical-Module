@@ -1,0 +1,97 @@
+TITLE:: GMZZMultiSlider
+summary:: An abstract class for sliders with multiple values (Graphical Module)
+categories:: GUI>Graphical Module
+related:: Classes/GMZZSlider, Classes/GMFaderMultiSlider, Classes/GMSymbolMultiSlider, Classes/GMLineMultiSlider, Classes/GMUserView, Classes/GMStyle
+
+DESCRIPTION::
+
+link::Classes/GMZZMultiSlider:: is an abstract class that defines multiple values sliders behavior within the scope of the Graphical Module. The class name begins with "GMZZ" so it is displayed last in the autocompletion API.
+
+subsection::A note about this documentation
+
+This class is an extension of the link::Classes/GMZZSlider:: class. It retains the same principle, but for several values instead of one. As such, you should read the link::Classes/GMZZSlider:: class documentation first, as only differences between those two classes are documented here.
+
+subsection::Action Mode
+
+link::Classes/GMZZMultiSlider:: manipulates an link::Classes/Array:: of values. The size of this array will define how many sliders are displayed within the view. By default, the link::Classes/Function:: associated with the code::action:: will be called passing this array as argument every time one of the value is modified.
+
+This is however somehow inefficient, as the the multislider only allows
+to modify a single value at a time. You can change this behavior by setting the code::actionMode:: parameter to code::\index::. In this case, the function will be evaluated with the index of the value, and its new value, as arguments :
+
+code::
+(
+GMMultiFaderSlider()
+.actionMode_(\index)
+.action_({ |index, newValue|
+	"Value at index ".post;
+	index.post;
+	" was changed to ".post;
+	newValue.postln;
+})
+.front
+)
+::
+
+subsection::Orientation
+
+The orientation logic isn't the same as link::Classes/GMZZSlider::. Here, an code::\horizontal:: orientation means sliders will be distributed horizontally, which means they will be interacted with vertically.
+
+When the sliders are distributed vertically, the topmost slider will modify the first value of the array, the bottommost slider will modify the last value of the array.
+
+subsection::Sequencer API
+
+link::Classes/GMZZMultiSlider:: can be used as a sequencer. As such, it is possible to highlight certain sliders, and to use a link::Classes/Routine:: to highlight the current beat. Since those are graphical properties only, those methods are documented within the documentation of the classes that inherit from link::Classes/GMZZMultiSlider::.
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of link::Classes/GMZZMultiSlider::.
+
+returns:: a link::Classes/GMZZMultiSlider:: instance. This method is implicitely internal.
+
+INSTANCEMETHODS::
+
+METHOD:: values
+Sets or gets the values the multislider is manipulating. The size of the array defines how many sliders are displayed.
+
+METHOD:: action
+Sets or gets the link::Classes/Function:: to be evaluated when interacting with the multislider changes one its value. Depending on the selected code::actionMode::, this link::Classes/Function:: either takes the current values as argument, or the last modified value with its index.
+
+METHOD:: actionMode
+Sets or gets the argument format the code::action:: function is expecting. Can be either code::\values:: or code::\index:: (see above).
+
+METHOD:: orientation
+Sets or gets the orientation of the multislider. This refers to the orientation of the sliders distribution, not the orientation they are interacted with. Can be either code::\horizontal:: or code::\vertical::.
+
+subsection::GMZZSlider Methods
+
+See the link::Classes/GMZZSlider:: class documentation for those methods.
+
+METHOD:: min
+METHOD:: max
+METHOD:: expMin
+METHOD:: scale
+METHOD:: polarity
+METHOD:: mouseDownAction
+METHOD:: helpersNumber
+METHOD:: helperSubdivisions
+METHOD:: modStep
+METHOD:: modStepOperator
+METHOD:: modStepPixelRange
+METHOD:: modStep2
+METHOD:: modStep2Operator
+METHOD:: modStep2PixelRange
+METHOD:: modSteps
+METHOD:: modStepsOperators
+METHOD:: modStepsPixelRanges
+
+subsection::Internal Methods
+
+METHOD:: prUpdateValue
+METHOD:: prCheckMod
+METHOD:: prGetClosestHelper
+METHOD:: prGetModStepValue
+
+EXAMPLES::
+
+See the link::Classes/GMFaderMultiSlider:: documentation for examples.

@@ -1,0 +1,82 @@
+TITLE:: GMUserView
+summary:: An abstract class used for creating graphical interfaces
+categories:: GUI>Graphical Module
+related:: Classes/GMStyle
+
+DESCRIPTION::
+link::Classes/GMUserView:: is an abstract class used to centralize some methods that (almost) every link::Classes/Class:: from the Graphical Module are using.
+
+It inherits from the link::Classes/UserView:: class.
+
+Its main usage is to provide common functions to it's children, notably the code::.drawFrame:: method that is used to draw the background of the widgets, and allow communication between the code::.drawFunc:: and the link::Classes/GMStyle:: associated to the widget.
+
+It can be used to draw an empty frame, but it is designed as if each of it's method was internal.
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of link::Classes/GMUserView::.
+
+This will be an empty view, and as such doesn't really makes sense.
+returns:: a link::Classes/GMUserView:: instance.
+
+INSTANCEMETHODS::
+
+METHOD:: style
+Sets or gets the link::Classes/GMStyle:: associated to the widget.
+
+METHOD:: displayBorder
+Sets or gets wether the border of the widget should be apparent.
+
+METHOD:: displayBackground
+Sets or gets wether the background of the widget should be apparent.
+
+METHOD:: displayFrame
+Sets wether both the background and the border of the widget should be apparent.
+
+subsection::Internal Methods
+
+METHOD:: init
+Associate the default link::Classes/GMStyle:: to this instance. Used at initialisation.
+
+METHOD:: drawBorder
+The function that draws every border of the widget.
+
+METHOD:: drawBackground
+The function that draws the background of the widget. The background color must be passed explicitely as argument.
+
+METHOD:: drawFrame
+The function that draws the background of the widget, then every border. The background color must be passed explicitely as argument.
+
+METHOD:: interactionRect
+Returns the surface of the widget that can be interacted with as a link::Classes/Rect::, i.e. the size of the widget minus the borders sizes.
+returns:: a link::Classes/Rect::
+
+METHOD:: stringCenteredIn
+A function that allows to display text in a rectangular portion of the widget.
+
+subsection::Internal Methods : style getters
+
+The following methods are getters that allow communication with the associated link::Classes/GMStyle:: in the context of the code::drawFunc::.
+
+METHOD:: mainColor
+METHOD:: secondColor
+METHOD:: backColor
+METHOD:: backgroundColor
+METHOD:: disabledColor
+METHOD:: borderSize
+METHOD:: secondBorderSize
+METHOD:: thirdBorderSize
+METHOD:: borderColor
+METHOD:: secondBorderColor
+METHOD:: thirdBorderColor
+METHOD:: font
+METHOD:: fontColor
+METHOD:: fontColorDisabled
+METHOD:: selectedColor
+METHOD:: outlineSize
+METHOD:: outlineColor
+METHOD:: beatColor
+METHOD:: helpersColor
+METHOD:: valueFontColor
+METHOD:: highlightColor

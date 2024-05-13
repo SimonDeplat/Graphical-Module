@@ -1,0 +1,255 @@
+TITLE:: GMFaderSlider
+summary:: A simple slider for creating graphical interfaces
+categories:: GUI>Graphical Module
+related:: Classes/GMZZSlider, Classes/GMSymbolSlider, Classes/GMUserView, Classes/GMStyle
+
+DESCRIPTION::
+link::Classes/GMFaderSlider:: is an easy to use customisable slider.
+
+It inherits from the link::Classes/GMZZSlider:: class, and is only responsible for graphical specifications. See link::Classes/GMZZSlider:: for non-graphical properties settings.
+
+Its color can be configured so that it becomes transparent as the value is getting lower. The transparency is independant from the selected scale mapping : it is always linear. This means the lower the color is, the lower the value is relatively to the maximum value. This visual hint is useful when using non-linear scale (a slider at the same position would display different colors on an exponential scale and a logarithmic scale). Setting the minimum transparency to 1 will disable the fading effect.
+
+By default, the slider will display its value, truncated to a certain number.
+
+In some certain cases, the built-in slider scales won't suit your usage, and you will need to post-process the slider value within its code::action:: function. In this case, you should also modify the code::displayFunction:: of the slider so that the displayed value is updated accordingly :
+
+code::
+(
+GMFaderSlider()
+.min_(1)
+.max_(10)
+.action_({ |value|
+	value = value.pow(3);
+	value.post;
+	" was selected".postln;
+})
+.displayFunction_({ |value|
+	value = value.pow(3); })
+.front
+)
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of link::Classes/GMFaderSlider::.
+
+By default, its graphical properties are defined by its associated link::Classes/GMStyle::. This means that creating sliders with different colors implies creating multiples link::Classes/GMStyle::. The slider color corresponds to the code::mainColor:: property.  The font color of the displayed value corresponds to the code::valueFontColor:: property.
+
+returns:: a link::Classes/GMFaderSlider:: instance.
+
+INSTANCEMETHODS::
+
+subsection::Graphical settings
+
+METHOD:: minAlpha
+Sets or gets the minimum alpha value that the slider color can reach when the value is equal to code::min::. Set to 1 to disable the fading effect.
+ARGUMENT:: aNumber
+A link::Classes/Float:: that should be between 0 and 1.
+
+METHOD:: sliderRatio
+Sets or gets the size of the slider relative to the widget size.
+ARGUMENT:: aNumber
+A link::Classes/Float:: that should be between 0 and 1.
+
+METHOD:: displayValue
+Sets or gets wether the value should be displayed.
+
+METHOD:: centerValue
+Sets or gets wether the value should be centered on the widget.
+
+METHOD:: roundValue
+Sets or gets the number the displayed value is truncated to.
+
+METHOD:: displayFunction
+Sets or gets the link::Classes/Function:: that will be used to adapt the displayed value if needed (see above). Set to code::nil:: to disable.
+
+METHOD:: fontRatio
+Sets or gets the size of the displayed value font relative to the widget size.
+ARGUMENT:: aFloat
+A link::Classes/Float:: that should be between 0 and 1.
+
+METHOD:: drawHelpers
+Sets or gets wether helpers should be displayed.
+
+METHOD:: helpersStyle
+Sets or gets the helpers style. Valid values are either code::\line:: or code::\dot::.
+
+METHOD:: helpersRatio
+Sets or gets the size of the displayed helpers relative to the widget size. When using code::\dot:: helpers, the value will be clipped if this would cause the dots to overlap.
+ARGUMENT:: aNumber
+A link::Classes/Float:: that should be between 0 and 1.
+
+METHOD:: centerHelpers
+Sets or gets wether helpers should be centered on the widget. Only relevant with code::line:: helpers.
+
+subsection::Internal Methods
+
+METHOD:: draw
+The link::Classes/Function:: associated to the link::Classes/View:: code::drawFunc::. Shouldn't be modified.
+
+METHOD:: prDrawSlider
+METHOD:: prDrawValue
+
+EXAMPLES::
+
+Here's a demo of different helpers configuration :
+
+code::
+(
+var win = Window(
+	"",
+	Rect(100, 100, 600, 600)
+).background_(Color.black);
+
+var slider1 = GMFaderSlider()
+.value_(0.333);
+
+var slider2 = GMFaderSlider()
+.value_(0.333)
+.helpersNumber_(3)
+.helperSubdivisions_(7)
+.drawHelpers_(true);
+
+var slider3 = GMFaderSlider()
+.value_(0.333)
+.helpersNumber_(3)
+.helperSubdivisions_(7)
+.drawHelpers_(true)
+.centerHelpers_(true);
+
+var slider4 = GMFaderSlider()
+.value_(0.333)
+.helpersNumber_(3)
+.helperSubdivisions_(7)
+.drawHelpers_(true)
+.helpersRatio_(1);
+
+var slider5 = GMFaderSlider()
+.value_(0.333)
+.helpersNumber_(4)
+.helperSubdivisions_(2)
+.drawHelpers_(true)
+.helpersStyle_(\dot)
+.helpersRatio_(0.25);
+
+var slider6 = GMFaderSlider()
+.value_(0.333)
+.minAlpha_(1)
+.helpersNumber_(4)
+.helperSubdivisions_(2)
+.drawHelpers_(true)
+.helpersStyle_(\dot)
+.helpersRatio_(0.25)
+.style_(
+	GMStyle.default.deepCopy
+	.helpersColor_(Color.yellow)
+);
+
+var hSlider = GMFaderSlider()
+.orientation_(\horizontal)
+.drawHelpers_(true)
+.helpersNumber_(4)
+.helperSubdivisions_(7)
+.polarity_(\bi)
+.value_(0.333);
+
+win.layout_(
+	VLayout()
+	.add(
+		HLayout()
+		.add(slider1)
+		.add(slider2)
+		.add(slider3)
+		.add(slider4)
+		.add(slider5)
+		.add(slider6),
+		6
+	)
+	.add(hSlider, 1)
+);
+
+win.front;
+
+CmdPeriod.doOnce({ win.close; });
+)
+::
+
+Copy-paste templates :
+
+Amp :
+
+code::
+(
+var slider = GMFaderSlider()
+.min_(0)
+.max_(1)
+.scale_(\lin)
+.value_(0)
+.action_({ |value|
+
+});
+
+slider.front;
+)
+::
+
+Freq (mapping imprecisions at certains values) :
+
+code::
+(
+var slider = GMFaderSlider()
+.min_(55)
+.max_(7040)
+.scale_(\exp)
+.value_(440)
+.helperSubdivisions_(6)
+.drawHelpers_(true)
+.action_({ |value|
+
+});
+
+slider.front;
+)
+::
+
+Panner :
+
+code::
+(
+var slider = GMFaderSlider()
+.min_(0)
+.max_(1)
+.scale_(\lin)
+.value_(0)
+.orientation_(\horizontal)
+.polarity_(\bi)
+.drawHelpers_(true)
+.action_({ |value|
+
+});
+
+slider.front;
+)
+::
+
+Exp scale (mapping imprecisions at certains values) :
+
+code::
+(
+var slider = GMFaderSlider()
+.min_(32.reciprocal)
+.max_(32)
+.scale_(\exp)
+.value_(1)
+.helpersNumber_(3)
+.helperSubdivisions_(4)
+.drawHelpers_(true)
+.action_({ |value|
+
+});
+
+slider.front;
+)
+::

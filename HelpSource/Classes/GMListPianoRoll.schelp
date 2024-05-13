@@ -1,0 +1,166 @@
+TITLE:: GMListPianoRoll
+summary:: A simple pianoroll for creating graphical interfaces, with limited functionalities
+categories:: GUI>Graphical Module
+related:: Classes/GMUserView, Classes/GMStyle, Classes/GMSequencer
+
+DESCRIPTION::
+link::Classes/GMListPianoRoll:: displays a simple configurable pianoroll.
+
+It is however limited compared to other pianoroll implementations : it can be viewed as a 2D checkbox, which manipulates a link::Classes/List::, allowing to fill its indices with predefined values. This means that it does not have a time representation, and as such, it is not possible to offset the position of an item on the grid, and it is not possible to stretch the size of an item on the grid (like one would do to increase the sustain of a note).
+
+One must provide a list of entries that can be checked and unchecked on every beat of the grid. Each index of the code::values:: link::Classes/List:: will contain every checked item, or be equal to code::nil:: if no entry has been checked.
+
+The size of the grid is determined by both code::entries:: and code::values:: sizes. Please not that the first entry corresponds to the row on the bottom of the grid, and the last entry correspodns to the topmost row.
+
+It is possible to highlight cases on both horizontal and vertical axis, and to highlight the current beat using a link::Classes/Routine:: (seee example below).
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of link::Classes/GMListPianoRoll::.
+
+Its graphical properties are defined by its associated link::Classes/GMStyle::.
+
+returns:: a link::Classes/GMListPianoRoll:: instance.
+
+INSTANCEMETHODS::
+
+METHOD:: action
+Sets or gets the link::Classes/Function:: that will be evaluated when the link::Classes/GMListPianoRoll:: has been interacted with. The arguments passed to the function depend on the code::actionMode::.
+
+METHOD:: actionMode
+Sets or gets which arguments are passed to the code::action::'s link::Classes/Function:: when the link::Classes/GMListPianoRoll:: has been interacted with. If set to code::\values::, the whole code::values:: link::Classes/List:: will be passed as argument. If set to code::\index::, the index of the modified value and the new value will be passed as arguments.
+
+METHOD:: values
+Sets or gets the pianoroll values. Takes a link::Classes/Collection:: containing collections, or code::nil:: as argument. The size of the collection determines the horizontal size of the pianoroll (i.e. the number of beats).
+
+METHOD:: entries
+Sets or gets the available pianoroll entries. Takes a link::Classes/Collection:: as argument. The size of the collection determines the vertical size of the pianoroll.
+
+METHOD:: beat
+Sets or gets the displayed beat. Set to code::-1:: to disable. This will internally defer the graphical update.
+
+METHOD:: highlights
+Sets or gets the policy that highlights columns. Takes an link::Classes/Array:: containing floats between code::0:: and code::1::, that should be the size of the code::values::. The closer the highlight is to code::1::, the more opaque the highlight will be.
+
+METHOD:: drawHighlights
+Sets or gets wether the horizontal highlights should be displayed.
+
+METHOD:: vHighlights
+Sets or gets the policy that highlights rows. Takes an link::Classes/Array:: containing floats between code::0:: and code::1::, that should be the size of the code::entries::. The closer the highlight is to code::1::, the more opaque the highlight will be.
+
+METHOD:: drawVHighlights
+Sets or gets wether the vertical highlights should be displayed.
+
+METHOD:: gridColor
+Sets or gets the grid color.
+
+METHOD:: gridWidth
+Sets or gets the grid width.
+
+METHOD:: boxRatio
+Sets or gets the ratio of the checkbox relative to the case size where it is displayed. Valid values are between code::0:: and code::1::.
+
+METHOD:: allowMouseMoveAction
+Sets or gets whether the widget should respond to mouse move action when it is being pressed.
+
+subsection::Internal Methods
+
+METHOD:: draw
+METHOD:: prUpdateValues
+METHOD:: prDrawValues
+METHOD:: prDrawHighlights
+METHOD:: prDrawVHighlights
+METHOD:: prDrawGrid
+METHOD:: prDrawBeat
+
+EXAMPLES::
+
+code::
+(
+s.waitForBoot({
+	var freq = 440;
+	var scale = \aeolian;
+	var freqs;
+	var score = Array.fill(8, { nil });
+
+	var routine;
+	var routinePlaying = false;
+
+	var win = Window()
+	.background_(Color.black);
+
+	var pianoRoll = GMListPianoRoll();
+
+	var playButton = GMPlayButton()
+	.maxWidth_(128)
+	.maxHeight_(128)
+    .action_({ |playing|
+        if(playing) {
+            routine = Routine({
+                var beat = 0;
+                loop {
+                    if(score[beat % score.size].notNil) {
+						score[beat % score.size].do({ |freq|
+							Synth(\GMPercSine, [\freq, freq, \amp, 0.25 / score[beat % score.size].size]);
+						});
+					};
+                    0.2.wait;
+                    beat = beat + 1;
+                    // Update beat display
+                    pianoRoll.beat_(beat % score.size);
+                };
+            }).play(TempoClock.default);
+
+            routinePlaying = true;
+        } {
+            routine.stop;
+            routinePlaying = false;
+            // Reset beat display
+            pianoRoll.beat_(0);
+        };
+    });
+
+	SynthDef(\GMPercSine, { |freq = 440, amp = 0.25|
+		var snd = SinOsc.ar(freq, mul: amp);
+		snd = snd * EnvGen.kr(
+			Env.perc(0.01, 0.2),
+			doneAction: Done.freeSelf
+		);
+		Out.ar(0, snd!2);
+	}).add;
+
+	freqs = Scale.at(scale).ratios;
+	freqs = freqs ++ [2];
+	freqs = freqs * freq;
+
+	pianoRoll
+	.entries_(freqs)
+	.beat_(0)
+	.highlights_([0.8, 0, 0.6, 0, 0.7, 0, 0.6, 0])
+	.vHighlights_([0.8, 0, 0.6, 0, 0.6, 0, 0, 0.8])
+	.action_({ |values| score = values; });
+
+	win.layout_(
+		HLayout()
+		.margins_(0)
+		.spacing_(0)
+		.add(playButton, 1)
+		.add(pianoRoll, 7)
+	);
+
+	win.onClose_({
+		if(routinePlaying)
+		{ routine.stop; };
+	});
+
+	CmdPeriod.doOnce({
+		routinePlaying = false;
+		win.close;
+
+	});
+
+	win.front;
+});
+)
+::

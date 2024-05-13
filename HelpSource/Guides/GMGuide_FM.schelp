@@ -1,0 +1,639 @@
+title:: Graphical Module : FM Drone Example
+categories:: GUI>Graphical Module
+summary:: A documented example of a continuous synth graphical interface using the Graphical Module
+
+section:: Introduction
+
+This guide documents the process of using the Graphical Module (GM) to build an interface that controls a continuous synth. Its purpose is to illustrate how to setup GM classes with a concrete example. It can also be used as a copy-paste template to build other synths interfaces.
+
+The full example code is located at the end of this guide.
+
+section:: The Synth
+
+The synth I'm using is a simple continuous synth which uses frequency modulation.
+
+It has 4 overall parameters :
+list::
+## amplitude
+## frequency
+## spread
+## frequency modulation
+::
+
+section:: Containers
+
+First, each control is nested inside a container using layouts. This allows to provide both the control(s) and a link::Classes/GMTextView:: that identifies what the control does :
+
+code::
+(
+var ampText = GMTextView()
+.string_("amp")
+.displayFrame_(true)
+.fontRatio_(0.3);
+
+var ampSlider = GMFaderSlider();
+
+var ampContainer = UserView()
+.resizeTo(128, 700)
+.layout_(
+	VLayout()
+	.margins_(0)
+	.spacing_(0)
+	.add(ampText, 1)
+	.add(ampSlider, 4)
+);
+
+ampContainer.front;
+)
+::
+
+section:: Style Setup
+
+Before instanciating GM classes, I first setup a link::Classes/GMStyle:: that will define how widgets are drawn :
+
+code::
+var style = GMStyle()
+.mainColor_(Color(0.75, 0.75, 0.0))
+.selectedColor_(Color(0.75, 0.75, 0.0))
+
+.backColor_(Color(0.0, 0.75, 0.75))
+.backgroundColor_(Color(0.0, 0.0, 0.0))
+
+.borderColor_(Color(0, 0.666, 0.666))
+.borderSize_(4)
+.secondBorderSize_(1)
+.secondBorderColor_(Color(0.75, 0.75, 0.75))
+.thirdBorderSize_(8);
+
+var textStyle = style.deepCopy
+.borderColor_(Color.black)
+.secondBorderSize_(0)
+.thirdBorderSize_(0);
+::
+
+This allows to unify style properties management within a single code block.
+
+As you can see, I'm using code::deepCopy:: to quickly define a second style that inherits from the first style properties. This style will be applied to controls link::Classes/GMTextView:: so that their design is smoother and does not catch the eye as much as controls do (this is mostly about reducing border sizes).
+
+When instanciating a GM object, the style must be applied to it using the code::style:: method :
+
+code::
+var style = GMStyle();
+var widget = GMFaderSlider()
+.style_(style);
+::
+
+section:: Amplitude control
+
+The amplitude control uses link::Classes/GMFaderSlider:: defaults value : a linear scale from code::0:: to code::1::. Its code::action:: just sets the synths code::\amp:: parameter to the chosen values.
+
+Helpers are displayed to ease the volume selection. They are configured so that there's 3 big helpers, and 4 small helpers inbetween each helpers pairs. This means there's a total of 11 helpers, allowing to snap the value to a multiple of 0.1 when holding the SHIFT key down.
+
+code::
+var ampSlider = GMFaderSlider()
+.drawHelpers_(true)
+.helpersNumber_(3)
+.helperSubdivisions_(4)
+::
+
+Mod steps are optionnal, but allow to refine the control behavior.
+
+The first mod step, that is used when holding only the CTRL key down, allows to smoothly increment and decrement the volume. This allows, for example, to simulate a LFO with the mouse.
+
+code::
+var ampSlider = GMFaderSlider()
+.modStep_(0.001)
+.modStepOperator_(\add)
+.modStepPixelRange_(1)
+::
+
+The second mod step, that is used when holding both CTRL + SHIFT keys down, behaves the same, but with a bigger pixel range. This means it take more mouse movement to increment / decrement the value. This allows to fine tune the volume very precisely.
+
+code::
+var ampSlider = GMFaderSlider()
+.modStep2_(0.001)
+.modStep2Operator_(\add)
+.modStep2PixelRange_(5)
+::
+
+section:: Spread control
+
+Spread allows to detune stereo channels, using this formula :
+
+code::
+freq = [freq * spread, freq / spread];
+::
+
+The expected range therefore begins at 1, and 1.25 is a good maximum. Values close to 1 give a nice stereo effect that make the sound 'oscillate'. Higher value will render the offset between the two channels more audible, thus sounding 'detuned'.
+
+The chosen scale is a curved one, meaning that at first, the slider will increment the spread value really slowly, allowing to fine tune the stereo effect. Higher values will increment more rapidly, because the detune effect doesn't need to be as precise. When specifying a number as code::scale:: parameter, the code::lincurve:: mapping method will be used.
+
+code::
+var spreadSlider = GMSymbolSlider()
+.min_(1)
+.max_(1.25)
+.scale_(8)
+.value_(1)
+::
+
+The spread parameter is a ratio, so I find it better expressed as a percentage. This is what the display function does, adapting the displayed value to a percentage equivalent, without affecting the argument passed to the synth :
+
+code::
+.displayFunction_({ |value|
+	value = value - 1;
+	value = value * 100;
+	value = value.trunc(0.001);
+	value = value.asString;
+	value = value ++ "%";
+	value
+})
+::
+
+Helpers are drawn mostly for esthetic purposes, and mod steps have nothing particular other than allowing to play with the control smoothly.
+
+section:: Frequency control
+
+This time, the base frequency parameter uses two distinct controls. This allows to either pick any frequency within an octave range, or to specifically select a note.
+
+The continuous frequency selector is a simple slider, that will round the displayed value for clarity :
+
+code::
+var freqSlider = GMSymbolSlider()
+
+.min_(440)
+.max_(880)
+.scale_(\exp)
+.value_(440)
+
+.displayFunction_({ |value| value.round(1).asInteger })
+.action_({ |value| setFreq.value(value); });
+::
+
+A link::Classes/GMMultiButton:: allows to select a particular 'named' note. Both note names and their respective frequencies are stored into arrays, and the multi-button acts as a 'bridge' between them :
+
+code::
+var namedFreqs = (Scale.at(\chromatic).ratios ++ [2]) * 440;
+var freqNames = [
+	"A", "Bb", "B", "C", "Db", "D", "Eb",
+	"E", "F", "F#", "G", "Ab", "A"
+];
+
+var freqSelector = GMMultiButton()
+.states_(freqNames)
+.action_({ |index| setFreq.value(namedFreqs[index]); });
+::
+
+Since both widgets modify the same control, they do not update the synth directly : they call a link::Classes/Function:: which is responsible for the Synth update, then updates both widgets according to the new frequency :
+
+code::
+var setFreq = { |newFreq|
+	var freqIndex = -1;
+
+	// Synth update
+	synth.set(\freq, newFreq);
+
+	// Slider update
+	freqSlider.value_(newFreq);
+
+	// Multi-button update
+	namedFreqs.do({ |freq, index|
+		if(freqIndex == -1) {
+			if(freq.round(1) == newFreq.round(1)) {
+				freqIndex = index;
+			};
+		};
+	});
+	if(freqIndex == -1)
+	{ freqSelector.desindex; }
+	{ freqSelector.state_(freqIndex); };
+};
+::
+
+Then, an other link::Classes/GMMultiButton:: simply allows to select a frequency multiplier that acts as an octave control.
+
+section:: Frequency modulation control
+
+The synth plays two different signals. The first is a sinusoïd oscillating at the specified frequency. The second is an other sinusoïd which frequency is modulated by an other sinusoïd.
+
+Frequency modulation uses two distinct parameters : a frequency, and an index. This frequency is often expressed as a ratio (in this case, relative to the base frequency).
+
+Using a link::Classes/GMSymbol2DSlider:: allows to play with both controls at once.
+
+The index parameter, on the horizontal axis, has no special property. It is a simple linear parameter that changes the texture of the sound.
+
+The frequency ratio parameter, however, has an interesting property. When its value is a power of 2 (0.5, 1, 2, 4, etc), both the first and second signal will be in sync, with the second signal playing two sinusoïds which frequencies are octaves of the first signal. When its value isn't a power of 2, signals won't be synced, thus being detuned (unless the value ends up producing harmonics of the first signal, which is unlikely).
+
+By setting up mod steps carefully, this allows to interact with the synth in two different ways : the normal behavior will allow to detune the synth and to play with the full range of frequency modulation. Holding CTRL + ALT keys down while moving the mouse will instead force the value to snap to a power of two : in this case, the synth will always be tuned.
+
+When a particular frequency ratio has been chosen, it becomes possible to only play with the index by pressing the CTRL key down.
+
+code::
+var fm2DSlider = GMSymbol2DSlider()
+
+.min_([0, 1/8])
+.max_([20, 1*8])
+.scales_([\lin, \exp])
+.values_([0, 1])
+
+.helpersNumbers_([2, 3])
+.helperSubdivisions_([9, 2])
+.action_({ |x, y|
+	synth.set(\modIndex, x);
+	synth.set(\modFreq, y);
+});
+::
+
+section:: Full screen on CTRL + F
+
+The following code allows to setup a fullscreen switch when the user presses CTRL + F :
+
+code::
+(
+var win = Window();
+var fullScreen = false;
+View.globalKeyDownAction_({ |view, char, mod, unicode|
+	// CTRL + F
+	if(unicode == 6) {
+		if(fullScreen)
+		{ win.endFullScreen; }
+		{ win.fullScreen; };
+		fullScreen = fullScreen.not;
+	};
+});
+win.front;
+)
+::
+
+section:: Window setup
+
+Now that every container is defined, they are distributed inside the window using layouts.
+
+The window is also setup so that closing the window, pressing code::ESC:: or using code::CTRL + .:: will free the synth and close the window if needed.
+
+section:: Code
+
+code::
+(
+s.waitForBoot({
+	var synth = SynthDef(\GMFM, { |amp = 0, freq = 440, freqMul = 1,
+		spread = 1.0, modFreq = 1, modIndex = 0|
+		var snd, carrier, mod;
+
+		freq = freq * freqMul;
+		freq = [freq * spread, freq / spread];
+
+		snd = SinOsc.ar(freq);
+
+		mod = SinOsc.ar(
+			freq * modFreq,
+			mul: modIndex);
+
+		carrier = SinOsc.ar(freq * mod);
+
+		carrier = LeakDC.ar(carrier);
+
+		snd = Mix.ar([snd, carrier]);
+
+		snd = snd * amp * 0.4;
+
+		Out.ar(0, snd);
+	}).play;
+
+	var synthPlaying = true;
+
+	var win = Window(
+		"Graphical Module FM Demo",
+		Rect(
+			Window.screenBounds.width * 0.1,
+			Window.screenBounds.height * 0.1,
+			Window.screenBounds.width * 0.8,
+			Window.screenBounds.height * 0.8
+		);
+	);
+
+	var fullScreen = false;
+
+	var gridMargin = 12;
+
+	var style = GMStyle()
+	.mainColor_(Color(0.75, 0.75, 0.0))
+	.selectedColor_(Color(0.75, 0.75, 0.0))
+
+	.backColor_(Color(0.0, 0.75, 0.75))
+	.backgroundColor_(Color(0.0, 0.0, 0.0))
+
+	.borderColor_(Color(0, 0.666, 0.666))
+	.borderSize_(4)
+	.secondBorderSize_(1)
+	.secondBorderColor_(Color(0.75, 0.75, 0.75))
+	.thirdBorderSize_(8);
+
+	var textStyle = style.deepCopy
+	.borderColor_(Color.black)
+	.secondBorderSize_(0)
+	.thirdBorderSize_(0);
+
+	var title = GMTextView()
+	.string_("Frequency Modulation Drone")
+	.displayFrame_(true)
+	.fontRatio_(0.75)
+	.style_(style);
+
+	//////////////////////
+	//    AMP SLIDER    //
+	//////////////////////
+
+	var ampText = GMTextView()
+	.style_(textStyle)
+	.string_("amp")
+	.displayFrame_(true)
+	.fontRatio_(0.3);
+
+	var ampSlider = GMFaderSlider()
+	.style_(style)
+
+	.drawHelpers_(true)
+	.helpersNumber_(3)
+	.helperSubdivisions_(4)
+
+	.modStep_(0.001)
+	.modStepOperator_(\add)
+	.modStepPixelRange_(1)
+	.modStep2_(0.001)
+	.modStep2Operator_(\add)
+	.modStep2PixelRange_(5)
+
+	.action_({ |value| synth.set(\amp, value); });
+
+	var ampContainer = UserView()
+	.layout_(
+		VLayout()
+		.margins_(0)
+		.spacing_(0)
+		.add(ampText, 1)
+		.add(ampSlider, 4)
+	);
+
+	////////////////
+	//    FREQ    //
+	////////////////
+
+	var freqText = GMTextView()
+	.string_("frequency")
+	.displayFrame_(true)
+	.fontRatio_(0.3)
+	.style_(textStyle);
+
+	var setFreq = { |newFreq|
+		var freqIndex = -1;
+		synth.set(\freq, newFreq);
+		freqSlider.value_(newFreq);
+		namedFreqs.do({ |freq, index|
+			if(freqIndex == -1) {
+				if(freq.round(1) == newFreq.round(1)) {
+					freqIndex = index;
+				};
+			};
+		});
+		if(freqIndex == -1)
+		{ freqSelector.desindex; }
+		{ freqSelector.state_(freqIndex); };
+	};
+
+	var namedFreqs = (Scale.at(\chromatic).ratios ++ [2]) * 440;
+	var freqNames = [
+		"A", "Bb", "B", "C", "Db", "D", "Eb",
+		"E", "F", "F#", "G", "Ab", "A"
+	];
+
+	var freqSelector = GMMultiButton()
+	.style_(style)
+	.fontRatio_(0.4)
+
+	.states_(freqNames)
+	.action_({ |index| setFreq.value(namedFreqs[index]); });
+
+	var freqSlider = GMSymbolSlider()
+	.style_(style)
+	.symbol_(\diamond)
+	.drawLine_(\none)
+
+	.min_(440)
+	.max_(880)
+	.scale_(\exp)
+	.value_(440)
+	.orientation_(\horizontal)
+
+	.displayFunction_({ |value| value.round(1).asInteger })
+	.action_({ |value| setFreq.value(value); });
+
+	var freqMuls = [0.25, 0.5, 1, 2, 4];
+	var freqMulSelector = GMMultiButton()
+	.style_(style)
+	.states_(["/4", "/2", "-", "x2", "x4"])
+	.state_(2)
+	.fontRatio_(0.4)
+	.action_({ |index| synth.set(\freqMul, freqMuls[index]); });
+
+	var freqContainer = UserView()
+	.layout_(
+		VLayout()
+		.margins_(0)
+		.spacing_(0)
+		.add(freqText)
+		.add(freqSelector)
+		.add(freqSlider)
+		.add(freqMulSelector)
+	);
+
+	/////////////////////////
+	//    SPREAD SLIDER    //
+	/////////////////////////
+
+	var spreadText = GMTextView()
+	.string_("spread")
+	.displayFrame_(true)
+	.fontRatio_(0.3)
+	.style_(textStyle);
+
+	var spreadSlider = GMSymbolSlider()
+	.style_(style)
+	.symbolRatio_(0.5)
+	.fontRatio_(0.2)
+	.drawLine_(\value)
+
+	.min_(1)
+	.max_(1.25)
+	.value_(1)
+	.scale_(8)
+
+	.drawHelpers_(true)
+	.helperSubdivisions_(8)
+
+	.modStep_(0.0001)
+	.modStepOperator_(\add)
+	.modStepPixelRange_(1)
+	.modStep2_(1.0001)
+	.modStep2Operator_(\mul)
+	.modStep2PixelRange_(1)
+
+	.displayFunction_({ |value|
+		value = value - 1;
+		value = value * 100;
+		value = value.trunc(0.001);
+		value = value.asString;
+		value = value ++ "%";
+		value
+	})
+
+	.action_({ |value| synth.set(\spread, value); });
+
+	var spreadContainer = UserView()
+	.layout_(
+		VLayout()
+		.margins_(0)
+		.spacing_(0)
+		.add(spreadText, 1)
+		.add(spreadSlider, 4)
+	);
+
+	//////////////
+	//    FM    //
+	//////////////
+
+	var dummyView = UserView();
+
+	var modFreqText = GMTextView()
+	.string_("mod. freq.")
+	.displayFrame_(true)
+	.orientation_(\top)
+	.fontRatio_(0.8)
+	.style_(textStyle);
+
+	var modIndexText = GMTextView()
+	.string_("mod. index")
+	.displayFrame_(true)
+	.fontRatio_(0.8)
+	.style_(textStyle);
+
+	var fm2DSlider = GMSymbol2DSlider()
+	.style_(style)
+	.drawHelpers_(true)
+	.helpersStyle_(\dot)
+	.drawLine_(true)
+	.symbol_(\diamond)
+
+	.min_([0, 1/8])
+	.max_([20, 1*8])
+	.scales_([\lin, \exp])
+	.values_([0, 1])
+
+	.helpersNumbers_([2, 3])
+	.helperSubdivisions_([9, 2])
+	.action_({ |x, y|
+		synth.set(\modIndex, x);
+		synth.set(\modFreq, y);
+	});
+
+	var fmContainer = UserView()
+	.layout_(
+		HLayout()
+		.margins_(0)
+		.spacing_(0)
+		.add(
+			VLayout()
+			.margins_(0)
+			.spacing_(0)
+			.add(dummyView, 1)
+			.add(modFreqText, 7),
+			1
+		)
+		.add(
+			VLayout()
+			.margins_(0)
+			.spacing_(0)
+			.add(modIndexText, 1)
+			.add(fm2DSlider, 7),
+			7
+		)
+	);
+
+	////////////////////////
+	//    WINDOW SETUP    //
+	////////////////////////
+
+	win.view.onResize_({
+		dummyView.maxWidth_(modIndexText.bounds.height);
+		modFreqText.maxWidth_(modIndexText.bounds.height);
+	});
+
+	win.background_(
+		Color(
+			style.borderColor.red * 0.6,
+			style.borderColor.green * 0.6,
+			style.borderColor.blue * 0.6
+		)
+	);
+
+	win.layout_(
+		VLayout()
+		.margins_(0)
+		.spacing_(0)
+
+		.add(title, 1)
+
+		.add(
+			HLayout()
+			.margins_(gridMargin)
+			.spacing_(gridMargin)
+
+			.add(ampContainer, 1)
+
+			.add(
+				VLayout()
+				.margins_(0)
+				.spacing_(gridMargin)
+				.add(freqContainer, 1)
+				.add(fmContainer, 1),
+				7
+			)
+
+			.add(
+				VLayout()
+				.margins_(0)
+				.spacing_(0)
+				.add(spreadContainer, 7)
+				.add(GMRecordButton().style_(style), 1),
+				1
+			),
+			9
+		)
+	);
+
+	win.onClose_({
+		if(synthPlaying)
+		{ synth.free; };
+	});
+
+	CmdPeriod.doOnce({
+		synthPlaying = false;
+		win.close;
+	});
+
+	View.globalKeyDownAction_({ |view, char, mod, unicode|
+		// CTRL + F
+		if(unicode == 6) {
+			if(fullScreen)
+			{ win.endFullScreen; }
+			{ win.fullScreen; };
+			fullScreen = fullScreen.not;
+		};
+
+		// ESC
+		if(unicode == 27) { win.close; };
+	});
+
+	win.front;
+});
+)
+::

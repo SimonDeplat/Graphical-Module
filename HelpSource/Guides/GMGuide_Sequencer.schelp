@@ -1,0 +1,482 @@
+title:: Graphical Module : Sequencer interface example
+categories:: GUI>Graphical Module
+summary:: A documented example of a graphical sequencer interface using the Graphical Module
+
+section:: Introduction
+
+This guide documents the process of using the Graphical Module (GM) to build an interface that controls a sequencer. Its purpose is to illustrate how to setup GM classes with a concrete example. It can also be used as a copy-paste template to build other synths interfaces.
+
+The full example code is located at the end of this guide.
+
+section:: Sequencer interface classes
+
+Several GM classes have unified methods designed to build a visual sequencer. In this example, a conjonction of link::Classes/GMListPianoRoll::, link::Classes/GMDuoSequencer:: and link::Classes/GMFaderMultiSlider:: is used to control a looping pattern.
+
+Those classes all manipulates an array of datas, in which every index corresponds to a particular beat. Similarly, they all implement an code::highlights:: method that allows to visually identify strong beats if needed.
+
+section:: Setting up datas
+
+In this example, the number of beats is defined by the length of the highlight array defined in the first lines of code :
+
+code::
+var highlights = [1, 0, 0.333, 0, 0.666, 0, 0.333, 0];
+::
+
+One can simply reduce its size to change the number of beats :
+
+code::
+var highlights = [1, 0, 0.333, 0, 0.666, 0];
+::
+
+The size of the array is then used to fill other arrays with default values for each parameter the synth takes :
+
+code::
+var notes = Array.fill(highlights.size, { nil });
+var triggers = Array.fill(highlights.size, { 1 });
+var amps = Array.fill(highlights.size, { 0.75 });
+var releases = Array.fill(highlights.size, { 0.25 });
+var pans = Array.fill(highlights.size, { 0 });
+var lpRatios = Array.fill(highlights.size, { 1 });
+::
+
+Later on, when widgets are created, they will be configured to manipulate those arrays :
+
+code::
+var ampControl = GMFaderMultiSlider()
+.values_(amps)
+.action_({ |values| amps = values; });
+::
+
+section:: Implementing the Routine
+
+Now that datas placeholders are accessible through the graphical interface, one can implement a link::Classes/Routine:: that will loop through those arrays, playing the required synth with the corresponding datas. Once the synth has been played, and the beat incremented, every widget is updated using the code::beat:: method :
+
+code::
+routine = Routine({
+	var currentBeat = 0;
+
+	loop {
+		// Check if piano roll has notes checked
+		if(notes[currentBeat].notNil) {
+			// Check if synth should trigger
+			if(triggers[currentBeat].coin) {
+				// For each note that should be played
+				notes[currentBeat].do({ |freq|
+					// Play it with the specified datas
+					Synth(
+						\GMPercSaw, [
+							\freq, freq,
+							\amp, amps[currentBeat],
+							\rel, releases[currentBeat],
+							\lowPassRatio, lpRatios[currentBeat],
+							\pan, pans[currentBeat]
+						]
+					);
+				});
+			};
+		};
+
+		0.25.wait;
+
+		// Update current beat
+		currentBeat = currentBeat + 1;
+		if(currentBeat == highlights.size)
+		{ currentBeat = 0;};
+		// Update widgets
+		beatWidgets.do({ |widget| widget.beat_(currentBeat); });
+	};
+}).play(TempoClock.default);
+::
+
+section:: Code
+
+code::
+(
+s.waitForBoot({
+	var highlights = [1, 0, 0.333, 0, 0.666, 0, 0.333, 0];
+	var notes = Array.fill(highlights.size, { nil });
+	var triggers = Array.fill(highlights.size, { 1 });
+	var amps = Array.fill(highlights.size, { 0.75 });
+	var releases = Array.fill(highlights.size, { 0.25 });
+	var pans = Array.fill(highlights.size, { 0 });
+	var lpRatios = Array.fill(highlights.size, { 1 });
+
+	var availableNotes = (Scale.at(\minor).ratios ++ [2]) * 220;
+	var noteHighlights = [1, 0, 0.5, 0, 0.5, 0, 0, 1];
+	var probabilities = [0, 0.25, 0.5, 0.75, 1];
+
+	var routine;
+	var routinePlaying = true;
+
+	var beatWidgets;
+
+	var win = Window(
+		"Graphical Sequencer Demo",
+		Rect(
+			Window.screenBounds.width * 0.1,
+			Window.screenBounds.height * 0.1,
+			Window.screenBounds.width * 0.8,
+			Window.screenBounds.height * 0.8
+		);
+	)
+	.background_(Color.black);
+
+	var fullScreen = false;
+	var margins = 12;
+
+	var style = GMStyle()
+	.mainColor_(Color(0.8, 0.0, 0.2))
+	.outlineColor_(Color(0.4, 0, 0.1333))
+	.selectedColor_(Color(0.75, 0.75, 0.0))
+
+	.backColor_(Color(1.0, 1.0, 1.0))
+	.backgroundColor_(Color(1.0, 1.0, 1.0))
+
+	.borderColor_(Color(0, 0, 0))
+	.borderSize_(4)
+	.secondBorderSize_(4)
+	.secondBorderColor_(Color(0.333, 0.333, 0.333))
+	.thirdBorderSize_(4)
+	.thirdBorderColor_(Color(0.666, 0.666, 0.666))
+
+	.outlineSize_(3)
+	.highlightColor_(Color(0, 0, 0, 0.3))
+	.helpersColor_(Color(0, 0, 0, 0.3))
+	.valueFontColor_(Color.black);
+
+	var textStyle = style.deepCopy
+	.secondBorderSize_(0)
+	.thirdBorderSize_(0);
+
+	var title = GMTextView()
+	.string_("Percussive Saw Sequencer")
+	.displayFrame_(true)
+	.fontRatio_(0.75)
+	.style_(style);
+
+	///////////////////////
+	//    PLAY BUTTON    //
+	///////////////////////
+
+	var playButton = GMPlayButton()
+	.style_(style)
+	.action_({ |playing|
+		if(playing) {
+			routine = Routine({
+				var currentBeat = 0;
+
+				loop {
+					if(notes[currentBeat].notNil) {
+						if(triggers[currentBeat].coin) {
+							notes[currentBeat].do({ |freq|
+								Synth(
+									\GMPercSaw, [
+										\freq, freq,
+										\amp, amps[currentBeat],
+										\rel, releases[currentBeat],
+										\lowPassRatio, lpRatios[currentBeat],
+										\pan, pans[currentBeat]
+									]
+								);
+							});
+						};
+					};
+
+					0.25.wait;
+
+					// Update current beat and widgets
+					currentBeat = currentBeat + 1;
+					if(currentBeat == highlights.size)
+					{ currentBeat = 0;};
+					beatWidgets.do({ |widget| widget.beat_(currentBeat); });
+				};
+			}).play(TempoClock.default);
+		} {
+			routine.stop;
+			beatWidgets.do({ |widget| widget.beat_(0); });
+		};
+	});
+
+	var recButton = GMRecordButton()
+	.style_(style);
+
+	var playContainer = UserView()
+	.layout_(
+		HLayout()
+		.margins_(0)
+		.spacing_(0)
+		.add(playButton)
+		.add(recButton)
+	);
+
+	////////////////
+	//    BEAT    //
+	////////////////
+
+	var pianoRoll = GMListPianoRoll()
+	.style_(style)
+	.boxRatio_(0.8)
+
+	.entries_(availableNotes)
+	.values_(notes)
+	.highlights_(highlights)
+	.vHighlights_(noteHighlights)
+	.action_({ |values| notes = values; });
+
+	var sequencer = GMDuoSequencer()
+	.style_(style)
+	.probabilities_(probabilities)
+	.values_(triggers)
+	.highlights_(highlights)
+	.action_({ |values| triggers = values; });
+
+	var beatContainer = UserView()
+	.layout_(
+		VLayout()
+		.margins_(0)
+		.spacing_(0)
+		.add(pianoRoll, 4)
+		.add(sequencer, 1)
+	);
+
+	///////////////
+	//    AMP    //
+	///////////////
+
+	var ampText = GMTextView()
+	.style_(textStyle)
+	.string_("Volume")
+	.displayFrame_(true)
+	.fontRatio_(0.5);
+
+	var ampControl = GMFaderMultiSlider()
+	.style_(style)
+	.drawHighlights_(true)
+	.centerValues_(false)
+	.drawHelpers_(true)
+	.helpersNumber_(3)
+	.minAlpha_(1)
+	.slidersRatio_(0.5)
+
+	.highlights_(highlights)
+	.values_(amps)
+	.action_({ |values| amps = values; });
+
+	var ampContainer = UserView()
+	.layout_(
+		VLayout()
+		.margins_(0)
+		.spacing_(0)
+		.add(ampText, 1)
+		.add(ampControl, 4)
+	);
+
+	////////////////////
+	//    RELEASES    //
+	////////////////////
+
+	var releaseText = GMTextView()
+	.style_(textStyle)
+	.string_("Release time")
+	.displayFrame_(true)
+	.fontRatio_(0.5);
+
+	var releaseControl = GMFaderMultiSlider()
+	.style_(style)
+	.drawHighlights_(true)
+	.centerValues_(false)
+	.minAlpha_(1)
+	.slidersRatio_(0.5)
+
+	.min_(0.05)
+	.max_(2)
+	.values_(releases)
+	.highlights_(highlights)
+	.displayFunction_({ |value|
+		if(value < 0.5) {
+			value = value * 1000;
+			value = value.asInteger.asString;
+			value = value ++ "ms";
+		} {
+			value = value.trunc(0.01);
+			value = value.asString;
+			value = value ++ "s";
+		};
+		value
+	})
+	.action_({ |values| amps = values; });
+
+	var releaseContainer = UserView()
+	.layout_(
+		VLayout()
+		.margins_(0)
+		.spacing_(0)
+		.add(releaseText, 1)
+		.add(releaseControl, 4)
+	);
+
+	////////////////////
+	//    LOW PASS    //
+	////////////////////
+
+	var lpRatioText = GMTextView()
+	.style_(textStyle)
+	.string_("Low Pass Freq. Ratio")
+	.displayFrame_(true)
+	.fontRatio_(0.5);
+
+	var lpRatioControl = GMFaderMultiSlider()
+	.style_(style)
+	.drawHighlights_(true)
+	.centerValues_(false)
+	.drawHelpers_(true)
+	.helpersStyle_(\dot)
+	.helpersNumber_(2)
+	.helperSubdivisions_(15)
+	.helpersRatio_(0.1)
+	.minAlpha_(1)
+	.slidersRatio_(0.5)
+
+	.min_(1)
+	.max_(16)
+	.values_(lpRatios)
+	.highlights_(highlights)
+	.displayFunction_({ |value| value.trunc(0.01) })
+	.action_({ |values| lpRatios = values; });
+
+	var lpRatioContainer = UserView()
+	.layout_(
+		VLayout()
+		.margins_(0)
+		.spacing_(0)
+		.add(lpRatioText, 1)
+		.add(lpRatioControl, 4)
+	);
+
+	///////////////////
+	//    PANNING    //
+	///////////////////
+
+	var panText = GMTextView()
+	.style_(textStyle)
+	.string_("Panning")
+	.displayFrame_(true)
+	.fontRatio_(0.5);
+
+	var panControl = GMSymbolMultiSlider()
+	.style_(
+		style.deepCopy
+		.outlineSize_(0)
+	)
+	.drawHighlights_(true)
+	.displayValues_(false)
+	.drawHelpers_(true)
+	.helpersRatio_(0.1)
+	.symbolRatio_(0.25)
+	.drawLine_(\none)
+	.orientation_(\vertical)
+	.polarity_(\bi)
+	.values_(pans)
+	.highlights_(highlights)
+	.displayFunction_({ |value| value.trunc(0.01) })
+	.action_({ |values| pans = values; });
+
+	var panContainer = UserView()
+	.layout_(
+		VLayout()
+		.margins_(0)
+		.spacing_(0)
+		.add(panText, 1)
+		.add(panControl, 9)
+	);
+
+
+	////////////////////
+	//    SYNTHDEF    //
+	////////////////////
+
+	SynthDef(\GMPercSaw, { |amp = 0.5, freq = 220, pan = 0,
+		rel = 0.25, lowPassRatio = 16|
+		var snd = Saw.ar(freq, amp);
+
+		snd = snd * EnvGen.kr(
+			Env.perc(0.01, rel),
+			doneAction: Done.freeSelf
+		);
+
+		snd = LPF.ar(snd, freq * lowPassRatio);
+
+		snd = Pan2.ar(snd, pan);
+
+		Out.ar(0, snd);
+	}).add;
+
+	beatWidgets = [
+		pianoRoll, sequencer, ampControl,
+		releaseControl, lpRatioControl, panControl
+	];
+	beatWidgets.do({ |widget| widget.beat_(0); });
+
+	win.onClose_({
+		if(routinePlaying)
+		{ routine.stop; };
+	});
+
+	CmdPeriod.doOnce({
+		routinePlaying = false;
+		win.close;
+	});
+
+	win.layout_(
+		VLayout()
+		.margins_(0)
+		.spacing_(0)
+
+		.add(title, 1)
+
+		.add(
+			HLayout()
+			.margins_(margins)
+			.spacing_(margins)
+
+			.add(
+				VLayout()
+				.margins_(0)
+				.spacing_(0)
+				.add(playContainer, 1)
+				.add(beatContainer, 8),
+				2
+			)
+
+			.add(
+				VLayout()
+				.margins_(0)
+				.spacing_(0)
+				.add(ampContainer)
+				.add(releaseContainer)
+				.add(lpRatioContainer),
+				3
+			)
+
+			.add(panContainer, 1),
+			9
+		)
+	);
+
+	View.globalKeyDownAction_({ |view, char, mod, unicode|
+		// CTRL + F
+		if(unicode == 6) {
+			if(fullScreen)
+			{ win.endFullScreen; }
+			{ win.fullScreen; };
+			fullScreen = fullScreen.not;
+		};
+
+		// ESC
+		if(unicode == 27) { win.close; };
+	});
+
+	win.front;
+});
+)
+::

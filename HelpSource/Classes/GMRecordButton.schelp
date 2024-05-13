@@ -1,0 +1,80 @@
+TITLE:: GMRecordButton
+summary:: A simple recording button for creating graphical interfaces
+categories:: GUI>Graphical Module
+related:: Classes/GMUserView, Classes/GMStyle
+
+DESCRIPTION::
+link::Classes/GMRecordButton:: is an easy to use button.
+
+It natively alternates between two visual symbols related to the idea of recording a sound. When recording, the button is slowly blinking.
+
+It only responds to mouse down clicks, and does not discriminate button identifiers.
+
+By default, it allows to record the default server, using default parameters, using this link::Classes/Function:: :
+
+code::
+{ |isRecording|
+	if(isRecording)
+	{ Server.default.record; }
+	{ Server.default.stopRecording; };
+}
+::
+
+You can override this by any custom link::Classes/Function::.
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of link::Classes/GMRecordButton::.
+
+By default, its graphical properties are defined by it's associated link::Classes/GMStyle::. In fact, the visual properties of this link::Classes/View:: are hardcoded, and the only available settings are the borders parameters.
+
+returns:: a link::Classes/GMRecordButton:: instance.
+
+INSTANCEMETHODS::
+
+subsection::Interaction
+
+METHOD:: action
+Sets or gets the link::Classes/Function:: to be triggered when the button is pressed down. This link::Classes/Function:: takes the current state of the button as a boolean as argument, i.e. pressing it down once will call the link::Classes/Function:: passing code::true:: as argument, pressing it down a second time will call the link::Classes/Function:: passing code::false:: as argument, etc.
+ARGUMENT:: aFunction
+A link::Classes/Function:: with one argument, the state of the button as a link::Classes/Boolean::.
+
+METHOD:: mouseDownAction
+Sets or gets the link::Classes/Function:: to be triggered when the button is pressed down. This link::Classes/Function:: takes the current state of the button as a boolean as argument, i.e. pressing it down once will call the link::Classes/Function:: passing code::true:: as argument, pressing it down a second time will call the link::Classes/Function:: passing code::false:: as argument, etc. Equivalent to code::.action:: .
+ARGUMENT:: aFunction
+A link::Classes/Function:: with one argument, the state of the button as a link::Classes/Boolean::.
+
+METHOD:: symbolRatio
+Sets or gets the symbol size relative to its smallest axis, and refreshes the link::Classes/View::.
+
+subsection::Internal Methods
+
+METHOD:: draw
+The function associated to the link::Classes/View::'s drawFunc. Shouldn't be modified, use link::Classes/UserView:: instead.
+
+ARGUMENT:: aFunction
+
+EXAMPLES::
+
+code::
+(
+s.waitForBoot({
+    var win = Window.new("", Rect(0, 400, 200, 100));
+
+    // Instanciate the View
+    var recordButton = GMRecordButton();
+
+    // Nest it inside a Layout
+    win.layout_(
+        HLayout(
+            recordButton,
+    ).margins_(0));
+
+    win.front;
+
+    // Useful when developping
+    CmdPeriod.doOnce({ win.close });
+});
+)
+::

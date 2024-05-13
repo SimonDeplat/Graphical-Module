@@ -1,0 +1,145 @@
+TITLE:: GMSequencer
+summary:: A simple deterministic sequencer for creating graphical interfaces
+categories:: GUI>Graphical Module
+related:: Classes/GMUserView, Classes/GMStyle, Classes/GMDuoSequencer
+
+DESCRIPTION::
+link::Classes/GMSequencer:: is an easy to use customisable multiple checkbox, that is designed to be used as a sequencer.
+
+It manipulates an link::Classes/Array:: containing either code::0:: or code::1::. The size of the provided array determines the size of the sequencer.
+
+It can be updated within a link::Classes/Routine:: so that the current playing beat is highlighted. It can also be configured so that particular indices are highlighted.
+
+Highlights are specified using an array of float between 0 and 1, that should be the size of the values. The higher the value is, the larger and opaque the highlight will be (see example below).
+
+Specifying a code::beat:: property will highlight the associated checkbox. One can use a link::Classes/Routine:: (or any link::Classes/TempoClock:: based algorithm) to dynamically display the current beat. The graphical update is internally deferred. See example below.
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of link::Classes/GMSequencer::.
+
+Its graphical properties are defined by its associated link::Classes/GMStyle::.
+
+returns:: a link::Classes/GMSequencer:: instance.
+
+INSTANCEMETHODS::
+
+METHOD:: action
+Sets or gets the link::Classes/Function:: that will be evaluated when the link::Classes/GMSequencer:: has been interacted with. The arguments passed to the function depend on the code::actionMode::.
+
+METHOD:: actionMode
+Sets or gets which arguments are passed to the code::action::'s link::Classes/Function:: when the link::Classes/GMSequencer:: has been interacted with. If set to code::\values::, the associated link::Classes/Array:: will be passed as argument. If set to code::\index::, the index of the modified value and the new value will be passed as arguments.
+
+METHOD:: values
+Sets or gets the sequencer values. Takes an link::Classes/Array:: containing only code::0:: or code::1:: as argument. The size of the array determines the size of the sequencer (i.e. the number of checkboxes).
+
+METHOD:: beat
+Sets or gets the displayed beat. Set to code::-1:: to disable. This will internally
+defer the graphical update.
+
+METHOD:: highlights
+Sets or gets the policy that highlights checkboxes. Takes an link::Classes/Array:: containing floats between code::0:: and code::1::, that should be the size of the code::values::. The closer the highlight is to code::1::, the larger and opaque the highlight will be.
+
+METHOD:: drawHighlights
+Sets or gets wether the highlights should be displayed.
+
+METHOD:: symbol
+Sets or gets the shape of the symbol used to display checked indices. Can either be code::\circle::, code::\square::, or code::\diamond::.
+
+METHOD:: symbolRatio
+Sets or gets the ratio of the symbol relative to the case size where it is displayed. Valid values are between code::0:: and code::1::.
+
+METHOD:: allowMouseMoveAction
+Sets or gets whether the widget should respond to mouse move action when it is being pressed.
+
+subsection::Internal Methods
+
+METHOD:: draw
+
+EXAMPLES::
+
+code::
+(
+s.waitForBoot({
+	var triggers = [
+		1, 0, 0, 0, 1, 0,
+		1, 0, 0, 1, 1, 0
+	];
+
+	var routine;
+	var routinePlaying = false;
+
+	var win = Window(
+		"",
+		Rect(
+			100, 100,
+			700, 100
+		)
+	);
+
+	var sequencer = GMSequencer()
+	.values_(triggers)
+	.highlights_([
+		1, 0, 0.75, 0, 0.5, 0,
+		1, 0, 0.75, 0, 0.5, 0
+	])
+	.beat_(0)
+	.action_({ |values| triggers = values;	});
+
+	var playButton = GMPlayButton()
+	.action_({ |playing|
+		if(playing) {
+			routine = Routine({
+				var beat = 0;
+				loop {
+					if(triggers[beat % triggers.size] == 1)
+					{ Synth(\GMWhitePerc); };
+					0.2.wait;
+					beat = beat + 1;
+					// Update beat display
+					sequencer.beat_(beat % triggers.size);
+				};
+			}).play(TempoClock.default);
+
+			routinePlaying = true;
+		} {
+			routine.stop;
+			routinePlaying = false;
+			// Reset beat display
+			sequencer.beat_(0);
+		};
+	});
+
+	SynthDef(\GMWhitePerc, {
+		var snd = WhiteNoise.ar(0.25);
+		snd = snd * EnvGen.kr(
+			Env.perc(0.01, 0.2),
+			doneAction: Done.freeSelf
+		);
+		snd = BPF.ar(snd, 10000, 0.75);
+		Out.ar(0, snd!2);
+	}).add;
+
+	win.layout_(
+		HLayout()
+		.margins_(0)
+		.spacing_(0)
+		.add(playButton, 1)
+		.add(sequencer, 7)
+	);
+
+	CmdPeriod.doOnce({
+		routinePlaying = false;
+		win.close;
+	});
+
+	win.onClose_({
+		if(routinePlaying)
+		{ routine.stop; };
+	});
+
+	win.front;
+});
+)
+::

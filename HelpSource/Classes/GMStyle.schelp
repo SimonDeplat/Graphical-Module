@@ -1,0 +1,167 @@
+TITLE:: GMStyle
+summary:: A palette class to apply styles to the Graphical Module's widgets
+categories:: GUI>Graphical Module
+related:: Classes/GMUserView
+
+DESCRIPTION::
+link::Classes/GMStyle:: is a placeholder for widgets visual properties specifications, when using the Graphical Module Quark.
+
+It allows to specify colors, border sizes, etc, and to apply those specifications to several widgets at once. Once a style is applied to a widget, modifying the style will update the widget automatically.
+
+There will always be a default style accessible using code::GMStyle.default::. This default style will be applied to any Graphical Module widget until a new style is applied to the widget.
+
+Please note that every widget has different drawings needs, and is unlikely to use every link::Classes/GMStyle:: parameter. For example, a link::Classes/GMFaderSlider:: do not use the code::outlineSize:: parameter.
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of link::Classes/GMStyle::.
+
+METHOD:: default
+Sets or gets the default instance of link::Classes/GMStyle::, which is applied to all widgets by default when they are created. If you do not plan to use more than one style, you can use this instance instead of creating your own.
+
+Setting a new default style won't apply the new style to previously created widgets which are tied to the precedent default style, which is likely to prevent their visual modification.
+
+returns:: the default link::Classes/GMStyle:: instance.
+
+INSTANCEMETHODS::
+
+METHOD:: borderSize
+Sets or gets the outer border size, in pixels.
+
+METHOD:: secondBorderSize
+Sets or gets the middle border size, in pixels.
+
+METHOD:: thirdBorderSize
+Sets or gets the inner border size, in pixels.
+
+METHOD:: borderColor
+Sets or gets the outer border color.
+
+METHOD:: secondBorderColor
+Sets or gets the middle border color.
+
+METHOD:: thirdBorderColor
+Sets or gets the inner border color.
+
+METHOD:: mainColor
+Sets or gets the style's main color. This color is usually used to highlight the relevant information inside a widget, and should contrast with other colors.
+
+METHOD:: secondColor
+Sets or gets the style's second color. This color is usually used to display informations that are not as relevant as the ones highlighted with the mainColor.
+
+METHOD:: backColor
+Sets or gets the style's back color. This color is usually used to fill irrelevant part of the widget, such as frames backgrounds.
+
+METHOD:: backgroundColor
+Sets or gets the style's background color. This color is usually used to fill the widgets background.
+
+METHOD:: outlineSize
+Sets or gets the width of every drawn line.
+
+METHOD:: outlineColor
+Sets or gets the color of every drawn line.
+
+METHOD:: beatColor
+Sets or gets the color associated to the notion of 'current beat'. This is used by rythm widgets to display which beat is currently playing.
+
+METHOD:: disabledColor
+Sets or gets the color of disabled widgets.
+
+METHOD:: selectedColor
+Sets or gets the color of selected widgets.
+
+METHOD:: selectedColor
+Sets or gets the helpers color.
+
+METHOD:: font
+Sets or gets the style's font.
+
+METHOD:: fontColor
+Sets or gets the style's font color.
+
+METHOD:: fontColorDisabled
+Sets or gets the style's font color for disabled widgets.
+
+METHOD:: valueFontColor
+Sets or gets the font color used to display values on widget such as sliders.
+
+METHOD:: highlightColor
+Sets or gets the reference color used to display beat helpers.
+
+subsection::Internal Methods
+
+METHOD:: addListener
+
+METHOD:: removeListener
+
+METHOD:: refreshListeners
+
+EXAMPLES::
+
+Use the code::style:: method of a widget to apply your newly created style :
+
+code::
+(
+var myStyle = GMStyle().mainColor_(Color.yellow);
+
+var mySlider = GMFaderSlider()
+.style_(myStyle)
+.value_(0.5);
+
+mySlider.front;
+)
+::
+
+You can also modify the default style to prototype quickly :
+
+code::
+(
+var mySlider = GMFaderSlider()
+.value_(0.5);
+
+GMStyle.default.mainColor_(Color.yellow);
+
+mySlider.front;
+)
+::
+
+Here's a template code creating a new link::Classes/GMStyle::, assigning values to it, and returning it. You can save it as a file inside your project, and use code::this.executeFile():: to load it automatically :
+
+code::
+(
+var style = GMStyle()
+
+.mainColor_(Color(0.75, 0, 0.333))
+.secondColor_(Color(0.5, 0, 0.111))
+
+.borderSize_(4)
+.borderColor_(Color(0.666, 0, 0.125))
+.secondBorderSize_(4)
+.secondBorderColor_(Color(0.333, 0, 0.0625))
+.thirdBorderSize_(8)
+.thirdBorderColor_(Color(0, 0, 0))
+
+.font_(Font.default.deepCopy.size_(24))
+.fontColor_(Color.black)
+.fontColorDisabled_(Color(0.25, 0.25, 0.25))
+
+.outlineSize_(3)
+.outlineColor_(Color(1, 1, 1))
+
+.backColor_(Color(1, 0, 0.25))
+.backgroundColor_(Color(0, 0, 0))
+
+.disabledColor_(Color(0.5, 0.5, 0.5))
+.selectedColor_(Color(0.75, 0, 0.333))
+
+.helpersColor_(Color(1, 1, 1, 0.25))
+
+.beatColor_(Color(0, 1, 1, 0.5))
+
+.valueFontColor_(Color(1, 1, 1))
+.highlightColor_(Color(1, 1, 1, 0.5));
+
+style
+)
+::

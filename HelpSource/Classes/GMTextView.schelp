@@ -1,0 +1,73 @@
+TITLE:: GMTextView
+summary:: A simple text view for creating graphical interfaces
+categories:: GUI>Graphical Module
+related:: Classes/GMUserView, Classes/GMStyle
+
+DESCRIPTION::
+link::Classes/GMTextView:: is a link::Classes/View:: that displays text.
+
+It only allows for centered text. You can specify the text orientation. It will automatically resize when its container is resized.
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of link::Classes/GMTextView::.
+
+Its graphical properties are defined by its associated link::Classes/GMStyle::. By default, its borders are hidden. Use code::.displayBorder_(true):: to modify this property.
+
+returns:: a link::Classes/GMTextView:: instance.
+
+INSTANCEMETHODS::
+
+METHOD:: string
+Sets or gets the displayed text, and refreshes the link::Classes/View::.
+
+METHOD:: orientation
+Sets or gets the displayed text orientation, and refreshes the link::Classes/View::. Valid values are : code::\right::, code::\top::, code::\left:: or code::\bottom::.
+
+METHOD:: fontRatio
+Sets or gets the widget displayed text ratio, relative to the smallest axis of the widget, and refreshes the link::Classes/View::. You'll need to reduce this value if the displayed text is larger than the size of the widget.
+
+Please note that this modifies the font ratio itsel, not the ratio of the displayed string. As such, you might want to divide this value if you are displaying multiple text lines.
+
+subsection::Internal Methods
+
+METHOD:: draw
+The function associated to the link::Classes/View::'s code::drawFunc::. Shouldn't be modified.
+
+EXAMPLES::
+
+code::
+(
+var win = Window.new(
+	"",
+	Rect(0, 400, 300, 100)
+);
+var label = GMTextView()
+.fontRatio_(0.4)
+.string_("Hello World !");
+
+// Nest it inside a Layout
+win.layout_(
+	HLayout(
+		label,
+).margins_(0));
+
+win.front;
+
+// Useful when developping
+CmdPeriod.doOnce({ win.close; });
+)
+::
+
+You can use code::.displayFrame_(true):: to render the link::Classes/GMStyle:: frame :
+
+code::
+(
+var label = GMTextView()
+.fontRatio_(0.15)
+.displayFrame_(true)
+.string_("Hello World !")
+.front;
+)
+::

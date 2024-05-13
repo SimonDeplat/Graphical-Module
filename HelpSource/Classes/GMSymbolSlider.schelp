@@ -1,0 +1,169 @@
+TITLE:: GMSymbolSlider
+summary:: A simple slider for creating graphical interfaces.
+categories:: GUI>Graphical Module
+related:: Classes/GMZZSlider, Classes/GMFaderSlider, Classes/GMUserView, Classes/GMStyle
+
+DESCRIPTION::
+link::Classes/GMSymbolSlider:: is an easy to use customisable slider.
+
+It inherits from the link::Classes/GMZZSlider:: class, and is only responsible for graphical specifications. See link::Classes/GMZZSlider:: for non-graphical properties settings.
+
+Its handle can either be a circle, a square or a diamond.
+
+By default, the slider will display its value, truncated to a certain number.
+
+In some certain cases, the built-in slider scales won't suit your usage, and you will need to post-process the slider value within its code::action:: function. In this case, you should also modify the code::displayFunction:: of the slider so that the displayed value is updated accordingly :
+
+code::
+(
+GMSymbolSlider()
+.min_(1)
+.max_(10)
+.action_({ |value|
+	value = value.pow(3);
+	value.post;
+	" was selected".postln;
+})
+.displayFunction_({ |value|
+	value = value.pow(3); })
+.front
+)
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of link::Classes/GMSymbolSlider::.
+
+By default, its graphical properties are defined by its associated link::Classes/GMStyle::. This means that creating sliders with different colors implies creating multiples link::Classes/GMStyle::. The font color of the displayed value corresponds to the code::valueFontColor:: property.
+
+returns:: a link::Classes/GMSymbolSlider:: instance.
+
+INSTANCEMETHODS::
+
+subsection::Graphical settings
+
+METHOD:: symbol
+Sets or gets the handle type. Can be either code::\circle::, code::\square:: or code::\diamond::.
+
+METHOD:: symbolRatio
+Sets or gets the size of the handle relative to the widget size.
+ARGUMENT:: aNumber
+A link::Classes/Float:: that should be between 0 and 1.
+
+METHOD:: symbolMinSize
+Sets or gets the minimum size of the handle, in pixels.
+
+METHOD:: symbolMaxSize
+Sets or gets the maximum size of the handle, in pixels.
+
+METHOD:: drawLine
+Sets or gets the line drawing policy. code::\none:: will disable it, code::\full:: will draw a line along the full selected axis, code::\value:: will draw a line between code::min:: and the handle.
+
+METHOD:: displayValue
+Sets or gets wether the value should be displayed.
+
+METHOD:: centerValue
+Sets or gets wether the value should be centered on the widget.
+
+METHOD:: roundValue
+Sets or gets the number the displayed value is truncated to.
+
+METHOD:: displayFunction
+Sets or gets the link::Classes/Function:: that will be used to adapt the displayed value if needed (see above). Set to code::nil:: to disable.
+
+METHOD:: fontRatio
+Sets or gets the size of the displayed value font relative to the widget size.
+ARGUMENT:: aFloat
+A link::Classes/Float:: that should be between 0 and 1.
+
+METHOD:: drawHelpers
+Sets or gets wether helpers should be displayed.
+
+METHOD:: helpersRatio
+Sets or gets the size of the displayed helpers relative to the widget size. The value will be clipped if this would cause the dots to overlap.
+ARGUMENT:: aNumber
+A link::Classes/Float:: that should be between 0 and 1.
+
+subsection::Internal Methods
+
+METHOD:: draw
+The link::Classes/Function:: associated to the link::Classes/View:: code::drawFunc::. Shouldn't be modified.
+
+METHOD:: prDrawSlider
+METHOD:: prDrawValue
+
+EXAMPLES::
+
+Here's an example of some different graphical configurations :
+
+code::
+(
+var win = Window(
+	"",
+	Rect(
+		100, 100,
+		90 * 8, 400
+	)
+).background_(Color.black);
+
+var slider1 = GMSymbolSlider()
+.value_(0.75)
+.symbol_(\diamond);
+
+var slider2 = GMSymbolSlider()
+.value_(0.75)
+.symbol_(\circle);
+
+var slider3 = GMSymbolSlider()
+.value_(0.75)
+.symbol_(\square);
+
+var slider4 = GMSymbolSlider()
+.value_(0.75)
+.symbol_(\circle)
+.drawLine_(\none);
+
+var slider5 = GMSymbolSlider()
+.value_(0.75)
+.symbol_(\circle)
+.drawLine_(\value);
+
+var slider6 = GMSymbolSlider()
+.value_(0.5)
+.symbol_(\circle)
+.polarity_(\bi)
+.drawLine_(\value);
+
+var slider7 = GMSymbolSlider()
+.value_(0.75)
+.symbol_(\circle)
+.drawLine_(\none)
+.drawHelpers_(true)
+.helpersRatio_(0.5)
+.centerValue_(false);
+
+var slider8 = GMSymbolSlider()
+.value_(0.75)
+.symbol_(\circle)
+.drawLine_(\full)
+.drawHelpers_(true)
+.helpersRatio_(0.5)
+.centerValue_(false);
+
+win.layout_(
+	HLayout()
+	.add(slider1)
+	.add(slider2)
+	.add(slider3)
+	.add(slider4)
+	.add(slider5)
+	.add(slider6)
+	.add(slider7)
+	.add(slider8)
+);
+
+win.front;
+CmdPeriod.doOnce({ win.close; });
+)
+::

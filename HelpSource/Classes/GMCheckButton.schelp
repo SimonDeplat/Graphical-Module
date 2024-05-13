@@ -1,0 +1,85 @@
+TITLE:: GMCheckButton
+summary:: A ready made checkbox button, for creating graphical interfaces
+categories:: GUI>Graphical Module
+related:: Classes/GMUserView, Classes/GMStyle
+
+DESCRIPTION::
+link::Classes/GMCheckButton:: is an easy to use toggle button, that acts as a checkbox.
+
+It alternates between being checked and unchecked, and either displays a circle or a square.
+
+It only responds to mouse down clicks, and does not discriminate button identifiers.
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of link::Classes/GMCheckButton::.
+
+By default, its graphical properties are defined by its associated link::Classes/GMStyle::. It uses both code::outlineColor:: and code::outlineSize:: properties.
+returns:: a link::Classes/GMCheckButton:: instance.
+
+INSTANCEMETHODS::
+
+subsection::Interaction
+
+METHOD:: action
+Sets or gets the link::Classes/Function:: to be triggered when the button is pressed down. This link::Classes/Function:: takes the current state of the button as a boolean as argument, i.e. pressing it down once will call the link::Classes/Function:: passing code::true:: as argument, pressing it down a second time will call the link::Classes/Function:: passing code::false:: as argument, etc.
+
+ARGUMENT:: aFunction
+A Function with one argument, the state of the button as a link::Classes/Boolean::.
+
+METHOD:: mouseDownAction
+Sets or gets the link::Classes/Function:: to be triggered when the button is pressed down. This link::Classes/Function:: takes the current state of the button as a boolean as argument, i.e. pressing it down once will call the link::Classes/Function:: passing code::true:: as argument, pressing it down a second time will call the link::Classes/Function:: passing code::false:: as argument, etc. Equivalent to code::.action:: .
+
+ARGUMENT:: aFunction
+A link::Classes/Function:: with one argument, the state of the button as a link::Classes/Boolean::.
+
+METHOD:: toggle
+Toggles the button, changing its state and evaluating the associated action.
+
+METHOD:: toggleDisplay
+Toggles the button display, changing its state without evaluating the associated action.
+
+subsection::Graphical settings
+
+METHOD:: displaySymbol
+Sets or gets the link::Classes/View::'s displayed symbol style, and refreshes the link::Classes/View::.
+ARGUMENT:: aSymbol
+The shape of the symbol will be a circle if set as code::\circle::, a square otherwise.
+
+METHOD:: symbolRatio
+Sets or gets the symbol size relative to its smallest axis, and refreshes the link::Classes/View::.
+
+subsection::Internal Methods
+
+METHOD:: draw
+The function associated to the link::Classes/View::'s drawFunc. Shouldn't be modified, use link::Classes/UserView:: instead.
+
+ARGUMENT:: aFunction
+
+EXAMPLES::
+
+code::
+(
+var win = Window(
+	"",
+	Rect(0, 400, 200, 100))
+.background_(Color.black);
+
+// Instanciate the View and configure it
+var button = GMCheckButton();
+button.displaySymbol_(\circle);
+button.action_({ |pressed| pressed.postln; });
+
+// Nest it inside a Layout
+win.layout_(
+	HLayout(
+		button,
+).margins_(0));
+
+win.front;
+
+// Useful when developping
+CmdPeriod.doOnce({ win.close; });
+)
+::

@@ -1,0 +1,70 @@
+TITLE:: GMCloseButton
+summary:: A ready made button displaying a cross for creating graphical interfaces
+categories:: GUI>Graphical Module
+related:: Classes/GMUserView, Classes/GMStyle
+
+DESCRIPTION::
+link::Classes/GMCloseButton:: is an easy to use customisable button.
+
+It natively displays a cross, suggesting pressing it will close the currently displayed link::Classes/View::.
+
+It only responds to mouse down clicks, and does not discriminate button identifiers.
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of link::Classes/GMCloseButton::.
+
+Its graphical properties are defined by its associated link::Classes/GMStyle::.
+
+returns:: a link::Classes/GMCloseButton:: instance.
+
+INSTANCEMETHODS::
+
+subsection::Interaction
+
+METHOD:: action
+Sets or gets the link::Classes/Function:: to be triggered when the button is pressed down. Doesn't take argument.
+
+ARGUMENT:: aFunction
+A link::Classes/Function:: without argument.
+
+METHOD:: mouseDownAction
+Sets or gets the link::Classes/Function:: to be triggered when the button is pressed down. Doesn't take arguments. Equivalent to .action .
+
+ARGUMENT:: aFunction
+A link::Classes/Function:: without argument.
+
+subsection::Internal Methods
+
+METHOD:: draw
+The function associated to the link::Classes/View::'s drawFunc. Shouldn't be modified, use link::Classes/UserView:: instead.
+
+ARGUMENT:: aFunction
+
+EXAMPLES::
+
+code::
+(
+var win = Window.new(
+	"",
+	Rect(0, 400, 100, 100)
+);
+
+var closeButton = GMCloseButton();
+
+// Assign a custom action
+closeButton.action_({ win.close; });
+
+// Nest it inside a Layout
+win.layout_(
+	HLayout(
+		closeButton,
+).margins_(0));
+
+win.front;
+
+// Useful when developping
+CmdPeriod.doOnce({ win.close; });
+)
+::
