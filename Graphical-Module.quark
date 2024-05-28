@@ -1,10 +1,8 @@
 (
-	\name: 		"Graphical Module",
-	\path: 		"Graphical-Module",
-	\summary:		"A collection of widgets to build graphical interfaces",
-	\author: 		"Simon Deplat",
-
-	\version:		0.9,
-	\country: 		"France",
-	\since: 		"2024",
+	name: 		"GraphicalModule",
+	path: 		"Graphical-Module",
+	summary:		"A collection of widgets to build graphical interfaces",
+	author: 		"Simon Deplat",
+	license: "GPL v3"
+	version:		0.9,
 )
