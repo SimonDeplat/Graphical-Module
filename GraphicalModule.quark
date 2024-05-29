@@ -3,6 +3,6 @@
 	path: "Graphical-Module",
 	summary: "A collection of widgets to build graphical interfaces",
 	author: "Simon Deplat",
-	license: "GPL v3"
+	license: "GPL v3",
 	version: 0.9,
 )
