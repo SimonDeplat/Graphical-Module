@@ -4,5 +4,5 @@
 	summary: "A collection of widgets to build graphical interfaces",
 	author: "Simon Deplat",
 	license: "GPL v3"
-	version: 0.9.0,
+	version: 0.9,
 )
