@@ -199,7 +199,9 @@ GMRoundButton : GMUserView {
 				super.backColor.green +
 				((thisBlinkColor.green - super.backColor.green) * timer),
 				super.backColor.blue +
-				((thisBlinkColor.blue - super.backColor.blue) * timer)
+				((thisBlinkColor.blue - super.backColor.blue) * timer),
+				super.backColor.alpha +
+				((thisBlinkColor.alpha - super.backColor.alpha) * timer)
 			);
 
 			thisCurrentFontColor = Color(
@@ -208,54 +210,59 @@ GMRoundButton : GMUserView {
 				super.fontColor.green +
 				((thisBlinkFontColor.green - super.fontColor.green) * timer),
 				super.fontColor.blue +
-				((thisBlinkFontColor.blue - super.fontColor.blue) * timer)
+				((thisBlinkFontColor.blue - super.fontColor.blue) * timer),
+				super.fontColor.alpha +
+				((thisBlinkFontColor.alpha - super.fontColor.alpha) * timer)
 			);
 		};
 
 		if(super.displayBorder) {
 			if(super.borderSize > 0) {
-				Pen.fillColor_(super.borderColor);
+				Pen.strokeColor_(super.borderColor);
+				Pen.width_(super.borderSize);
 				Pen.addArc(
 					Point(
 						super.bounds.width / 2,
 						super.bounds.height / 2
 					),
-					buttonSize / 2,
+					(buttonSize / 2) - (super.borderSize / 2),
 					0, 2pi
 				);
-				Pen.fill;
+				Pen.stroke;
 				buttonSize =
 				buttonSize - (super.borderSize * 2);
 			};
 
 			if(super.secondBorderSize > 0) {
-				Pen.fillColor_(super.secondBorderColor);
+				Pen.strokeColor_(super.secondBorderColor);
+				Pen.width_(super.secondBorderSize);
 				Pen.addArc(
 					Point(
 						super.bounds.width / 2,
 						super.bounds.height / 2
 					),
-					buttonSize / 2,
+					(buttonSize / 2) - (super.secondBorderSize / 2),
 					0, 2pi
 				);
-				Pen.fill;
+				Pen.stroke;
 				buttonSize =
 				buttonSize - (super.secondBorderSize * 2);
 			};
 
 			if(super.thirdBorderSize > 0) {
-				Pen.fillColor_(super.thirdBorderColor);
+				Pen.strokeColor_(super.thirdBorderColor);
+				Pen.width_(super.thirdBorderSize);
 				Pen.addArc(
 					Point(
 						super.bounds.width / 2,
 						super.bounds.height / 2
 					),
-					buttonSize / 2,
+					(buttonSize / 2) - (super.thirdBorderSize / 2),
 					0, 2pi
 				);
-				Pen.fill;
-				buttonSize
-				= buttonSize - (super.thirdBorderSize * 2);
+				Pen.stroke;
+				buttonSize =
+				buttonSize - (super.thirdBorderSize * 2);
 			};
 		};
 
