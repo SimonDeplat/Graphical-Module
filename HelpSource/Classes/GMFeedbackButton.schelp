@@ -83,38 +83,41 @@ EXAMPLES::
 code::
 (
 s.waitForBoot({
-    var win = Window.new(
+	var win = Window.new(
 		"",
 		Rect(0, 400, 200, 100)
 	);
 
-    var feedbackButton;
+	var feedbackButton;
 
-    SynthDef(\GMhelp, {
-        |out = 0, amp = 0.1, freq = 440|
-        var snd = SinOsc.ar(freq, mul: amp);
-        snd = snd * EnvGen.kr(Env.perc);
-        Out.ar(0, snd!2);
-    }).add;
+	SynthDef(\GMhelp, {
+		|out = 0, amp = 0.1, freq = 440|
+		var snd = SinOsc.ar(freq, mul: amp);
+		snd = snd * EnvGen.kr(
+			Env.perc,
+			doneAction: Done.freeSelf
+		);
+		Out.ar(0, snd!2);
+	}).add;
 
-    // Instanciate the View, and modify it's look
-    feedbackButton = GMFeedbackButton();
+	// Instanciate the View, and modify it's look
+	feedbackButton = GMFeedbackButton();
 
-    feedbackButton.string_("beep");
+	feedbackButton.string_("beep");
 
-    // Assign a custom action
-    feedbackButton.action_({ Synth(\GMhelp, [\freq, 600]) });
+	// Assign a custom action
+	feedbackButton.action_({ Synth(\GMhelp, [\freq, 600]) });
 
-    // Nest it inside a Layout
-    win.layout_(
-        HLayout(
-            feedbackButton,
-    ).margins_(0));
+	// Nest it inside a Layout
+	win.layout_(
+		HLayout(
+			feedbackButton,
+	).margins_(0));
 
-    win.front;
+	win.front;
 
-    // Useful when developping
-    CmdPeriod.doOnce({ win.close; });
+	// Useful when developping
+	CmdPeriod.doOnce({ win.close; });
 });
 )
 ::
