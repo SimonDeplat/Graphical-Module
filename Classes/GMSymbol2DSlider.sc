@@ -278,9 +278,6 @@ GMSymbol2DSlider : GMZZ2DSlider {
 
 		if(thisXDisplayFunction.notNil) {
 			string = thisXDisplayFunction.value(super.values[0]);
-			string = string.trunc(thisRoundValues[0]);
-			if(thisRoundValues[0].isKindOf(Integer))
-			{ string = string.asInteger; };
 			string = string.asString;
 		} {
 			string = super.values[0].trunc(thisRoundValues[0]);
@@ -303,9 +300,6 @@ GMSymbol2DSlider : GMZZ2DSlider {
 
 		if(thisYDisplayFunction.notNil) {
 			string = thisYDisplayFunction.value(super.values[1]);
-			string = string.trunc(thisRoundValues[1]);
-			if(thisRoundValues[1].isKindOf(Integer))
-			{ string = string.asInteger; };
 			string = string.asString;
 		} {
 			string = super.values[1].trunc(thisRoundValues[1]);
