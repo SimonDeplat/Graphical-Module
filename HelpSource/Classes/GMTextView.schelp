@@ -30,6 +30,9 @@ Sets or gets the widget displayed text ratio, relative to the smallest axis of t
 
 Please note that this modifies the font ratio itsel, not the ratio of the displayed string. As such, you might want to divide this value if you are displaying multiple text lines.
 
+METHOD:: maxFontSize
+Sets or gets the widget maximum font height, expressed in pixels.
+
 subsection::Internal Methods
 
 METHOD:: draw

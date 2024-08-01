@@ -3,6 +3,7 @@ GMTextView : GMUserView {
 	var thisString = "";
 	var thisFontRatio = 0.8;
 	var thisTextOrientation = \right;
+	var thisMaxFontSize;
 
 	*new {
 		^super.new.init;
@@ -21,6 +22,8 @@ GMTextView : GMUserView {
 		this.drawFunc_({ this.draw; });
 		super.displayBorder_(false);
 		super.displayBackground_(false);
+
+		thisMaxFontSize = inf;
 	}
 
 	// Graphical settings
@@ -39,6 +42,15 @@ GMTextView : GMUserView {
 
 	fontRatio_ { |aFloat|
 		thisFontRatio = aFloat;
+		this.refresh;
+	}
+
+	maxFontSize {
+		^thisMaxFontSize
+	}
+
+	maxFontSize_ { |anInteger|
+		thisMaxFontSize = anInteger;
 		this.refresh;
 	}
 
@@ -61,8 +73,11 @@ GMTextView : GMUserView {
 			super.interactionRect,
 			super.font.deepCopy.size_(
 				min(
-					super.interactionRect.width * thisFontRatio,
-					super.interactionRect.height * thisFontRatio
+					thisMaxFontSize,
+					min(
+						super.interactionRect.width * thisFontRatio,
+						super.interactionRect.height * thisFontRatio
+					)
 				)
 			),
 			super.fontColor,
