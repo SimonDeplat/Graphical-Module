@@ -49,7 +49,7 @@ GMListPianoRoll : GMXYUserView {
 	}
 
 	values_ { |aCollection|
-		thisValues = aCollection;
+		thisValues = aCollection.deepCopy;
 		thisValues.do({ |value, index|
 			if(value.notNil) {
 				if(value.isKindOf(Array)) {
@@ -66,7 +66,7 @@ GMListPianoRoll : GMXYUserView {
 
 	entries_ { |anArray|
 		thisEntries = anArray;
-		thisValues = Array.fill(thisEntries.size, { nil });
+		// Should implement current values safety check
 		this.refresh;
 	}
 
