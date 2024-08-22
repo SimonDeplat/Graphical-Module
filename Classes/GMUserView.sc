@@ -193,49 +193,53 @@ GMUserView : UserView {
 				0.5pi,
 				rect.left + (rect.width / 2),
 				rect.top + (rect.height / 2)
-			); };
+		); };
 		if(direction == \bottom) {
 			Pen.rotate(
 				0.5pi.neg,
 				rect.left + (rect.width / 2),
 				rect.top + (rect.height / 2)
-			); };
+		); };
 		if(direction == \left) {
 			Pen.rotate(
 				pi.neg,
 				rect.left + (rect.width / 2),
 				rect.top + (rect.height / 2)
-			); };
+		); };
 	}
 
 	interactionRect {
-		if(thisDisplayBorder) {
-			^Rect(
-				thisStyle.borderSize
-				+ thisStyle.secondBorderSize +
-				thisStyle.thirdBorderSize,
+		if(this.bounds.notNil) {
+			if(thisDisplayBorder) {
+				^Rect(
+					thisStyle.borderSize
+					+ thisStyle.secondBorderSize +
+					thisStyle.thirdBorderSize,
 
-				thisStyle.borderSize
-				+ thisStyle.secondBorderSize
-				+ thisStyle.thirdBorderSize,
-
-				this.bounds.width -
-				((thisStyle.borderSize
+					thisStyle.borderSize
 					+ thisStyle.secondBorderSize
-					+ thisStyle.thirdBorderSize) * 2),
+					+ thisStyle.thirdBorderSize,
 
-				this.bounds.height -
-				((thisStyle.borderSize
-					+ thisStyle.secondBorderSize
-					+ thisStyle.thirdBorderSize) * 2)
-			);
+					this.bounds.width -
+					((thisStyle.borderSize
+						+ thisStyle.secondBorderSize
+						+ thisStyle.thirdBorderSize) * 2),
+
+					this.bounds.height -
+					((thisStyle.borderSize
+						+ thisStyle.secondBorderSize
+						+ thisStyle.thirdBorderSize) * 2)
+				);
+			} {
+				^Rect(
+					0, 0,
+					this.bounds.width,
+					this.bounds.height
+				)
+			};
 		} {
-			^Rect(
-				0, 0,
-				this.bounds.width,
-				this.bounds.height
-			)
-		}
+			Rect(0, 0, 0, 0);
+		};
 	}
 
 	// No setters because the GMStyle associated is responsible
