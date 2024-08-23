@@ -120,11 +120,11 @@ GMMultiButton : GMXYUserView {
 	}
 
 	states_ { |anArray|
+		var newStates = anArray.deepCopy;
 		this.free;
-
-		anArray.do({ |item, index|
+		newStates.do({ |item, index|
 			if(item.isKindOf(String)) {
-				anArray[index] = (
+				newStates[index] = (
 					string: item,
 					color: super.backgroundColor,
 					fontColor: super.valueFontColor
@@ -132,7 +132,7 @@ GMMultiButton : GMXYUserView {
 			};
 		});
 
-		anArray.do({ |item|
+		newStates.do({ |item|
 			if(item.includesKey(\svg)) {
 				item[\img] = Image.openSVG(item[\svg]);
 				item[\svgSize] = Point(
@@ -142,7 +142,7 @@ GMMultiButton : GMXYUserView {
 			};
 		});
 
-		thisStates = anArray;
+		thisStates = newStates;
 		thisCurrentState = 0;
 
 		this.prResizeSVGs;
