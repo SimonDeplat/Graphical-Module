@@ -1,0 +1,366 @@
+TITLE:: GMCurveEnvView
+summary:: A graphical interface that controls an Env
+categories:: GUI>Graphical Module
+related:: Classes/GMUserView, Classes/GMStyle
+
+DESCRIPTION::
+link::Classes/GMCurveEnvView:: is a widget that allows interaction with an link::Classes/Env::.
+
+It provides strong::handles on every level:: of the link::Classes/Env::, allowing to reshape it with the cursor. It also provides strong::handles on every segment::, allowing to change the curvature of the selected segment. The CTRL + LEFT MOUSE BUTTON will strong::add new points::, RIGHT MOUSE BUTTON will strong::delete points::.
+
+In SuperCollider, link::Classes/Env::s have a strong::default maximum number of values::, which is defined at link::Classes/SynthDef:: creation. This needs to be assigned to the link::Classes/GMCurveEnvView:: using code::maxSize:: to prevent the user from exceeding the length of the link::Classes/Env::.
+
+strong::This widget only manipulates:: link::Classes/Env::s strong::with integer curvatures values::. Assigning an link::Classes/Env:: with other curvatures types (e.g. \exp, \sin, ...) will convert those curvatures to 0 (i.e. linear curvatures). By default, assigning a 'wrong' link::Classes/Env:: will reevaluate the associated action so the displayed link::Classes/Env:: corresponds to the link::Classes/Env:: currently in use. Consequently, associating an code::action:: and a code::maxSize:: before assigning an env to the widget is preferable.
+
+In SuperCollider, link::Classes/Env::s are passed as references. To avoid issues, link::Classes/GMCurveEnvView:: makes a copy of the provided link::Classes/Env::, and also makes a copy of its own internal link::Classes/Env:: when its code::action:: is triggered. This means that if you modify the link::Classes/Env:: that is currently displayed without using the widget, the widget will not update automatically : you will need to reassign the link::Classes/Env:: to reflect modifications.
+
+link::Classes/GMCurveEnvView::s code::drawFunc:: relies heavily on code::mouseMoveAction::. In order to function properly, this means that every of its parent views should have code::acceptsMouseOver:: set to code::true::. By default, on creation, link::Classes/GMCurveEnvView:: will recursively set code::acceptsMouseOver:: to code::true:: for every one of its parents, after a 100ms delay, which should ensure the algorithm works properly. However, if you are reagencing the view hierarchy, you will need to ensure manually that all of its parents have this property correctly set.
+
+Currrently, link::Classes/GMCurveEnvView:: only supports linear distribution on its Y axis.
+
+CLASSMETHODS::
+
+METHOD:: new
+Creates a new instance of link::Classes/GMCurveEnvView::.
+
+Its graphical properties are defined by its associated link::Classes/GMStyle::.
+
+INSTANCEMETHODS::
+
+subsection::Interaction
+
+METHOD:: env
+Sets or gets the manipulated link::Classes/Env::.
+
+Two checks are passed on the new env : if the new env is longer than the allowed max size, it will be shrunk to the max allowed size. Then, for every segment of the env, if its curvature is not an integer (or not \lin), it will be set to a 0 curvature.
+
+Since those checks might have modified the env, this would mean the displayed env is not in sync with the original env. code::env:: takes an additional boolean argument which, if set to code::true::, will reevaluate the code::action:: if the env has been modified, to ensure synchronicity.
+
+METHOD:: action
+Sets or gets the function to evaluate when the widget is used. This link::Classes/Function:: takes a single link::Classes/Env:: argument. Please note that the env passed as argument will be a copy of link::Classes/GMCurveEnvView:: internal env.
+
+ARGUMENT:: aFunction
+A link::Classes/Function:: with a single argument.
+
+METHOD:: actionOnMove
+Sets or gets wether the associated code::action:: should be evaluated every time the user moves a point or a curvature. If set to code::false::, code::action:: will only evaluate on mouse up and down actions.
+
+METHOD:: timeScale
+Sets or gets the portion of time the width of the widget represents, in seconds. For example, a value of 2.0 means that a point on the right border of the widget defines the level of the env 2.0 seconds after it started playing. In the same way, a point exactly in the middle of the widgets horizontal axis would represent the level of the env 1 second after it started playing. Setting this value too low can prevent selecting points which time are greater than the current code::timeScale::.
+
+ARGUMENT:: aNumber
+
+METHOD:: yMin
+Sets or gets the value the vertical axis bottom border corresponds to. This is purely visual and won't affect envs levels. Setting this value too high might prevent selecting points which level is lower. Will disable code::lastLevelIsZero:: is different from 0.
+
+ARGUMENT:: aNumber
+
+METHOD:: yMax
+Sets or gets the value the vertical axis top border corresponds to. This is purely visual and won't affect envs levels. Setting this value too low might prevent selecting points which level is higher
+
+ARGUMENT:: aNumber
+
+METHOD:: lastLevelIsZero
+Sets or gets wether the last point should be constrained to a value of 0. This is mostly useful for enveloppes that control an amplitude parameter.
+
+METHOD:: maxSize
+Sets or gets the max number of points that the widget allows to create. Since link::Classes/SynthDef:: have a fixed maximum enveloppe size defined at creation, this allows to adapt the link::Classes/GMCurveEnvView:: accordingly. Addition of new points will be disabled once this maximum is reached.
+
+ARGUMENT:: anInteger
+An link::Classes/Integer::.
+
+subsection::Grahics
+
+METHOD:: modColor
+Sets or gets the link::Classes/Color:: used to display new point preview and highlight hovered handles.
+
+METHOD:: displayHelpers
+Sets or gets wether helpers should be drawn. Helpers will display a grid pattern on the background of the widget to ease point placement.
+
+METHOD:: xHelpers
+Sets or gets the number of vertical lines displayed on the background of the widget, not counting extremities, when helpers are displayed.
+
+METHOD:: yHelpers
+Sets or gets the number of horizontal lines displayed on the background of the widget, not counting extremities, when helpers are displayed.
+
+METHOD:: helpersWidth
+Sets or gets the helpers grid width, in pixel.
+
+METHOD:: helpersFontSize
+Sets or gets the font size of helpers labels, in pixel.
+
+METHOD:: xRoundValue
+Sets or gets the rounding value of horizontal helpers labels.
+
+METHOD:: yRoundValue
+Sets or gets the rounding value of vertical helpers labels.
+
+subsection::Internal Methods
+
+METHOD:: draw
+The function associated to the link::Classes/View::s code::drawFunc::. Shouldn't be modified.
+
+METHOD:: prAddPoint
+METHOD:: prCheckHovering
+METHOD:: prCollideWith
+METHOD:: prDrawHandles
+METHOD:: prDrawHelpers
+METHOD:: prDrawLine
+METHOD:: prDrawNewPoint
+METHOD:: prDrawPoints
+METHOD:: prFillShape
+METHOD:: prGetHandlePositions
+METHOD:: prGetPointPositions
+METHOD:: prMousePosInbounds
+METHOD:: prMoveHandle
+METHOD:: prMovePoint
+METHOD:: prRemovePoint
+
+EXAMPLES::
+
+A simple example, with a link::Classes/GMCurveEnvView:: controlling a sine wave amplitude:
+
+code::
+(
+s.waitForBoot({
+	var win = Window.new(
+		"",
+		Rect(0, 400, 400, 100)
+	);
+	var button = GMButton();
+
+	// Create a default env to start with
+	var env = Env.perc();
+	var envView = GMCurveEnvView();
+
+	SynthDef(\GMhelp, {
+		|out = 0, amp = 0.1, freq = 440|
+		var snd;
+
+		// This is how you can create
+		// an \env parameter:
+		var env = Env.newClear(8); // This is the maxSize!
+		var envGen = EnvGen.kr(
+			\env.kr(env.asArray),
+			doneAction: Done.freeSelf
+		);
+
+		snd = SinOsc.ar(freq, mul: amp);
+
+		// Apply the enveloppe control
+		snd = snd * envGen;
+
+		Out.ar(0, snd!2);
+	}).add;
+
+	// Assign action,
+	// assign maxSize to reflect synth definition,
+	// assign new env to the envView,
+	// and configure it if needed
+	envView
+	.action_({ |newEnv| env = newEnv; })
+	.maxSize_(8)
+	.lastLevelIsZero_(true)
+	.env_(env)
+	.displayHelpers_(true);
+
+	// The button will play our synth
+	// with our custom env as argument
+	button
+	.string_(">")
+	.maxWidth_(64)
+	.mouseDownAction_({
+		Synth(\GMhelp, [\env, env]);
+	});
+
+	// Nest it inside a Layout
+	win.layout_(
+		HLayout()
+		.margins_(0)
+		.spacing_(0)
+
+		.add(button)
+		.add(envView)
+	);
+
+	win.front;
+
+	// Useful when developping
+	CmdPeriod.doOnce({ win.close; });
+});
+)
+::
+
+A more complex example, with 3 controls : amplitude, frequency and panning. A slider also allows to modify widgets timeScales:
+
+code::
+(
+s.waitForBoot({
+	var win = Window.new(
+		"",
+		Rect(0, 400, 800, 600)
+	);
+	var button = GMButton();
+	var zoomSlider = GMFaderSlider();
+
+	var ampEnv = Env(
+		[0, 1, 0],
+		[0.05, 1.95],
+		[0, 0]
+	);
+	var ampEnvView = GMCurveEnvView();
+
+	var panEnv = Env(
+		[0, 1, -1, 0],
+		[0.666, 0.666, 0.666],
+		[4, 4, 4]
+	);
+	var panEnvView = GMCurveEnvView();
+
+	var freqEnv = Env(
+		[440, 440 * 4, 440 * 2,  440 * 4, 440],
+		[0.25, 0.25, 0.25, 1.25],
+		[4, -4, 4, -4]
+	);
+	var freqEnvView = GMCurveEnvView();
+
+	SynthDef(\GMhelp, {
+		|out = 0, amp = 0.1|
+		var snd;
+
+		var ampEnv = Env.newClear(8);
+		var ampEnvGen = EnvGen.kr(
+			\ampEnv.kr(ampEnv.asArray),
+			doneAction: Done.freeSelf
+		);
+
+		var freqEnv = Env.newClear(8);
+		var freqEnvGen = EnvGen.kr(
+			\freqEnv.kr(freqEnv.asArray),
+			doneAction: Done.freeSelf
+		);
+
+		var panEnv = Env.newClear(8);
+		var panEnvGen = EnvGen.kr(
+			\panEnv.kr(panEnv.asArray),
+			doneAction: Done.freeSelf
+		);
+
+		snd = SinOsc.ar(freqEnvGen, mul: amp);
+
+		snd = Pan2.ar(snd, panEnvGen);
+		snd = snd * ampEnvGen;
+
+		Out.ar(0, snd);
+	}).add;
+
+	ampEnvView
+	.action_({ |newEnv| ampEnv = newEnv; })
+	.maxSize_(8)
+	.lastLevelIsZero_(true)
+	.env_(ampEnv)
+	.displayHelpers_(true);
+
+	panEnvView
+	.action_({ |newEnv| panEnv = newEnv; })
+	.maxSize_(8)
+	.yMin_(-1)
+	.yMax_(1)
+	.env_(panEnv)
+	.displayHelpers_(true);
+
+	freqEnvView
+	.action_({ |newEnv| freqEnv = newEnv; })
+	.maxSize_(8)
+	.yMin_(440)
+	.yMax_(440 * 4)
+	.env_(freqEnv)
+	.displayHelpers_(true);
+
+	button
+	.string_(">")
+	.maxWidth_(64)
+	.mouseDownAction_({
+		Synth(\GMhelp, [
+			\ampEnv, ampEnv,
+			\freqEnv, freqEnv,
+			\panEnv, panEnv,
+		]);
+	});
+
+	zoomSlider
+	.maxHeight_(64)
+	.orientation_(\horizontal)
+	.min_(0.25)
+	.max_(5)
+	.value_(2.0)
+	.action_({ |value|
+		ampEnvView.timeScale_(value);
+		freqEnvView.timeScale_(value);
+		panEnvView.timeScale_(value);
+	});
+
+	win.layout_(
+		HLayout()
+		.margins_(0)
+		.spacing_(0)
+
+		.add(button)
+
+		.add(
+			VLayout()
+			.margins_(0)
+			.spacing_(0)
+
+			.add(
+				HLayout()
+				.add(
+					GMTextView()
+					.displayFrame_(true)
+					.string_("amp")
+					.orientation_(\top)
+					.maxWidth_(64)
+				)
+				.add(ampEnvView)
+				.margins_(0)
+				.spacing_(0)
+			)
+
+			.add(
+				HLayout()
+				.add(
+					GMTextView()
+					.displayFrame_(true)
+					.string_("freq")
+					.orientation_(\top)
+					.maxWidth_(64)
+				)
+				.add(freqEnvView)
+				.margins_(0)
+				.spacing_(0)
+			)
+
+			.add(
+				HLayout()
+				.add(
+					GMTextView()
+					.displayFrame_(true)
+					.string_("pan")
+					.orientation_(\top)
+					.maxWidth_(64)
+				)
+				.add(panEnvView)
+				.margins_(0)
+				.spacing_(0)
+			)
+
+			.add(zoomSlider)
+		)
+	);
+
+	win.front;
+
+	CmdPeriod.doOnce({ win.close; });
+});
+)
+::
