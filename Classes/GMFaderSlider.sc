@@ -10,7 +10,7 @@ GMFaderSlider : GMZZSlider {
 	var thisCenterValue = true;
 	var thisDisplayFunction = nil;
 
-	var thisDrawHelpers = false;
+	var thisDisplayHelpers = false;
 	var thisHelpersRatio = 0.5;
 	var thisHelpersStyle = \line;
 	var thisCenterHelpers = false;
@@ -89,12 +89,23 @@ GMFaderSlider : GMZZSlider {
 		this.refresh;
 	}
 
+	displayHelpers {
+		^thisDisplayHelpers
+	}
+
+	displayHelpers_ { |aBoolean|
+		thisDisplayHelpers = aBoolean;
+		this.refresh;
+	}
+
 	drawHelpers {
-		^thisDrawHelpers
+		"GMFaderSlider: drawHelpers will be deprecated soon, use displayHelpers instead.".warn;
+		^thisDisplayHelpers
 	}
 
 	drawHelpers_ { |aBoolean|
-		thisDrawHelpers = aBoolean;
+		"GMFaderSlider: drawHelpers will be deprecated soon, use displayHelpers instead.".warn;
+		thisDisplayHelpers = aBoolean;
 		this.refresh;
 	}
 
@@ -283,7 +294,7 @@ GMFaderSlider : GMZZSlider {
 
 		this.prDrawSlider;
 
-		if(thisDrawHelpers) {
+		if(thisDisplayHelpers) {
 			if(thisHelpersStyle == \line) {
 				super.drawLineHelpers(
 					super.polarity,
