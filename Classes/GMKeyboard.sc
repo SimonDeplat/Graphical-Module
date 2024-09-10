@@ -1187,14 +1187,24 @@ GMKeyboard : GMXYUserView {
 				(x < (keyPos - (caseSize * 0.1665)))
 				and: { keyboardLayout[
 					(thisChromaticStartNote + key - 1)%12] == \b }
-			) { ^(key - 1) };
+			) { key = key - 1; };
 
 			if(
 				(x > (keyPos + (caseSize * 0.1665)))
 				and: { keyboardLayout[
 					(thisChromaticStartNote + key + 1)%12] == \b }
-			) { ^(key + 1) };
+			) { key = key + 1; };
 		};
+
+		// This prevents from clicking a black note
+		// that should be there but isn't on the left
+		// extremity of the keyboard
+		if(key == -1) { key = 0; };
+
+		// This prevents from clicking a black note
+		// that should be there but isn't on the right
+		// extremity of the keyboard
+		if(key == thisKeyNumber) { key = key - 1; };
 
 		^key
 	}
