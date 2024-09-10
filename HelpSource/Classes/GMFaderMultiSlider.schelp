@@ -32,7 +32,7 @@ GMFaderMultiSlider()
 	1, 0, 0.333, 0,
 	0.666, 0, 0.333, 0
 ])
-.drawHighlights_(true)
+.displayHighlights_(true)
 .front
 )
 ::
@@ -50,7 +50,7 @@ GMFaderMultiSlider()
 	1, 0, 0.333, 0, 0.333, 0,
 	0.666, 0, 0.333, 0, 0.333, 0
 ])
-.drawHighlights_(true)
+.displayHighlights_(true)
 .front
 )
 ::
@@ -70,7 +70,7 @@ var multiSlider = GMFaderMultiSlider()
 	1, 0, 0.333, 0,
 	0.666, 0, 0.333, 0
 ])
-.drawHighlights_(true)
+.displayHighlights_(true)
 .beat_(currentBeat);
 
 var routine = Routine({
@@ -107,8 +107,11 @@ METHOD:: beat
 Sets or gets the displayed beat. Set to code::-1:: to disable. This will internally
 defer the graphical update.
 
-METHOD:: drawHighlights
+METHOD:: displayHighlights
 Sets or gets wether the highlights should be displayed.
+
+METHOD:: drawHighlights
+Deprecated method. Use code::displayHighlights:: instead.
 
 METHOD:: highlightRatio
 Sets or gets the highlights maximum ratio relative to the sliders available space.
@@ -128,6 +131,7 @@ METHOD:: roundValue
 METHOD:: displayFunction
 METHOD:: fontRatio
 METHOD:: drawHelpers
+METHOD:: displayHelpers
 METHOD:: helpersStyle
 METHOD:: helpersRatio
 METHOD:: centerHelpers
@@ -280,7 +284,7 @@ s.waitForBoot({
 	.centerValues_(false)
 	.roundValue_(1)
 	.helperSubdivisions_(2)
-	.drawHighlights_(true)
+	.displayHighlights_(true)
 	.highlights_(highlights)
 	.beat_(0)
 	.actionMode_(\index)

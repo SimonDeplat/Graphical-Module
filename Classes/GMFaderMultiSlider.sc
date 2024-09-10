@@ -10,12 +10,12 @@ GMFaderMultiSlider : GMZZMultiSlider {
 	var thisCenterValues = true;
 	var thisDisplayFunction = nil;
 
-	var thisDrawHelpers = false;
+	var thisDisplayHelpers = false;
 	var thisHelpersRatio = 1;
 	var thisHelpersStyle = \line;
 	var thisCenterHelpers = true;
 
-	var thisDrawHighlights = false;
+	var thisDisplayHighlights = false;
 	var thisHighlights = nil;
 	var thisHighlightRatio = 0.25;
 	var thisBeat = -1;
@@ -94,12 +94,23 @@ GMFaderMultiSlider : GMZZMultiSlider {
 		this.refresh;
 	}
 
+	displayHelpers {
+		^thisDisplayHelpers
+	}
+
+	displayHelpers_ { |aBoolean|
+		thisDisplayHelpers = aBoolean;
+		this.refresh;
+	}
+
 	drawHelpers {
-		^thisDrawHelpers
+		"GMFaderMultiSlider: drawHelpers will be deprecated soon, use displayHelpers instead.".warn;
+		^thisDisplayHelpers
 	}
 
 	drawHelpers_ { |aBoolean|
-		thisDrawHelpers = aBoolean;
+		"GMFaderMultiSlider: drawHelpers will be deprecated soon, use displayHelpers instead.".warn;
+		thisDisplayHelpers = aBoolean;
 		this.refresh;
 	}
 
@@ -139,12 +150,23 @@ GMFaderMultiSlider : GMZZMultiSlider {
 		{ this.refresh; }.defer;
 	}
 
+	displayHighlights {
+		^thisDisplayHighlights
+	}
+
+	displayHighlights_ { |aBoolean|
+		thisDisplayHighlights = aBoolean;
+		this.refresh;
+	}
+
 	drawHighlights {
-		^thisDrawHighlights
+		"GMFaderMultiSlider: drawHighlights will be deprecated soon, use displayHighlights instead.".warn;
+		^thisDisplayHighlights
 	}
 
 	drawHighlights_ { |aBoolean|
-		thisDrawHighlights = aBoolean;
+		"GMFaderMultiSlider: drawHighlights will be deprecated soon, use displayHighlights instead.".warn;
+		thisDisplayHighlights = aBoolean;
 		this.refresh;
 	}
 
@@ -204,9 +226,9 @@ GMFaderMultiSlider : GMZZMultiSlider {
 
 		this.prDrawSliders;
 
-		if(thisDrawHighlights) { this.prDrawHighlights; };
+		if(thisDisplayHighlights) { this.prDrawHighlights; };
 
-		if(thisDrawHelpers) {
+		if(thisDisplayHelpers) {
 			if(thisHelpersStyle == \line) {
 				super.drawLineHelpers(
 					super.polarity,
@@ -565,5 +587,4 @@ GMFaderMultiSlider : GMZZMultiSlider {
 			});
 		};
 	}
-
 }
