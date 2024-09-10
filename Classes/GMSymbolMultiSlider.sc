@@ -77,15 +77,6 @@ GMSymbolMultiSlider : GMZZMultiSlider {
 		this.refresh;
 	}
 
-	displayLine {
-		^thisDisplayLine
-	}
-
-	displayLine_ { |aSymbol|
-		thisDisplayLine = aSymbol;
-		this.refresh;
-	}
-
 	drawLine {
 		"GMSymbolMultiSlider: drawLine will be deprecated soon, use displayLine instead.".warn;
 		^thisDisplayLine
