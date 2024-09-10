@@ -4,7 +4,7 @@ GMSymbol2DSlider : GMZZ2DSlider {
 	var thisSymbolMinSize = 24;
 	var thisSymbolMaxSize = 96;
 
-	var thisDrawLine = false;
+	var thisDisplayLine = false;
 
 	var thisDisplayValues = true;
 	var thisFontRatio = 0.1;
@@ -13,7 +13,7 @@ GMSymbol2DSlider : GMZZ2DSlider {
 	var thisYDisplayFunction = nil;
 
 	var thisHelpersStyle = \line;
-	var thisDrawHelpers = false;
+	var thisDisplayHelpers = false;
 	var thisHelpersRatio = 0.2;
 	var thisCenterHelpers;
 
@@ -65,12 +65,23 @@ GMSymbol2DSlider : GMZZ2DSlider {
 		this.refresh;
 	}
 
+	displayLine {
+		^thisDisplayLine
+	}
+
+	displayLine_ { |aBoolean|
+		thisDisplayLine = aBoolean;
+		this.refresh;
+	}
+
 	drawLine {
-		^thisDrawLine
+		"GMSymbol2DSlider: drawLine will be deprecated soon, use displayLine instead.".warn;
+		^thisDisplayLine
 	}
 
 	drawLine_ { |aBoolean|
-		thisDrawLine = aBoolean;
+		"GMSymbol2DSlider: drawLine will be deprecated soon, use displayLine instead.".warn;
+		thisDisplayLine = aBoolean;
 		this.refresh;
 	}
 
@@ -129,16 +140,27 @@ GMSymbol2DSlider : GMZZ2DSlider {
 
 	helpersStyle_ { |aBoolean|
 		thisHelpersStyle = aBoolean;
-		if(thisDrawHelpers)
+		if(thisDisplayHelpers)
 		{ this.refresh; };
 	}
 
+	displayHelpers {
+		^thisDisplayHelpers
+	}
+
+	displayHelpers_ { |aBoolean|
+		thisDisplayHelpers = aBoolean;
+		this.refresh;
+	}
+
 	drawHelpers {
-		^thisDrawHelpers
+		"GMSymbol2DSlider: drawHelpers will be deprecated soon, use displayHelpers instead.".warn;
+		^thisDisplayHelpers
 	}
 
 	drawHelpers_ { |aBoolean|
-		thisDrawHelpers = aBoolean;
+		"GMSymbol2DSlider: drawHelpers will be deprecated soon, use displayHelpers instead.".warn;
+		thisDisplayHelpers = aBoolean;
 		this.refresh;
 	}
 
@@ -148,7 +170,7 @@ GMSymbol2DSlider : GMZZ2DSlider {
 
 	helpersRatio_ { |aNumber|
 		thisHelpersRatio = aNumber;
-		if(thisDrawHelpers)
+		if(thisDisplayHelpers)
 		{ this.refresh; };
 	}
 
@@ -158,7 +180,7 @@ GMSymbol2DSlider : GMZZ2DSlider {
 
 	centerHelpers_ { |anArray|
 		thisCenterHelpers = anArray;
-		if(thisDrawHelpers)
+		if(thisDisplayHelpers)
 		{ this.refresh; };
 	}
 
@@ -168,7 +190,7 @@ GMSymbol2DSlider : GMZZ2DSlider {
 
 		this.prDrawSlider;
 
-		if(thisDrawHelpers) {
+		if(thisDisplayHelpers) {
 			if(thisHelpersStyle == \line)
 			{ this.prDrawLineHelpers; };
 			if(thisHelpersStyle == \dot)
@@ -242,7 +264,7 @@ GMSymbol2DSlider : GMZZ2DSlider {
 		Pen.strokeColor_(super.mainColor);
 		Pen.width_(super.outlineSize);
 
-		if(thisDrawLine) {
+		if(thisDisplayLine) {
 			Pen.line(
 				Point(symbolPosition.x, super.interactionRect.top),
 				Point(symbolPosition.x, super.interactionRect.bottom)
