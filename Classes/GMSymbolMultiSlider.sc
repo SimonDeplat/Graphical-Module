@@ -6,7 +6,7 @@ GMSymbolMultiSlider : GMZZMultiSlider {
 	var thisSymbolMaxSize = 128;
 
 	var symbolPosition = 0;
-	var thisDrawLine = \value;
+	var thisDisplayLine = \value;
 
 	var thisDisplayValues = true;
 	var thisFontRatio = 0.3;
@@ -14,10 +14,10 @@ GMSymbolMultiSlider : GMZZMultiSlider {
 	var thisCenterValues = false;
 	var thisDisplayFunction = nil;
 
-	var thisDrawHelpers = false;
+	var thisDisplayHelpers = false;
 	var thisHelpersRatio = 0.2;
 
-	var thisDrawHighlights = false;
+	var thisDisplayHiglights = false;
 	var thisHighlights = nil;
 	var thisHighlightRatio = 0.5;
 	var thisBeat = -1;
@@ -68,12 +68,32 @@ GMSymbolMultiSlider : GMZZMultiSlider {
 		this.refresh;
 	}
 
+	displayLine {
+		^thisDisplayLine
+	}
+
+	displayLine_ { |aSymbol|
+		thisDisplayLine = aSymbol;
+		this.refresh;
+	}
+
+	displayLine {
+		^thisDisplayLine
+	}
+
+	displayLine_ { |aSymbol|
+		thisDisplayLine = aSymbol;
+		this.refresh;
+	}
+
 	drawLine {
-		^thisDrawLine
+		"GMSymbolMultiSlider: drawLine will be deprecated soon, use displayLine instead.".warn;
+		^thisDisplayLine
 	}
 
 	drawLine_ { |aSymbol|
-		thisDrawLine = aSymbol;
+		"GMSymbolMultiSlider: drawLine will be deprecated soon, use displayLine instead.".warn;
+		thisDisplayLine = aSymbol;
 		this.refresh;
 	}
 
@@ -123,12 +143,23 @@ GMSymbolMultiSlider : GMZZMultiSlider {
 		this.refresh;
 	}
 
+	displayHelpers {
+		^thisDisplayHelpers
+	}
+
+	displayHelpers_ { |aBoolean|
+		thisDisplayHelpers = aBoolean;
+		this.refresh;
+	}
+
 	drawHelpers {
-		^thisDrawHelpers
+		"GMSymbolMultiSlider: drawHelpers will be deprecated soon, use displayHelpers instead.".warn;
+		^thisDisplayHelpers
 	}
 
 	drawHelpers_ { |aBoolean|
-		thisDrawHelpers = aBoolean;
+		"GMSymbolMultiSlider: drawHelpers will be deprecated soon, use displayHelpers instead.".warn;
+		thisDisplayHelpers = aBoolean;
 		this.refresh;
 	}
 
@@ -150,12 +181,23 @@ GMSymbolMultiSlider : GMZZMultiSlider {
 		{ this.refresh; }.defer;
 	}
 
+	displayHighlights {
+		^thisDisplayHiglights
+	}
+
+	displayHighlights_ { |aBoolean|
+		thisDisplayHiglights = aBoolean;
+		this.refresh;
+	}
+
 	drawHighlights {
-		^thisDrawHighlights
+		"GMSymbolMultiSlider: drawHighlights will be deprecated soon, use displayHighlights instead.".warn;
+		^thisDisplayHiglights
 	}
 
 	drawHighlights_ { |aBoolean|
-		thisDrawHighlights = aBoolean;
+		"GMSymbolMultiSlider: drawHighlights will be deprecated soon, use displayHighlights instead.".warn;
+		thisDisplayHiglights = aBoolean;
 		this.refresh;
 	}
 
@@ -209,11 +251,11 @@ GMSymbolMultiSlider : GMZZMultiSlider {
 			};
 		};
 
-		if(thisDrawHighlights) { this.prDrawHighlights; };
+		if(thisDisplayHiglights) { this.prDrawHighlights; };
 
 		this.prDrawSliders;
 
-		if(thisDrawHelpers) {
+		if(thisDisplayHelpers) {
 			super.drawMultiDotHelpers(
 				super.polarity,
 				super.orientation,
@@ -312,8 +354,8 @@ GMSymbolMultiSlider : GMZZMultiSlider {
 			Pen.strokeColor_(super.mainColor);
 			Pen.width_(super.outlineSize);
 
-			if(thisDrawLine != \none) {
-				if(thisDrawLine == \full) {
+			if(thisDisplayLine != \none) {
+				if(thisDisplayLine == \full) {
 					if(super.orientation == \horizontal) {
 						Pen.line(
 							Point(

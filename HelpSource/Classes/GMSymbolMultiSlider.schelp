@@ -32,7 +32,7 @@ GMSymbolMultiSlider()
 	1, 0, 0.333, 0,
 	0.666, 0, 0.333, 0
 ])
-.drawHighlights_(true)
+.displayHighlights_(true)
 .front
 )
 ::
@@ -50,7 +50,7 @@ GMSymbolMultiSlider()
 	1, 0, 0.333, 0, 0.333, 0,
 	0.666, 0, 0.333, 0, 0.333, 0
 ])
-.drawHighlights_(true)
+.displayHighlights_(true)
 .front
 )
 ::
@@ -70,7 +70,7 @@ var multiSlider = GMSymbolMultiSlider()
 	1, 0, 0.333, 0,
 	0.666, 0, 0.333, 0
 ])
-.drawHighlights_(true)
+.displayHighlights_(true)
 .beat_(currentBeat);
 
 var routine = Routine({
@@ -107,8 +107,11 @@ METHOD:: beat
 Sets or gets the displayed beat. Set to code::-1:: to disable. This will internally
 defer the graphical update.
 
-METHOD:: drawHighlights
+METHOD:: displayHighlights
 Sets or gets wether the highlights should be displayed.
+
+METHOD:: drawHighlights
+Deprecated. Use code::displayHighlights:: instead.
 
 METHOD:: highlightRatio
 Sets or gets the highlights maximum ratio relative to the sliders available space.
@@ -124,12 +127,14 @@ METHOD:: symbol
 METHOD:: symbolRatio
 METHOD:: symbolMinSize
 METHOD:: symbolMaxSize
+METHOD:: displayLine
 METHOD:: drawLine
 METHOD:: displayValues
 METHOD:: centerValues
 METHOD:: roundValue
 METHOD:: displayFunction
 METHOD:: fontRatio
+METHOD:: displayHelpers
 METHOD:: drawHelpers
 METHOD:: helpersRatio
 
@@ -164,7 +169,7 @@ s.waitForBoot({
 
 	var ampSlider = GMSymbolSlider()
 	.centerValue_(false)
-	.drawLine_(\value)
+	.displayLine_(\value)
 	.symbol_(\diamond)
 	.action_({ |value|
 		amp = value / nHarmo;
@@ -273,7 +278,7 @@ s.waitForBoot({
 	var ampSlider = GMSymbolSlider()
 	.value_(amp)
 	.centerValue_(false)
-	.drawLine_(\none)
+	.displayLine_(\none)
 	.maxWidth_(256)
 	.action_({ |value| amp = value; });
 
@@ -285,10 +290,10 @@ s.waitForBoot({
 	.centerValues_(false)
 	.roundValue_(1)
 	.helperSubdivisions_(2)
-	.drawHighlights_(true)
+	.displayHighlights_(true)
 	.highlights_(highlights)
-	.drawLine_(\none)
-	.drawHelpers_(true)
+	.displayLine_(\none)
+	.displayHelpers_(true)
 	.beat_(0)
 	.actionMode_(\index)
 	.action_({ |index, value|
