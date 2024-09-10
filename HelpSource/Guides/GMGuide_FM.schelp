@@ -91,7 +91,7 @@ Helpers are displayed to ease the volume selection. They are configured so that 
 
 code::
 var ampSlider = GMFaderSlider()
-.drawHelpers_(true)
+.displayHelpers_(true)
 .helpersNumber_(3)
 .helperSubdivisions_(4)
 ::
@@ -352,7 +352,7 @@ s.waitForBoot({
 	var ampSlider = GMFaderSlider()
 	.style_(style)
 
-	.drawHelpers_(true)
+	.displayHelpers_(true)
 	.helpersNumber_(3)
 	.helperSubdivisions_(4)
 
@@ -416,7 +416,7 @@ s.waitForBoot({
 	var freqSlider = GMSymbolSlider()
 	.style_(style)
 	.symbol_(\diamond)
-	.drawLine_(\none)
+	.displayLine_(\none)
 
 	.min_(440)
 	.max_(880)
@@ -460,14 +460,14 @@ s.waitForBoot({
 	.style_(style)
 	.symbolRatio_(0.5)
 	.fontRatio_(0.2)
-	.drawLine_(\value)
+	.displayLine_(\value)
 
 	.min_(1)
 	.max_(1.25)
 	.value_(1)
 	.scale_(8)
 
-	.drawHelpers_(true)
+	.displayHelpers_(true)
 	.helperSubdivisions_(8)
 
 	.modStep_(0.0001)
@@ -518,9 +518,9 @@ s.waitForBoot({
 
 	var fm2DSlider = GMSymbol2DSlider()
 	.style_(style)
-	.drawHelpers_(true)
+	.displayHelpers_(true)
 	.helpersStyle_(\dot)
-	.drawLine_(true)
+	.displayLine_(true)
 	.symbol_(\diamond)
 
 	.min_([0, 1/8])
