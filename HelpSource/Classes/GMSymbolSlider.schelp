@@ -57,8 +57,11 @@ Sets or gets the minimum size of the handle, in pixels.
 METHOD:: symbolMaxSize
 Sets or gets the maximum size of the handle, in pixels.
 
-METHOD:: drawLine
+METHOD:: displayLine
 Sets or gets the line drawing policy. code::\none:: will disable it, code::\full:: will draw a line along the full selected axis, code::\value:: will draw a line between code::min:: and the handle.
+
+METHOD:: drawLine
+Deprecated. Use code::displayLine:: instead.
 
 METHOD:: displayValue
 Sets or gets wether the value should be displayed.
@@ -77,8 +80,11 @@ Sets or gets the size of the displayed value font relative to the widget size.
 ARGUMENT:: aFloat
 A link::Classes/Float:: that should be between 0 and 1.
 
-METHOD:: drawHelpers
+METHOD:: displayHelpers
 Sets or gets wether helpers should be displayed.
+
+METHOD:: drawHelpers
+Deprecated. Use displayHelpers instead.
 
 METHOD:: helpersRatio
 Sets or gets the size of the displayed helpers relative to the widget size. The value will be clipped if this would cause the dots to overlap.
@@ -122,32 +128,32 @@ var slider3 = GMSymbolSlider()
 var slider4 = GMSymbolSlider()
 .value_(0.75)
 .symbol_(\circle)
-.drawLine_(\none);
+.displayLine_(\none);
 
 var slider5 = GMSymbolSlider()
 .value_(0.75)
 .symbol_(\circle)
-.drawLine_(\value);
+.displayLine_(\value);
 
 var slider6 = GMSymbolSlider()
 .value_(0.5)
 .symbol_(\circle)
 .polarity_(\bi)
-.drawLine_(\value);
+.displayLine_(\value);
 
 var slider7 = GMSymbolSlider()
 .value_(0.75)
 .symbol_(\circle)
-.drawLine_(\none)
-.drawHelpers_(true)
+.displayLine_(\none)
+.displayHelpers_(true)
 .helpersRatio_(0.5)
 .centerValue_(false);
 
 var slider8 = GMSymbolSlider()
 .value_(0.75)
 .symbol_(\circle)
-.drawLine_(\full)
-.drawHelpers_(true)
+.displayLine_(\full)
+.displayHelpers_(true)
 .helpersRatio_(0.5)
 .centerValue_(false);
 

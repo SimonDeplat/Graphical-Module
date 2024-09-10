@@ -6,7 +6,7 @@ GMSymbolSlider : GMZZSlider {
 	var thisSymbolMaxSize = 96;
 
 	var symbolPosition = 0;
-	var thisDrawLine = \full;
+	var thisDisplayLine = \full;
 
 	var thisDisplayValue = true;
 	var thisFontRatio = 0.3;
@@ -14,7 +14,7 @@ GMSymbolSlider : GMZZSlider {
 	var thisCenterValue = true;
 	var thisDisplayFunction = nil;
 
-	var thisDrawHelpers = false;
+	var thisDisplayHelpers = false;
 	var thisHelpersRatio = 0.2;
 
 	*new {
@@ -63,12 +63,23 @@ GMSymbolSlider : GMZZSlider {
 		this.refresh;
 	}
 
+	displayLine {
+		^thisDisplayLine
+	}
+
+	displayLine_ { |aSymbol|
+		thisDisplayLine = aSymbol;
+		this.refresh;
+	}
+
 	drawLine {
-		^thisDrawLine
+		"GMSymbolSlider: drawLine will be deprecated soon, use displayLine instead.".warn;
+		^thisDisplayLine
 	}
 
 	drawLine_ { |aSymbol|
-		thisDrawLine = aSymbol;
+		"GMSymbolSlider: drawLine will be deprecated soon, use displayLine instead.".warn;
+		thisDisplayLine = aSymbol;
 		this.refresh;
 	}
 
@@ -121,12 +132,23 @@ GMSymbolSlider : GMZZSlider {
 		{ this.refresh; };
 	}
 
+	displayHelpers {
+		^thisDisplayHelpers
+	}
+
+	displayHelpers_ { |aBoolean|
+		thisDisplayHelpers = aBoolean;
+		this.refresh;
+	}
+
 	drawHelpers {
-		^thisDrawHelpers
+		"GMSymbolSlider: drawHelpers will be deprecated soon, use displayHelpers instead.".warn;
+		^thisDisplayHelpers
 	}
 
 	drawHelpers_ { |aBoolean|
-		thisDrawHelpers = aBoolean;
+		"GMSymbolSlider: drawHelpers will be deprecated soon, use displayHelpers instead.".warn;
+		thisDisplayHelpers = aBoolean;
 		this.refresh;
 	}
 
@@ -145,7 +167,7 @@ GMSymbolSlider : GMZZSlider {
 
 		this.prDrawSlider;
 
-		if(thisDrawHelpers) {
+		if(thisDisplayHelpers) {
 			super.drawDotHelpers(
 				super.polarity,
 				super.orientation,
@@ -226,8 +248,8 @@ GMSymbolSlider : GMZZSlider {
 		Pen.strokeColor_(super.mainColor);
 		Pen.width_(super.outlineSize);
 
-		if(thisDrawLine != \none) {
-			if(thisDrawLine == \full) {
+		if(thisDisplayLine != \none) {
+			if(thisDisplayLine == \full) {
 				if(super.orientation == \horizontal) {
 					Pen.line(
 						Point(
