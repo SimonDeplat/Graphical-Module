@@ -297,7 +297,7 @@ GMRoundButton : GMUserView {
 			super.font.deepCopy.size_(
 				buttonSize * thisStringRatio
 			),
-			super.fontColor,
+			thisCurrentFontColor,
 			thisOrientation
 		);
 	}
