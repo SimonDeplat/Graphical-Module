@@ -27,7 +27,7 @@ CLASSMETHODS::
 METHOD:: new
 Creates a new instance of link::Classes/GMRecordButton::.
 
-By default, its graphical properties are defined by it's associated link::Classes/GMStyle::. In fact, the visual properties of this link::Classes/View:: are hardcoded, and the only available settings are the borders parameters.
+By default, its graphical properties are defined by its associated link::Classes/GMStyle::. In fact, the visual properties of this link::Classes/View:: are hardcoded, and the only available settings are the borders parameters.
 
 returns:: a link::Classes/GMRecordButton:: instance.
 
@@ -45,8 +45,14 @@ Sets or gets the link::Classes/Function:: to be triggered when the button is pre
 ARGUMENT:: aFunction
 A link::Classes/Function:: with one argument, the state of the button as a link::Classes/Boolean::.
 
+METHOD:: setDisplay
+Allows to animate the button without triggering the associated action (for example in response to a keyboard event). Passing code::true:: as argument will animate the button if not animated already, passing code::false:: will stop the animation if not stopped already. Visual updates are internally deferred so the method can be called within a clock context.
+
 METHOD:: symbolRatio
 Sets or gets the symbol size relative to its smallest axis, and refreshes the link::Classes/View::.
+
+METHOD:: isRecording
+Gets the internal state of the link::Classes/GMRecordButton::.
 
 subsection::Internal Methods
 
