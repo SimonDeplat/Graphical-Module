@@ -17,6 +17,11 @@ GMSymbol2DSlider : GMZZ2DSlider {
 	var thisHelpersRatio = 0.2;
 	var thisCenterHelpers;
 
+	var thisSVGPath = "";
+	var thisSVGSize = nil;
+	var thisSVGRatio = 0.8;
+	var thisIMG = nil;
+
 	*new {
 		^super.new.init;
 	}
@@ -26,6 +31,16 @@ GMSymbol2DSlider : GMZZ2DSlider {
 		this.drawFunc_({ this.draw; });
 		thisCenterHelpers = [false, false];
 		thisRoundValues = [0.01, 0.01];
+
+		this.onResize_(
+			FunctionList()
+			.addFunc({ this.prResizeSVG; })
+		);
+
+		this.onClose_(
+			FunctionList()
+			.addFunc({ this.free; })
+		);
 	}
 
 	// Graphical settings
@@ -184,9 +199,51 @@ GMSymbol2DSlider : GMZZ2DSlider {
 		{ this.refresh; };
 	}
 
+	svg { |aPath|
+		if(thisIMG.notNil)
+		{ this.free; };
+
+		thisSVGPath = aPath;
+		thisIMG = Image.openSVG(aPath);
+		thisSVGSize = Point(
+			thisIMG.width,
+			thisIMG.height
+		);
+
+		this.prResizeSVG;
+	}
+
+	svgRatio {
+		^thisSVGRatio
+	}
+
+	svgRatio_ { |aFloat|
+		thisSVGRatio = aFloat;
+		this.refresh;
+	}
+
+	free {
+		if(thisIMG.notNil) {
+			thisIMG.free;
+			thisIMG = nil;
+			this.refresh;
+		};
+	}
+
 	// Custom drawFunc
 	draw {
 		super.drawBackground(super.backgroundColor);
+
+		if(thisIMG.notNil) {
+			thisIMG.drawAtPoint(
+				Point(
+					(super.bounds.width / 2)
+					- (thisIMG.width / 2),
+					(super.bounds.height / 2)
+					- (thisIMG.height / 2)
+				)
+			);
+		};
 
 		this.prDrawSlider;
 
@@ -518,5 +575,31 @@ GMSymbol2DSlider : GMZZ2DSlider {
 		});
 
 		Pen.fill;
+	}
+
+	prResizeSVG {
+		if(thisIMG.notNil) {
+			var hRatio = super.interactionRect.width / thisSVGSize.x;
+			var vRatio = super.interactionRect.height / thisSVGSize.y;
+
+			var width;
+			var height;
+
+			thisIMG.free;
+
+			if(hRatio < vRatio) {
+				width = (super.interactionRect.width * thisSVGRatio);
+				height = (thisSVGSize.y * (width / thisSVGSize.x));
+			} {
+				height = (super.interactionRect.height * thisSVGRatio);
+				width = (thisSVGSize.x * (height / thisSVGSize.y));
+			};
+			thisIMG = Image.openSVG(
+				thisSVGPath,
+				Size(width, height)
+			);
+
+			this.refresh;
+		};
 	}
 }

@@ -106,6 +106,15 @@ Sets or gets the link::Classes/Function:: that will be used to adapt the value d
 METHOD:: yDisplayFunction
 Sets or gets the link::Classes/Function:: that will be used to adapt the value displayed on the vertical axis if needed. Set to code::nil:: to disable.
 
+METHOD:: svg
+Sets a path to a valid SVG file to be displayed on top of the widget's background.
+
+METHOD:: svgRatio
+Sets or gets the background SVG's size ratio relative to the widget size.
+
+METHOD:: free
+Frees the current background SVG, allowing garbage collection.
+
 subsection::GMSymbolSlider Methods
 
 See the link::Classes/GMSymbolSlider:: class documentation for those methods.
@@ -130,6 +139,7 @@ METHOD:: prDrawSlider
 METHOD:: prDrawValues
 METHOD:: prDrawLineHelpers
 METHOD:: prDrawDotHelpers
+METHOD:: prResizeSVG
 
 EXAMPLES::
 
