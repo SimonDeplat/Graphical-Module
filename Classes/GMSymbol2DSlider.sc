@@ -199,7 +199,7 @@ GMSymbol2DSlider : GMZZ2DSlider {
 		{ this.refresh; };
 	}
 
-	svg { |aPath|
+	svg_ { |aPath|
 		if(thisIMG.notNil)
 		{ this.free; };
 
