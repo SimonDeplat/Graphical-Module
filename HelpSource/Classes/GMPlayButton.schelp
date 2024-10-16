@@ -40,6 +40,9 @@ Toggles the button, changing its state and evaluating the associated action.
 METHOD:: toggleDisplay
 Toggles the button display, changing its state without evaluating the associated action.
 
+METHOD:: setPlaying
+Sets the button display, changing its state without evaluating the associated action.
+
 subsection::Graphical settings
 
 METHOD:: mode
