@@ -209,13 +209,13 @@ GMUserView : UserView {
 	}
 
 	interactionRect {
+		var rect = Rect(0, 0, 0, 0);
 		if(this.bounds.notNil) {
 			if(thisDisplayBorder) {
-				^Rect(
+				rect = Rect(
 					thisStyle.borderSize
 					+ thisStyle.secondBorderSize +
 					thisStyle.thirdBorderSize,
-
 					thisStyle.borderSize
 					+ thisStyle.secondBorderSize
 					+ thisStyle.thirdBorderSize,
@@ -224,22 +224,20 @@ GMUserView : UserView {
 					((thisStyle.borderSize
 						+ thisStyle.secondBorderSize
 						+ thisStyle.thirdBorderSize) * 2),
-
 					this.bounds.height -
 					((thisStyle.borderSize
 						+ thisStyle.secondBorderSize
 						+ thisStyle.thirdBorderSize) * 2)
 				);
 			} {
-				^Rect(
+				rect = Rect(
 					0, 0,
 					this.bounds.width,
 					this.bounds.height
 				)
 			};
-		} {
-			^Rect(0, 0, 0, 0);
 		};
+		^rect
 	}
 
 	// No setters because the GMStyle associated is responsible
