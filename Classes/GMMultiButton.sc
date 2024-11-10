@@ -369,8 +369,9 @@ GMMultiButton : GMXYUserView {
 
 			thisStates.do({ |item, index|
 				rectSize = Point(caseSize, super.interactionRect.height);
-
-				fontSize = super.interactionRect.height * thisFontRatio;
+				if((thisDirection == \left) or: { thisDirection == \right })
+				{ fontSize = super.interactionRect.height * thisFontRatio; }
+				{ fontSize = caseSize * thisFontRatio; };
 
 				if((index == thisCurrentState) and: { thisDrawSelected }) {
 					color = super.selectedColor;
@@ -442,8 +443,9 @@ GMMultiButton : GMXYUserView {
 
 			thisStates.do({ |item, index|
 				rectSize = Point(super.interactionRect.width, caseSize);
-
-				fontSize = caseSize * thisFontRatio;
+				if((thisDirection == \top) or: { thisDirection == \bottom })
+				{ fontSize = super.interactionRect.width * thisFontRatio; }
+				{ fontSize = caseSize * thisFontRatio; };
 
 				if((index == thisCurrentState) and: { thisDrawSelected }) {
 					color = super.selectedColor;
