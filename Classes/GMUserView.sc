@@ -238,7 +238,7 @@ GMUserView : UserView {
 				)
 			};
 		} {
-			Rect(0, 0, 0, 0);
+			^Rect(0, 0, 0, 0);
 		};
 	}
 
