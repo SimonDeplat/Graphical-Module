@@ -44,7 +44,13 @@ METHOD:: string
 Sets or gets the button displayed text, and refreshes the link::Classes/View::.
 
 METHOD:: stringRatio
+Deprecated, see fontRatio
+
+METHOD:: fontRatio
 Sets or gets the widget displayed text ratio, relative to the smallest axis of the widget, and refreshes the link::Classes/View::. You'll need to reduce this value if the displayed text is larger than the size of the widget.
+
+METHOD:: maxFontSize
+Sets or gets the maximum allowed font size.
 
 METHOD:: orientation
 Sets or gets the button displayed text orientation, and refreshes the link::Classes/View::. Valid values are : code::\right::, code::\top::, code::\left:: or code::\bottom::. This doesn't affect the displayed svg if any.

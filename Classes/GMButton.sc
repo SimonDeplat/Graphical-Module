@@ -1,7 +1,8 @@
 GMButton : GMUserView {
 
 	var thisString = "";
-	var thisStringRatio = 0.8;
+	var thisFontRatio = 0.8;
+	var thisMaxFontSize = 64;
 	var thisOrientation = \right;
 	var thisSVG;
 	var thisSVGPath = "";
@@ -14,16 +15,13 @@ GMButton : GMUserView {
 
 	init {
 		super.init;
-
 		this.setEventHandler(
 			QObject.mouseUpEvent, \mouseDownEvent, true);
 		this.setEventHandler(
 			QObject.mouseUpEvent, \mouseUpEvent, true);
 		this.setEventHandler(
 			QObject.mouseDblClickEvent, \mouseDownEvent, false);
-
 		this.drawFunc_({ this.draw });
-
 		this.onResize_({
 			if((thisSVGPath == "").not)
 			{ this.resizeSVG; };
@@ -58,11 +56,31 @@ GMButton : GMUserView {
 	}
 
 	stringRatio {
-		^thisStringRatio
+		"GMButton: stringRatio will be deprecatd soon, please use fontRatio instead".warn
+		^thisFontRatio
 	}
 
 	stringRatio_ { |aFloat|
-		thisStringRatio = aFloat;
+		"GMButton: stringRatio will be deprecatd soon, please use fontRatio instead".warn
+		thisFontRatio = aFloat;
+		this.refresh;
+	}
+
+	fontRatio {
+		^thisFontRatio
+	}
+
+	fontRatio_ { |aFloat|
+		thisFontRatio = aFloat;
+		this.refresh;
+	}
+
+	maxFontSize {
+		^thisMaxFontSize
+	}
+
+	maxFontSize_ { |anInteger|
+		thisMaxFontSize = anInteger;
 		this.refresh;
 	}
 
@@ -131,11 +149,8 @@ GMButton : GMUserView {
 
 	draw {
 		super.drawFrame(super.backColor);
-
 		if((thisSVGPath == "").not) {
-
 			Pen.fillColor_(super.fontColor);
-
 			thisSVG.drawInRect(
 				Rect(
 					(this.bounds.width / 2) - (thisSVG.width / 2),
@@ -145,14 +160,16 @@ GMButton : GMUserView {
 				);
 			);
 		};
-
 		super.stringCenteredIn(
 			thisString,
 			super.interactionRect,
 			super.font.deepCopy.size_(
-				min(
-					super.interactionRect.width * thisStringRatio,
-					super.interactionRect.height * thisStringRatio
+				max(
+					thisFontMaxSize,
+					min(
+						super.interactionRect.width * thisFontRatio,
+						super.interactionRect.height * thisFontRatio
+					)
 				)
 			),
 			super.fontColor,
