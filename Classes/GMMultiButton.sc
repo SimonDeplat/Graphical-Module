@@ -1,20 +1,16 @@
 GMMultiButton : GMXYUserView {
 	var thisStates;
 	var thisCurrentState = 0;
-
 	var thisOrientation = \horizontal;
 	var thisDirection = \right;
-
 	var thisAllowRetrigger = false;
 	var thisAllowMouseMove = true;
-
 	var thisFontRatio = 0.4;
+	var thisMaxFontSize = 64;
 	var thisUnselectedRatio = 0.8;
-
 	var thisDrawSelected = true;
 	var thisAltIndex = nil;
 	var thisDisplayAltValue = true;
-
 	var thisSVGRatio = 0.8;
 
 	*new {
@@ -23,7 +19,6 @@ GMMultiButton : GMXYUserView {
 
 	init {
 		super.init;
-
 		// Allowed events
 		this.setEventHandler(
 			QObject.mouseUpEvent,
@@ -34,26 +29,21 @@ GMMultiButton : GMXYUserView {
 		this.setEventHandler(
 			QObject.mouseUpEvent,
 			\mouseUpEvent, true);
-
 		// Forbidden events
 		// Allows to switch rapidly between states
 		this.setEventHandler(
 			QObject.mouseDblClickEvent,
 			\mouseDownEvent, false);
-
 		this.drawFunc_({ this.draw });
 		this.action_({});
-
 		this.onResize_(
 			FunctionList()
 			.addFunc({ this.prResizeSVGs; })
 		);
-
 		this.onClose_(
 			FunctionList()
 			.addFunc({ this.free; })
 		);
-
 		thisStates = [
 			(
 				string: "I",
@@ -131,7 +121,6 @@ GMMultiButton : GMXYUserView {
 				);
 			};
 		});
-
 		newStates.do({ |item|
 			if(item.includesKey(\svg)) {
 				item[\img] = Image.openSVG(item[\svg]);
@@ -141,10 +130,8 @@ GMMultiButton : GMXYUserView {
 				);
 			};
 		});
-
 		thisStates = newStates;
 		thisCurrentState = 0;
-
 		this.prResizeSVGs;
 	}
 
@@ -215,6 +202,15 @@ GMMultiButton : GMXYUserView {
 		this.refresh;
 	}
 
+	maxFontSize {
+		^thisMaxFontSize
+	}
+
+	maxFontSize_ { |anInteger|
+		thisMaxFontSize = anInteger;
+		this.refresh;
+	}
+
 	unselectedRatio {
 		^thisUnselectedRatio
 	}
@@ -250,12 +246,10 @@ GMMultiButton : GMXYUserView {
 			if(state.includesKey(\svg)) {
 				var hRatio, vRatio;
 				var width, height;
-
 				if(thisOrientation == \horizontal) {
 					hRatio = (super.interactionRect.width / thisStates.size)
 					/ state[\svgSize].x;
 					vRatio = super.interactionRect.height / state[\svgSize].y;
-
 					if(hRatio < vRatio) {
 						width = ((super.interactionRect.width / thisStates.size)
 							* thisSVGRatio);
@@ -268,7 +262,6 @@ GMMultiButton : GMXYUserView {
 					hRatio = super.interactionRect.width / state[\svgSize].x;
 					vRatio = (super.interactionRect.height / thisStates.size)
 					/ state[\svgSize].y;
-
 					if(hRatio < vRatio) {
 						width = super.interactionRect.width	* thisSVGRatio;
 						height = (state[\svgSize].y * (width / state[\svgSize].x));
@@ -278,15 +271,12 @@ GMMultiButton : GMXYUserView {
 						width = (state[\svgSize].x * (height / state[\svgSize].y));
 					};
 				};
-
 				state[\img].free;
 				state[\smallImg].free;
-
 				state[\img] = Image.openSVG(
 					state[\svg],
 					Size(width, height)
 				);
-
 				state[\smallImg] = Image.openSVG(
 					state[\svg],
 					Size(
@@ -296,7 +286,6 @@ GMMultiButton : GMXYUserView {
 				);
 			};
 		});
-
 		this.refresh;
 	}
 
@@ -304,15 +293,12 @@ GMMultiButton : GMXYUserView {
 	action_ { |aFunction|
 		mouseDownAction = { |view, x, y, mod|
 			var index;
-
 			if(thisOrientation == \horizontal)
 			{ index = super.getXIndex(x, thisStates.size); }
 			{ index = super.getYIndex(y, thisStates.size, false); };
-
 			// If ALT pressed
 			if(mod == 524288)
 			{ thisAltIndex = thisCurrentState; };
-
 			if(index != thisCurrentState) {
 				thisCurrentState = index;
 				aFunction.value(thisCurrentState);
@@ -329,7 +315,6 @@ GMMultiButton : GMXYUserView {
 				if(thisOrientation == \horizontal)
 				{ index = super.getXIndex(x, thisStates.size); }
 				{ index = super.getYIndex(y, thisStates.size, false); };
-
 				if(index != thisCurrentState) {
 					thisCurrentState = index;
 					aFunction.value(thisCurrentState);
@@ -361,18 +346,14 @@ GMMultiButton : GMXYUserView {
 	// Custom drawFunc
 	draw {
 		var caseSize, fontSize, rectSize, color, fontColor, currentRect;
-
 		super.drawFrame(super.backgroundColor);
-
 		if(thisOrientation == \horizontal) {
 			caseSize = super.interactionRect.width / thisStates.size;
-
 			thisStates.do({ |item, index|
 				rectSize = Point(caseSize, super.interactionRect.height);
 				if((thisDirection == \left) or: { thisDirection == \right })
 				{ fontSize = super.interactionRect.height * thisFontRatio; }
 				{ fontSize = caseSize * thisFontRatio; };
-
 				if((index == thisCurrentState) and: { thisDrawSelected }) {
 					color = super.selectedColor;
 					fontColor = super.fontColor;
@@ -389,7 +370,6 @@ GMMultiButton : GMXYUserView {
 						fontColor = item[\fontColor];
 					};
 				};
-
 				currentRect = Rect(
 					super.interactionRect.left
 					+ (caseSize * index)
@@ -400,10 +380,8 @@ GMMultiButton : GMXYUserView {
 					rectSize.x,
 					rectSize.y
 				);
-
 				Pen.fillColor_(color);
 				Pen.fillRect(currentRect);
-
 				if(item.includesKey(\img)) {
 					if((index == thisCurrentState) and: { thisDrawSelected }) {
 						item[\img].drawAtPoint(
@@ -429,7 +407,6 @@ GMMultiButton : GMXYUserView {
 						);
 					}
 				};
-
 				super.stringCenteredIn(
 					item[\string],
 					currentRect,
@@ -440,13 +417,11 @@ GMMultiButton : GMXYUserView {
 			});
 		} {
 			caseSize = super.interactionRect.height / thisStates.size;
-
 			thisStates.do({ |item, index|
 				rectSize = Point(super.interactionRect.width, caseSize);
 				if((thisDirection == \top) or: { thisDirection == \bottom })
 				{ fontSize = super.interactionRect.width * thisFontRatio; }
 				{ fontSize = caseSize * thisFontRatio; };
-
 				if((index == thisCurrentState) and: { thisDrawSelected }) {
 					color = super.selectedColor;
 					fontColor = super.fontColor;
@@ -463,7 +438,6 @@ GMMultiButton : GMXYUserView {
 						fontColor = item[\fontColor];
 					};
 				};
-
 				currentRect = Rect(
 					(super.bounds.width / 2)
 					- (rectSize.x / 2),
@@ -474,10 +448,8 @@ GMMultiButton : GMXYUserView {
 					rectSize.x,
 					rectSize.y
 				);
-
 				Pen.fillColor_(color);
 				Pen.fillRect(currentRect);
-
 				if(item.includesKey(\img)) {
 					if((index == thisCurrentState) and: { thisDrawSelected }) {
 						item[\img].drawAtPoint(
@@ -503,11 +475,15 @@ GMMultiButton : GMXYUserView {
 						);
 					};
 				};
-
 				super.stringCenteredIn(
 					item[\string],
 					currentRect,
-					super.font.deepCopy.size_(fontSize),
+					super.font.deepCopy.size_(
+						min(
+							fontSize,
+							thisMaxFontSize
+						)
+					),
 					fontColor,
 					thisDirection
 				);

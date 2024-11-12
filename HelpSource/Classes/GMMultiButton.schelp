@@ -109,6 +109,9 @@ Sets or gets whether the selected button should be highlighted.
 METHOD:: fontRatio
 Sets or gets the font ratio relative to the height of its case size.
 
+METHOD:: maxFontSize
+Sets or gets the maximum allowed font size, in pixels.
+
 METHOD:: unselectedRatio
 Sets or gets the ratio of unselected buttons. If this value is less than one, they'll be smaller than the selected button.
 
