@@ -56,12 +56,12 @@ GMButton : GMUserView {
 	}
 
 	stringRatio {
-		"GMButton: stringRatio will be deprecatd soon, please use fontRatio instead".warn
+		"GMButton: stringRatio will be deprecatd soon, please use fontRatio instead".warn;
 		^thisFontRatio
 	}
 
 	stringRatio_ { |aFloat|
-		"GMButton: stringRatio will be deprecatd soon, please use fontRatio instead".warn
+		"GMButton: stringRatio will be deprecatd soon, please use fontRatio instead".warn;
 		thisFontRatio = aFloat;
 		this.refresh;
 	}
