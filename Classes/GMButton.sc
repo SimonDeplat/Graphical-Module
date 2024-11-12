@@ -164,7 +164,7 @@ GMButton : GMUserView {
 			thisString,
 			super.interactionRect,
 			super.font.deepCopy.size_(
-				max(
+				min(
 					thisMaxFontSize,
 					min(
 						super.interactionRect.width * thisFontRatio,
