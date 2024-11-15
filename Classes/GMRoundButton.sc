@@ -1,20 +1,18 @@
 GMRoundButton : GMUserView {
 	var thisString = "";
-	var thisStringRatio = 0.4;
+	var thisFontRatio = 0.4;
 	var thisOrientation = \right;
 	var thisSVG;
 	var thisSVGPath = "";
 	var thisSVGRatio = 0.8;
 	var thisSVGSize;
-
 	var thisCurrentBackColor;
 	var thisBlinkColor;
-
 	var thisCurrentFontColor;
 	var thisBlinkFontColor;
-
 	var thisFrameRate = 60;
 	var thisBlinkTime = 0.5;
+	var thisMaxFontSize = 64;
 	var timer = 0;
 
 	*new {
@@ -23,30 +21,23 @@ GMRoundButton : GMUserView {
 
 	init {
 		super.init;
-
 		this.setEventHandler(
-			QObject.mouseUpEvent, \mouseDownEvent, true);
+			QObject.mouseDownEvent, \mouseDownEvent, true);
 		this.setEventHandler(
 			QObject.mouseUpEvent, \mouseUpEvent, false);
 		this.setEventHandler(
 			QObject.mouseDblClickEvent, \mouseDownEvent, false);
-
 		this.drawFunc_({ this.draw });
 		this.mouseDownAction_({
-			timer = 1;
-			this.animate_(true);
+			this.blink;
 		});
-
 		this.onResize_({
 			if((thisSVGPath == "").not)
 			{ this.resizeSVG; };
 		});
-
 		this.frameRate_(thisFrameRate);
-
 		thisBlinkColor = Color.white;
 		thisBlinkFontColor = Color.black;
-
 		thisCurrentBackColor = super.mainColor;
 		thisCurrentFontColor = super.fontColor;
 	}
@@ -62,12 +53,11 @@ GMRoundButton : GMUserView {
 			this.blink;
 		};
 	}
-
+	
 	mouseDownAction_ { |aFunction|
 		mouseDownAction = {
-			this.animate_(true);
-			timer = 1;
 			aFunction.value;
+			this.blink;
 		};
 	}
 
@@ -82,11 +72,31 @@ GMRoundButton : GMUserView {
 	}
 
 	stringRatio {
-		^thisStringRatio
+		"GMRoundButton: stringRatio will be deprecated soon, please use fontRatio instead".warn;
+		^thisFontRatio
 	}
 
 	stringRatio_ { |aFloat|
-		thisStringRatio = aFloat;
+		"GMRoundButton: stringRatio will be deprecated soon, please use fontRatio instead".warn;
+		thisFontRatio = aFloat;
+		this.refresh;
+	}
+
+	fontRatio {
+		^thisFontRatio
+	}
+
+	fontRatio_ { |aFloat|
+		thisFontRatio = aFloat;
+		this.refresh;
+	}
+
+	maxFontSize {
+		^thisMaxFontSize
+	}
+
+	maxFontSize_ { |aNumber|
+		thisMaxFontSize = aNumber;
 		this.refresh;
 	}
 
@@ -129,12 +139,9 @@ GMRoundButton : GMUserView {
 		);
 		var hRatio = buttonSize / thisSVGSize.x;
 		var vRatio = buttonSize / thisSVGSize.y;
-
 		var width;
 		var height;
-
 		thisSVG.free;
-
 		if(hRatio < vRatio) {
 			width = (buttonSize * thisSVGRatio);
 			height = (thisSVGSize.y * (width / thisSVGSize.x));
@@ -148,7 +155,6 @@ GMRoundButton : GMUserView {
 				thisSVGPath,
 				Size(width, height));
 		};
-
 		this.refresh;
 	}
 
@@ -187,10 +193,8 @@ GMRoundButton : GMUserView {
 			this.bounds.width,
 			this.bounds.height
 		);
-
 		if(timer > 0)
 		{ timer = timer - ((1 / thisFrameRate) / thisBlinkTime) };
-
 		if(timer <= 0) {
 			timer = 0;
 			thisCurrentBackColor = super.backColor;
@@ -207,7 +211,6 @@ GMRoundButton : GMUserView {
 				super.backColor.alpha +
 				((thisBlinkColor.alpha - super.backColor.alpha) * timer)
 			);
-
 			thisCurrentFontColor = Color(
 				super.fontColor.red +
 				((thisBlinkFontColor.red - super.fontColor.red) * timer),
@@ -219,7 +222,6 @@ GMRoundButton : GMUserView {
 				((thisBlinkFontColor.alpha - super.fontColor.alpha) * timer)
 			);
 		};
-
 		if(super.displayBorder) {
 			if(super.borderSize > 0) {
 				Pen.strokeColor_(super.borderColor);
@@ -236,7 +238,6 @@ GMRoundButton : GMUserView {
 				buttonSize =
 				buttonSize - (super.borderSize * 2);
 			};
-
 			if(super.secondBorderSize > 0) {
 				Pen.strokeColor_(super.secondBorderColor);
 				Pen.width_(super.secondBorderSize);
@@ -252,7 +253,6 @@ GMRoundButton : GMUserView {
 				buttonSize =
 				buttonSize - (super.secondBorderSize * 2);
 			};
-
 			if(super.thirdBorderSize > 0) {
 				Pen.strokeColor_(super.thirdBorderColor);
 				Pen.width_(super.thirdBorderSize);
@@ -269,7 +269,6 @@ GMRoundButton : GMUserView {
 				buttonSize - (super.thirdBorderSize * 2);
 			};
 		};
-
 		Pen.fillColor_(thisCurrentBackColor);
 		Pen.addArc(
 			Point(
@@ -280,11 +279,8 @@ GMRoundButton : GMUserView {
 			0, 2pi
 		);
 		Pen.fill;
-
 		if((thisSVGPath == "").not) {
-
 			Pen.fillColor_(super.fontColor);
-
 			thisSVG.drawInRect(
 				Rect(
 					(this.bounds.width / 2) - (thisSVG.width / 2),
@@ -294,12 +290,14 @@ GMRoundButton : GMUserView {
 				);
 			);
 		};
-
 		super.stringCenteredIn(
 			thisString,
 			super.interactionRect,
 			super.font.deepCopy.size_(
-				buttonSize * thisStringRatio
+				min(
+					thisMaxFontSize,
+					buttonSize * thisFontRatio
+				)
 			),
 			thisCurrentFontColor,
 			thisOrientation
