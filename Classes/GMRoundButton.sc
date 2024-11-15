@@ -59,8 +59,7 @@ GMRoundButton : GMUserView {
 	action_ { |aFunction|
 		mouseDownAction = {
 			aFunction.value;
-			timer = 1;
-			this.animate_(true);
+			this.blink;
 		};
 	}
 
@@ -151,6 +150,11 @@ GMRoundButton : GMUserView {
 		};
 
 		this.refresh;
+	}
+
+	blink {
+		timer = 1;
+		{ this.animate_(true); }.defer;
 	}
 
 	blinkTime {

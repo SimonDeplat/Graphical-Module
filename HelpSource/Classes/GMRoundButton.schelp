@@ -41,6 +41,9 @@ A link::Classes/Function:: without argument.
 
 subsection::Graphical settings
 
+METHOD:: blink
+Triggers the button animation, without evaluating associated function. This method allows to simulate the button being pressed using code. Refresh call is internally deferred, so this method can be called safely within a Routine context.
+
 METHOD:: blinkColor
 Sets or gets the widget back color when it's starting its visual effect.
 
