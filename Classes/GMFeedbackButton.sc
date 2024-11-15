@@ -1,20 +1,18 @@
 GMFeedbackButton : GMUserView {
 	var thisString = "";
-	var thisStringRatio = 0.8;
+	var thisFontRatio = 0.8;
 	var thisOrientation = \right;
 	var thisSVG;
 	var thisSVGPath = "";
 	var thisSVGRatio = 0.8;
 	var thisSVGSize;
-
 	var thisCurrentBackColor;
 	var thisBlinkColor;
-
 	var thisCurrentFontColor;
 	var thisBlinkFontColor;
-
 	var thisFrameRate = 60;
 	var thisBlinkTime = 0.5;
+	var thisMaxFontSize = 64;
 	var timer = 0;
 
 	*new {
@@ -30,23 +28,17 @@ GMFeedbackButton : GMUserView {
 			QObject.mouseUpEvent, \mouseUpEvent, false);
 		this.setEventHandler(
 			QObject.mouseDblClickEvent, \mouseDownEvent, false);
-
 		this.drawFunc_({ this.draw });
 		this.mouseDownAction_({
-			timer = 1;
-			this.animate_(true);
+			this.blink;
 		});
-
 		this.onResize_({
 			if((thisSVGPath == "").not)
 			{ this.resizeSVG; };
 		});
-
 		this.frameRate_(thisFrameRate);
-
 		thisBlinkColor = Color.white;
 		thisBlinkFontColor = Color.black;
-
 		thisCurrentBackColor = super.mainColor;
 		thisCurrentFontColor = super.fontColor;
 	}
@@ -59,16 +51,14 @@ GMFeedbackButton : GMUserView {
 	action_ { |aFunction|
 		mouseDownAction = {
 			aFunction.value;
-			timer = 1;
-			this.animate_(true);
+			this.blink;
 		};
 	}
 
 	mouseDownAction_ { |aFunction|
 		mouseDownAction = {
-			this.animate_(true);
-			timer = 1;
 			aFunction.value;
+			this.blink;
 		};
 	}
 
@@ -83,11 +73,31 @@ GMFeedbackButton : GMUserView {
 	}
 
 	stringRatio {
-		^thisStringRatio
+		"GMRoundButton: stringRatio will be deprecated soon, please use fontRatio instead".warn;
+		^thisFontRatio
 	}
 
 	stringRatio_ { |aFloat|
-		thisStringRatio = aFloat;
+		"GMRoundButton: stringRatio will be deprecated soon, please use fontRatio instead".warn;
+		thisFontRatio = aFloat;
+		this.refresh;
+	}
+
+	fontRatio {
+		^thisFontRatio
+	}
+
+	fontRatio_ { |aFloat|
+		thisFontRatio = aFloat;
+		this.refresh;
+	}
+
+	maxFontSize {
+		^thisMaxFontSize
+	}
+
+	maxFontSize_ { |aNumber|
+		thisMaxFontSize = aNumber;
 		this.refresh;
 	}
 
@@ -96,6 +106,15 @@ GMFeedbackButton : GMUserView {
 	}
 
 	orientation_ { |aSymbol|
+		thisOrientation = aSymbol;
+		this.refresh;
+	}
+
+	direction {
+		^thisOrientation
+	}
+
+	direction_ { |aSymbol|
 		thisOrientation = aSymbol;
 		this.refresh;
 	}
@@ -134,12 +153,9 @@ GMFeedbackButton : GMUserView {
 	resizeSVG  {
 		var hRatio = super.interactionRect.width / thisSVGSize.x;
 		var vRatio = super.interactionRect.height / thisSVGSize.y;
-
 		var width;
 		var height;
-
 		thisSVG.free;
-
 		if(hRatio < vRatio) {
 			width = (super.interactionRect.width * thisSVGRatio);
 			height = (thisSVGSize.y * (width / thisSVGSize.x));
@@ -153,8 +169,12 @@ GMFeedbackButton : GMUserView {
 				thisSVGPath,
 				Size(width, height));
 		};
-
 		this.refresh;
+	}
+
+	blink {
+		timer = 1;
+		{ this.animate_(true); }.defer;
 	}
 
 	blinkTime {
@@ -183,10 +203,10 @@ GMFeedbackButton : GMUserView {
 
 	// Custom drawFunc
 	draw {
-
+		var fontSize;
+		// Color calculation
 		if(timer > 0)
 		{ timer = timer - ((1 / thisFrameRate) / thisBlinkTime) };
-
 		if(timer <= 0) {
 			timer = 0;
 			thisCurrentBackColor = super.backColor;
@@ -201,7 +221,6 @@ GMFeedbackButton : GMUserView {
 				super.backColor.blue +
 				((thisBlinkColor.blue - super.backColor.blue) * timer)
 			);
-
 			thisCurrentFontColor = Color(
 				super.fontColor.red +
 				((thisBlinkFontColor.red - super.fontColor.red) * timer),
@@ -211,13 +230,11 @@ GMFeedbackButton : GMUserView {
 				((thisBlinkFontColor.blue - super.fontColor.blue) * timer)
 			);
 		};
-
+		// Frame drawing
 		super.drawFrame(thisCurrentBackColor);
-
+		// SVG
 		if((thisSVGPath == "").not) {
-
 			Pen.fillColor_(super.fontColor);
-
 			thisSVG.drawInRect(
 				Rect(
 					(this.bounds.width / 2) - (thisSVG.width / 2),
@@ -227,16 +244,19 @@ GMFeedbackButton : GMUserView {
 				);
 			);
 		};
-
+		// Label
+		if((thisOrientation == \right)
+			or: { thisOrientation == \left })
+		{ fontSize = super.interactionRect.height * thisFontRatio }
+		{ fontSize = super.interactionRect.width * thisFontRatio };
+		fontSize = min(
+			fontSize,
+			thisMaxFontSize
+		);
 		super.stringCenteredIn(
 			thisString,
 			super.interactionRect,
-			super.font.deepCopy.size_(
-				min(
-					super.interactionRect.width * thisStringRatio,
-					super.interactionRect.height * thisStringRatio
-				)
-			),
+			super.font.deepCopy.size_(fontSize),
 			super.fontColor,
 			thisOrientation
 		);
