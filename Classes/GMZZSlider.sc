@@ -238,7 +238,7 @@ GMZZSlider : GMXYUserView {
 	// Interaction
 	action_ { |aFunction|
 		mouseDownAction = { |view, x, y, mod|
-
+			var newValue;
 			// Ckeck if we have to update at the end
 			var update = false;
 
@@ -269,7 +269,7 @@ GMZZSlider : GMXYUserView {
 
 			if(update) {
 				if(shiftBlock.not) {
-					var newValue = this.prUpdateValue(x, y);
+					newValue = this.prUpdateValue(x, y);
 					if(thisValue != newValue) {
 						thisValue = newValue;
 						aFunction.(thisValue);
@@ -292,12 +292,12 @@ GMZZSlider : GMXYUserView {
 		};
 
 		mouseMoveAction = { |view, x, y, mod|
-
+			var newValue, modStep, modOperator, pixelRange;
 			mod = this.prCheckMod(mod);
 
 			// Normal behavior : NO MOD or ALT ONLY
 			if((mod == 0) or: { mod == 524288 }) {
-				var newValue = this.prUpdateValue(x, y);
+				newValue = this.prUpdateValue(x, y);
 				if(thisValue != newValue) {
 					thisValue = newValue;
 					aFunction.(thisValue);
@@ -309,7 +309,7 @@ GMZZSlider : GMXYUserView {
 			// SHIFT behavior without CTRL :
 			// get closest helper
 			if(shiftPressed and: { ctrlPressed.not }) {
-				var newValue = this.prGetClosestHelper(x, y);
+				newValue = this.prGetClosestHelper(x, y);
 				if(thisValue != newValue) {
 					thisValue = newValue;
 					aFunction.(thisValue);
@@ -319,9 +319,6 @@ GMZZSlider : GMXYUserView {
 
 			// CTRL behavior :
 			if(ctrlPressed) {
-				var newValue;
-				var modStep, modOperator, pixelRange;
-
 				// First check if it was pressed before,
 				// if not, store references
 				if(ctrlPressed and: { thisModReference.isNil }) {
@@ -444,6 +441,7 @@ GMZZSlider : GMXYUserView {
 
 		var offset;
 		var newValue;
+		var reference;
 
 		if(thisOrientation == \horizontal)
 		{ offset = x - thisModReference; }
@@ -463,7 +461,7 @@ GMZZSlider : GMXYUserView {
 
 		if(thisPolarity == \uni) {
 			if(modOperator == \mul) {
-				var reference = thisModValueReference;
+				reference = thisModValueReference;
 				// Arbitrary problem solving
 				if(reference == 0) { reference = 0.01; };
 
@@ -493,7 +491,7 @@ GMZZSlider : GMXYUserView {
 		} { // Bipolar scale
 
 			if(modOperator == \mul) {
-				var reference = thisModValueReference;
+				reference = thisModValueReference;
 				// Arbitrary problem solving
 				if(reference == 0) { reference = 0.01; };
 				// Only difference with unipolar scale
@@ -578,6 +576,7 @@ GMZZSlider : GMXYUserView {
 	prGetClosestHelper { |x, y|
 		var nDiv = ((thisHelpersNumber - 1) * (thisHelperSubdivisions + 1)) + 1;
 		var value;
+		var min;
 
 		if(thisPolarity == \uni) {
 			if(thisOrientation == \horizontal) {
@@ -606,13 +605,13 @@ GMZZSlider : GMXYUserView {
 					{ value = value.linlin(0, (nDiv - 1), thisMin, thisMax); };
 
 					if(thisScale == \exp) {
-						var min = thisMin;
+						min = thisMin;
 						if(min == 0) { min = thisExpMin; };
 						value = value.linexp(0, (nDiv - 1), min, thisMax);
 					};
 
 					if(thisScale == \log) {
-						var min = thisMin;
+						min = thisMin;
 						if(min == 0) { min = thisExpMin; };
 						value = ((nDiv  - 1) - value).linexp(0, (nDiv - 1), min, thisMax);
 						value = thisMax - value;
@@ -671,7 +670,7 @@ GMZZSlider : GMXYUserView {
 						};
 
 						if(thisScale == \exp) {
-							var min = thisMin;
+							min = thisMin;
 							if(min == 0) { min = thisExpMin; };
 							if(value > 0) {
 								value = value.linexp(
@@ -691,7 +690,7 @@ GMZZSlider : GMXYUserView {
 						};
 
 						if(thisScale == \log) {
-							var min = thisMin;
+							min = thisMin;
 							if(min == 0) { min = thisExpMin; };
 							if(value > 0) {
 								value = ((((nDiv + 1) / 2) - 1) - value).linexp(

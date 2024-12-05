@@ -555,8 +555,8 @@ GMSymbolMultiSlider : GMZZMultiSlider {
 	}
 
 	prDrawHighlights {
+		var caseSize, ratio;
 		if(thisHighlights.notNil) {
-			var caseSize, ratio;
 			if(super.orientation == \horizontal) {
 				caseSize =
 				super.interactionRect.width / super.values.size;

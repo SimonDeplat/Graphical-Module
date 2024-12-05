@@ -125,7 +125,7 @@ GMSwitchButton : GMUserView {
 				);
 			};
 		});
-		
+
 		thisStates = newStates;
 		currentState = 0;
 		this.refresh;
@@ -193,11 +193,10 @@ GMSwitchButton : GMUserView {
 	}
 
 	prResizeSVGs {
+		var hRatio, vRatio;
+		var width, height;
 		thisStates.do({ |state|
 			if(state.includesKey(\svg)) {
-				var hRatio, vRatio;
-				var width, height;
-
 				hRatio = super.interactionRect.width / state[\svgSize].x;
 				vRatio = super.interactionRect.height / state[\svgSize].y;
 
@@ -216,7 +215,6 @@ GMSwitchButton : GMUserView {
 				);
 			};
 		});
-
 		this.refresh;
 	}
 
@@ -228,7 +226,7 @@ GMSwitchButton : GMUserView {
 			or: { thisDirection == \left })
 		{ fontSize = super.interactionRect.height * thisFontRatio }
 		{ fontSize = super.interactionRect.width * thisFontRatio };
-		
+
 		super.drawFrame(thisStates[currentState][\color]);
 
 		if(thisStates[currentState].includesKey(\img)) {

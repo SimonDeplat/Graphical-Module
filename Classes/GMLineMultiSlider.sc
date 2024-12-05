@@ -265,7 +265,7 @@ GMLineMultiSlider : GMZZMultiSlider {
 	prDrawSliders {
 		var caseSize;
 		var points = List(0);
-
+		var dotSize;
 		if(super.orientation == \horizontal)
 		{ caseSize = super.interactionRect.width / super.values.size; }
 		{ caseSize = super.interactionRect.height / super.values.size; };
@@ -378,7 +378,6 @@ GMLineMultiSlider : GMZZMultiSlider {
 		Pen.stroke;
 
 		if(thisDrawDots) {
-			var dotSize;
 			if(super.orientation == \horizontal) {
 				dotSize = min(
 					caseSize * thisDotsRatio,
@@ -409,6 +408,7 @@ GMLineMultiSlider : GMZZMultiSlider {
 		var origin = Point(0, 0);
 		var end = Point(0, 0);
 		var caseSize;
+		var point;
 		var points = List(0);
 
 		if(super.orientation == \horizontal)
@@ -517,7 +517,7 @@ GMLineMultiSlider : GMZZMultiSlider {
 		Pen.moveTo(origin);
 
 		if(thisJoinExtremities) {
-			var point = Point(0, 0);
+			point = Point(0, 0);
 			point.x = origin.x;
 			point.y = origin.y;
 			if(this.orientation == \horizontal)
@@ -529,7 +529,7 @@ GMLineMultiSlider : GMZZMultiSlider {
 		points.do({ |point| Pen.lineTo(point); });
 
 		if(thisJoinExtremities) {
-			var point = Point(0, 0);
+			point = Point(0, 0);
 			point.x = end.x;
 			point.y = end.y;
 			if(this.orientation == \horizontal)
@@ -654,8 +654,8 @@ GMLineMultiSlider : GMZZMultiSlider {
 	}
 
 	prDrawHighlights {
+		var caseSize, ratio;
 		if(thisHighlights.notNil) {
-			var caseSize, ratio;
 			if(super.orientation == \horizontal) {
 				caseSize =
 				super.interactionRect.width / super.values.size;

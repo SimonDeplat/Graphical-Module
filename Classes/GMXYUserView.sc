@@ -772,6 +772,7 @@ GMXYUserView : GMUserView {
 
 		var nHelpers =
 		((helpersNumber - 1) * (helperSubdivisions + 1)) + 1;
+		var caseSize;
 
 		if(polarity == \bi)
 		{ nHelpers = (nHelpers * 2) - 1; };
@@ -780,7 +781,7 @@ GMXYUserView : GMUserView {
 		Pen.strokeColor_(color);
 
 		if(orientation == \horizontal) {
-			var caseSize = super.interactionRect.width / (nHelpers - 1);
+			caseSize = super.interactionRect.width / (nHelpers - 1);
 			nHelpers.do({ |index|
 				var helperSize;
 
@@ -832,7 +833,7 @@ GMXYUserView : GMUserView {
 				Pen.stroke;
 			});
 		} {
-			var caseSize = super.interactionRect.height / (nHelpers - 1);
+			caseSize = super.interactionRect.height / (nHelpers - 1);
 			nHelpers.do({ |index|
 				var helperSize;
 
@@ -894,6 +895,7 @@ GMXYUserView : GMUserView {
 
 		var nHelpers =
 		((helpersNumber - 1) * (helperSubdivisions + 1)) + 1;
+		var caseSize;
 
 		if(polarity == \bi)
 		{ nHelpers = (nHelpers * 2) - 1; };
@@ -902,7 +904,7 @@ GMXYUserView : GMUserView {
 		Pen.fillColor_(color);
 
 		if(orientation == \horizontal) {
-			var caseSize = super.interactionRect.width / (nHelpers - 1);
+			caseSize = super.interactionRect.width / (nHelpers - 1);
 			nHelpers.do({ |index|
 				var helperSize;
 
@@ -933,7 +935,7 @@ GMXYUserView : GMUserView {
 				Pen.fill;
 			});
 		} {
-			var caseSize = super.interactionRect.height / (nHelpers - 1);
+			caseSize = super.interactionRect.height / (nHelpers - 1);
 			nHelpers.do({ |index|
 				var helperSize;
 
@@ -972,6 +974,7 @@ GMXYUserView : GMUserView {
 
 		var nHelpers =
 		((helpersNumber - 1) * (helperSubdivisions + 1)) + 1;
+		var caseSize, caseSize2;
 
 		if(polarity == \bi)
 		{ nHelpers = (nHelpers * 2) - 1; };
@@ -980,8 +983,8 @@ GMXYUserView : GMUserView {
 		Pen.fillColor_(color);
 
 		if(orientation == \vertical) {
-			var caseSize = super.interactionRect.width / (nHelpers - 1);
-			var caseSize2 = super.interactionRect.height / nCases;
+			caseSize = super.interactionRect.width / (nHelpers - 1);
+			caseSize2 = super.interactionRect.height / nCases;
 
 			nHelpers.do({ |index|
 				var helperSize;
@@ -1017,8 +1020,8 @@ GMXYUserView : GMUserView {
 				Pen.fill;
 			});
 		} {
-			var caseSize = super.interactionRect.height / (nHelpers - 1);
-			var caseSize2 = super.interactionRect.width / nCases;
+			caseSize = super.interactionRect.height / (nHelpers - 1);
+			caseSize2 = super.interactionRect.width / nCases;
 
 			nHelpers.do({ |index|
 				var helperSize;

@@ -137,9 +137,10 @@ GMFaderSlider : GMZZSlider {
 	}
 
 	prDrawSlider {
+		var thisRectPos, thisRectSize;
 		if(super.orientation == \horizontal) {
 			if(super.polarity == \uni) {
-				var thisRectSize = super.getXValueMapping(
+				thisRectSize = super.getXValueMapping(
 					super.value,
 					super.min,
 					super.max,
@@ -158,7 +159,7 @@ GMFaderSlider : GMZZSlider {
 					)
 				);
 			} {
-				var thisRectPos = super.getXValueMappingBipolar(
+				thisRectPos = super.getXValueMappingBipolar(
 					super.value,
 					super.min,
 					super.max,
@@ -197,7 +198,7 @@ GMFaderSlider : GMZZSlider {
 			};
 		} {
 			if(super.polarity == \uni) {
-				var thisRectSize = super.getYValueMapping(
+				thisRectSize = super.getYValueMapping(
 					super.value,
 					super.min,
 					super.max,
@@ -217,7 +218,7 @@ GMFaderSlider : GMZZSlider {
 				);
 			} {
 				// /!\ Value is negated to invert axis /!\
-				var thisRectPos = super.getYValueMappingBipolar(
+				thisRectPos = super.getYValueMappingBipolar(
 					super.value.neg,
 					super.min,
 					super.max,

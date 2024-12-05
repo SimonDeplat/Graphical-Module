@@ -242,10 +242,10 @@ GMMultiButton : GMXYUserView {
 	}
 
 	prResizeSVGs {
+		var hRatio, vRatio;
+		var width, height;
 		thisStates.do({ |state|
 			if(state.includesKey(\svg)) {
-				var hRatio, vRatio;
-				var width, height;
 				if(thisOrientation == \horizontal) {
 					hRatio = (super.interactionRect.width / thisStates.size)
 					/ state[\svgSize].x;
@@ -310,8 +310,8 @@ GMMultiButton : GMXYUserView {
 		};
 
 		mouseMoveAction = { |view, x, y|
+			var index;
 			if(thisAllowMouseMove) {
-				var index;
 				if(thisOrientation == \horizontal)
 				{ index = super.getXIndex(x, thisStates.size); }
 				{ index = super.getYIndex(y, thisStates.size, false); };

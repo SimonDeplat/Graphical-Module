@@ -80,13 +80,14 @@ GMUserView : UserView {
 	}
 
 	drawBorder {
+		var borderSize, borderSize2, borderSize3;
 		if(thisDisplayBorder) {
-			var borderSize3 = this.borderSize
+			borderSize3 = this.borderSize
 			+ this.secondBorderSize
 			+ this.thirdBorderSize;
-			var borderSize2 = this.borderSize
+			borderSize2 = this.borderSize
 			+ this.secondBorderSize;
-			var borderSize = this.borderSize;
+			borderSize = this.borderSize;
 
 			Pen.fillColor_(this.thirdBorderColor);
 			Pen.fillRect(

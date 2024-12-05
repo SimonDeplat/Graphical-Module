@@ -135,25 +135,26 @@ GMDuoSequencer : GMXYUserView {
 	}
 
 	action_ { |aFunction|
+		var index, xIndex, yIndex, probaMax;
 		this.mouseDownAction = { |view, mousePosX, mousePosY|
-			var xIndex = super.getXIndex(
+			xIndex = super.getXIndex(
 				mousePosX, thisValues.size);
-			var yIndex = super.getYIndex(
+			yIndex = super.getYIndex(
 				mousePosY, 2, false);
 
 			if(yIndex == 0) {
-				var probaMax = thisProbabilities[
+				probaMax = thisProbabilities[
 					thisProbabilities.size - 1];
 				if(thisValues[xIndex] == probaMax)
 				{ thisValues[xIndex] = thisProbabilities[0]; }
 				{ thisValues[xIndex] = probaMax; };
 			} {
-				var probaMax = thisProbabilities[
+				probaMax = thisProbabilities[
 					thisProbabilities.size - 1];
 				if(thisValues[xIndex] == probaMax) {
 					thisValues[xIndex] = thisProbabilities[1];
 				} {
-					var index = thisProbabilities.detectIndex({ |item|
+					index = thisProbabilities.detectIndex({ |item|
 						item == thisValues[xIndex]; });
 					thisValues[xIndex] = thisProbabilities[index + 1];
 				};
@@ -168,26 +169,27 @@ GMDuoSequencer : GMXYUserView {
 		};
 
 		this.mouseMoveAction = { |view, mousePosX, mousePosY|
+			var index, xIndex, yIndex, probaMax;
 			if(thisAllowMouseMoveAction) {
-				var xIndex = super.getXIndex(
+				xIndex = super.getXIndex(
 					mousePosX, thisValues.size);
 				if(thisCurrentIndex != xIndex) {
-					var yIndex = super.getYIndex(
+					yIndex = super.getYIndex(
 						mousePosY, 2, false);
 
 					if(yIndex == 0) {
-						var probaMax = thisProbabilities[
+						probaMax = thisProbabilities[
 							thisProbabilities.size - 1];
 						if(thisValues[xIndex] == probaMax)
 						{ thisValues[xIndex] = thisProbabilities[0]; }
 						{ thisValues[xIndex] = probaMax; };
 					} {
-						var probaMax = thisProbabilities[
+						probaMax = thisProbabilities[
 							thisProbabilities.size - 1];
 						if(thisValues[xIndex] == probaMax) {
 							thisValues[xIndex] = thisProbabilities[1];
 						} {
-							var index = thisProbabilities.detectIndex({ |item|
+							index = thisProbabilities.detectIndex({ |item|
 								item == thisValues[xIndex]; });
 							thisValues[xIndex] = thisProbabilities[index + 1];
 						};
@@ -214,6 +216,7 @@ GMDuoSequencer : GMXYUserView {
 			caseSize.x * thisSymbolRatio,
 			caseSize.y / 2 * thisSymbolRatio
 		);
+		var newSymbolSize;
 
 		symbolSize = symbolSize - super.outlineSize;
 
@@ -400,7 +403,7 @@ GMDuoSequencer : GMXYUserView {
 					);
 					Pen.fill;
 				} { // Else
-					var newSymbolSize = symbolSize * value;
+					newSymbolSize = symbolSize * value;
 
 					Pen.fillColor_(Color(0.75, 0.75, 0.75));
 					Pen.addArc(

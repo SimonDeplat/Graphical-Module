@@ -121,8 +121,9 @@ GMSequencer : GMXYUserView {
 	}
 
 	action_ { |aFunction|
+		var xIndex;
 		this.mouseDownAction = { |view, mousePosX, mousePosY|
-			var xIndex = super.getXIndex(
+			xIndex = super.getXIndex(
 				mousePosX, thisValues.size);
 			if(thisValues[xIndex] == 0)
 			{ thisValues[xIndex] = 1; }
@@ -138,8 +139,9 @@ GMSequencer : GMXYUserView {
 
 
 		this.mouseMoveAction = { |view, mousePosX, mousePosY|
+			var xIndex;
 			if(thisAllowMouseMoveAction) {
-				var xIndex = super.getXIndex(
+				xIndex = super.getXIndex(
 					mousePosX, thisValues.size);
 				if(thisCurrentIndex != xIndex) {
 					if(thisValues[xIndex] == 0)

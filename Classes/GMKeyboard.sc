@@ -610,6 +610,7 @@ GMKeyboard : GMXYUserView {
 	prDrawKey { |aRect, outlineSize, index, type = \white|
 		var blinkTimer = nil;
 		var highlight = 1;
+		var noteName;
 		if(thisDisplayHighlights)
 		{ highlight = thisHighlights[index%thisHighlights.size]; };
 
@@ -692,7 +693,7 @@ GMKeyboard : GMXYUserView {
 		};
 
 		if(thisDisplayNames) {
-			var noteName = thisNames[index%thisNames.size];
+			noteName = thisNames[index%thisNames.size];
 			if(thisMode == \chromatic) {
 				noteName =
 				thisNames[(index + thisChromaticStartNote)%thisNames.size];
@@ -714,6 +715,7 @@ GMKeyboard : GMXYUserView {
 	prDrawLeftKey { |aRect, outlineSize, index|
 		var blinkTimer = nil;
 		var highlight = 1;
+		var noteName;
 		if(thisDisplayHighlights)
 		{ highlight = thisHighlights[index%thisHighlights.size]; };
 
@@ -805,7 +807,7 @@ GMKeyboard : GMXYUserView {
 		};
 
 		if(thisDisplayNames) {
-			var noteName = thisNames[index%thisNames.size];
+			noteName = thisNames[index%thisNames.size];
 			if(thisMode == \chromatic) {
 				noteName =
 				thisNames[(index + thisChromaticStartNote)%thisNames.size];
@@ -827,6 +829,7 @@ GMKeyboard : GMXYUserView {
 	prDrawRightKey { |aRect, outlineSize, index|
 		var blinkTimer = nil;
 		var highlight = 1;
+		var noteName;
 		if(thisDisplayHighlights)
 		{ highlight = thisHighlights[index%thisHighlights.size]; };
 
@@ -934,7 +937,7 @@ GMKeyboard : GMXYUserView {
 		};
 
 		if(thisDisplayNames) {
-			var noteName = thisNames[index%thisNames.size];
+			noteName = thisNames[index%thisNames.size];
 			if(thisMode == \chromatic) {
 				noteName =
 				thisNames[(index + thisChromaticStartNote)%thisNames.size];
@@ -956,6 +959,7 @@ GMKeyboard : GMXYUserView {
 	prDrawMiddleKey { |aRect, outlineSize, index|
 		var blinkTimer = nil;
 		var highlight = 1;
+		var noteName;
 		if(thisDisplayHighlights)
 		{ highlight = thisHighlights[index%thisHighlights.size]; };
 
@@ -1080,7 +1084,7 @@ GMKeyboard : GMXYUserView {
 		};
 
 		if(thisDisplayNames) {
-			var noteName = thisNames[index%thisNames.size];
+			noteName = thisNames[index%thisNames.size];
 			if(thisMode == \chromatic) {
 				noteName =
 				thisNames[(index + thisChromaticStartNote)%thisNames.size];

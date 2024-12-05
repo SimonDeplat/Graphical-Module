@@ -275,10 +275,9 @@ GMGridButton : GMXYUserView {
 		};
 
 		thisStates.do({ |state|
+			var hRatio, vRatio;
+			var width, height;
 			if(state.includesKey(\svg)) {
-				var hRatio, vRatio;
-				var width, height;
-
 				hRatio = minCaseSize.x / state[\svgSize].x;
 				vRatio = minCaseSize.y / state[\svgSize].y;
 
@@ -314,10 +313,9 @@ GMGridButton : GMXYUserView {
 	// Interaction
 	action_ { |aFunction|
 		mouseDownAction = { |view, x, y, mod|
+			var xIndex, yIndex;
 			var index = 0;
-
 			if(thisOrientation == \horizontal) {
-				var xIndex, yIndex;
 				yIndex = super.getYIndex(y, thisGridOrga.size, false);
 				xIndex = super.getXIndex(x, thisGridOrga[yIndex]);
 				yIndex.do({ |i|
@@ -325,7 +323,6 @@ GMGridButton : GMXYUserView {
 				});
 				index = index + xIndex;
 			} {
-				var xIndex, yIndex;
 				xIndex = super.getXIndex(x, thisGridOrga.size);
 				yIndex = super.getYIndex(y, thisGridOrga[xIndex], false);
 				xIndex.do({ |i|
@@ -349,11 +346,10 @@ GMGridButton : GMXYUserView {
 		};
 
 		mouseMoveAction = { |view, x, y|
+			var xIndex, yIndex;
+			var index = 0;
 			if(thisAllowMouseMove) {
-				var index = 0;
-
 				if(thisOrientation == \horizontal) {
-					var xIndex, yIndex;
 					yIndex = super.getYIndex(y, thisGridOrga.size, false);
 					xIndex = super.getXIndex(x, thisGridOrga[yIndex]);
 					yIndex.do({ |i|
@@ -361,7 +357,6 @@ GMGridButton : GMXYUserView {
 					});
 					index = index + xIndex;
 				} {
-					var xIndex, yIndex;
 					xIndex = super.getXIndex(x, thisGridOrga.size);
 					yIndex = super.getYIndex(y, thisGridOrga[xIndex], false);
 					xIndex.do({ |i|
@@ -402,6 +397,7 @@ GMGridButton : GMXYUserView {
 	draw {
 		var constantAxisSize, caseSize, itemPosition,
 		currentRect, color, fontColor, fontSize, indexInAxis;
+		var minCaseHeight;
 
 		super.drawFrame(super.backgroundColor);
 
@@ -499,7 +495,7 @@ GMGridButton : GMXYUserView {
 					thisDirection
 				);
 			} { // vertical orientation
-				var minCaseHeight = inf;
+				minCaseHeight = inf;
 				thisGridOrga.do({ |item|
 					minCaseHeight = min(
 						minCaseHeight,

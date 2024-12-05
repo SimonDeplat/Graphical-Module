@@ -178,10 +178,11 @@ GMListPianoRoll : GMXYUserView {
 		};
 
 		this.mouseMoveAction = { |view, mousePosX, mousePosY|
+			var xIndex, yIndex;
 			if(thisAllowMouseMoveAction) {
-				var xIndex = super.getXIndex(
+				xIndex = super.getXIndex(
 					mousePosX, thisValues.size);
-				var yIndex = super.getYIndex(
+				yIndex = super.getYIndex(
 					mousePosY, thisEntries.size, true);
 				if(currentPos != Point(xIndex, yIndex)) {
 					this.prUpdateValues(xIndex, yIndex);
@@ -330,8 +331,9 @@ GMListPianoRoll : GMXYUserView {
 	}
 
 	prDrawHighlights {
+		var caseSize;
 		if(thisHighlights.notNil) {
-			var caseSize = super.interactionRect.width / thisValues.size;
+			caseSize = super.interactionRect.width / thisValues.size;
 			min(
 				thisHighlights.size,
 				thisValues.size
@@ -364,8 +366,9 @@ GMListPianoRoll : GMXYUserView {
 	}
 
 	prDrawVHighlights {
+		var caseSize;
 		if(thisVHighlights.notNil) {
-			var caseSize = super.interactionRect.height / thisEntries.size;
+			caseSize = super.interactionRect.height / thisEntries.size;
 			min(
 				thisVHighlights.size,
 				thisEntries.size

@@ -578,12 +578,11 @@ GMSymbol2DSlider : GMZZ2DSlider {
 	}
 
 	prResizeSVG {
+		var hRatio, vRatio;
+		var width, height;
 		if(thisIMG.notNil) {
-			var hRatio = super.interactionRect.width / thisSVGSize.x;
-			var vRatio = super.interactionRect.height / thisSVGSize.y;
-
-			var width;
-			var height;
+			hRatio = super.interactionRect.width / thisSVGSize.x;
+			vRatio = super.interactionRect.height / thisSVGSize.y;
 
 			thisIMG.free;
 

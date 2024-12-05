@@ -40,6 +40,7 @@ GMTapTempo : GMUserView {
 		thisAction = {};
 
 		this.mouseDownAction_({
+			var reset, time, times;
 			// This will only happen on first click
 			if(timeStamps.isNil) {
 				timeStamps = List(0);
@@ -52,7 +53,7 @@ GMTapTempo : GMUserView {
 				thisString = "-";
 				this.animate_(true);
 			} { // On subsequent clicks:
-				var reset = false;
+				reset = false;
 				// Check if we need to reset tap tempo
 				// -> this click not coherent with current tempo
 				if(thisTimeBetweenClicks.notNil) {
@@ -66,7 +67,7 @@ GMTapTempo : GMUserView {
 				};
 
 				if(reset) {
-					var time = [
+					time = [
 						Date().hourStamp,
 						SystemClock.seconds
 					];
@@ -85,7 +86,7 @@ GMTapTempo : GMUserView {
 					this.animate_(true);
 				} {
 					// If not reset
-					var times = List(0);
+					times = List(0);
 					timeStamps.add([
 						Date().hourStamp,
 						SystemClock.seconds

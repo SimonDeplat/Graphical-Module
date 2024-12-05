@@ -287,6 +287,8 @@ GMLinesButton : GMXYUserView {
 
 	prResizeSVGs {
 		var maxAxisSize = 0;
+		var hRatio, vRatio;
+		var width, height;
 
 		thisStates.do({ |subArray|
 			maxAxisSize = max(
@@ -298,9 +300,6 @@ GMLinesButton : GMXYUserView {
 		thisStates.do({ |subArray|
 			subArray.do({ |state|
 				if(state.includesKey(\svg)) {
-					var hRatio, vRatio;
-					var width, height;
-
 					if(thisOrientation == \horizontal) {
 						hRatio = (super.interactionRect.width / maxAxisSize)
 						/ state[\svgSize].x;
@@ -380,9 +379,8 @@ GMLinesButton : GMXYUserView {
 		};
 
 		mouseMoveAction = { |view, x, y|
+			var index1, index2;
 			if(thisAllowMouseMove) {
-				var index1, index2;
-
 				if(thisOrientation == \horizontal) {
 					index1 = super.getYIndex(y, thisStates.size, false);
 					index2 = super.getXIndex(x, thisStates[index1].size);

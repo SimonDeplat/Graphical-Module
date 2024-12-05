@@ -401,6 +401,7 @@ GMZZ2DSlider : GMXYUserView {
 		var nDivY = ((thisHelpersNumbers[1] - 1)
 			* (thisHelperSubdivisions[1] + 1)) + 1;
 		var values = [0, 0];
+		var min;
 
 		if(thisPolarities[0] == \uni) {
 			values[0] = x.linlin(
@@ -453,7 +454,7 @@ GMZZ2DSlider : GMXYUserView {
 					};
 
 					if(thisScales[0] == \exp) {
-						var min = thisMin[0];
+						min = thisMin[0];
 						if(min == 0) { min = thisExpMins[0]; };
 						values[0] = values[0].linexp(
 							0,
@@ -464,7 +465,7 @@ GMZZ2DSlider : GMXYUserView {
 					};
 
 					if(thisScales[0] == \log) {
-						var min = thisMin[0];
+						min = thisMin[0];
 						if(min == 0) { min = thisExpMins[0]; };
 						values[0] = ((nDivX  - 1)
 							- values[0]).linexp(
@@ -514,7 +515,7 @@ GMZZ2DSlider : GMXYUserView {
 						};
 
 						if(thisScales[0] == \exp) {
-							var min = thisMin[0];
+							min = thisMin[0];
 							if(min == 0) { min = thisExpMins[0]; };
 							if(values[0] > 0) {
 								values[0] = values[0].linexp(
@@ -534,7 +535,7 @@ GMZZ2DSlider : GMXYUserView {
 						};
 
 						if(thisScales[0] == \log) {
-							var min = thisMin[0];
+							min = thisMin[0];
 							if(min == 0) { min = thisExpMins[0]; };
 							if(values[0] > 0) {
 								values[0] = ((((nDivX + 1) / 2) - 1) - values[0]).linexp(
@@ -595,7 +596,7 @@ GMZZ2DSlider : GMXYUserView {
 					};
 
 					if(thisScales[1] == \exp) {
-						var min = thisMin[1];
+						min = thisMin[1];
 						if(min == 0) { min = thisExpMins[1]; };
 						values[1] = values[1].linexp(
 							0,
@@ -606,7 +607,7 @@ GMZZ2DSlider : GMXYUserView {
 					};
 
 					if(thisScales[1] == \log) {
-						var min = thisMin[1];
+						min = thisMin[1];
 						if(min == 1) { min = thisExpMins[1]; };
 						values[1] = ((nDivY  - 1)
 							- values[1]).linexp(0, (nDivY - 1), min, thisMax[1]);
@@ -651,7 +652,7 @@ GMZZ2DSlider : GMXYUserView {
 						};
 
 						if(thisScales[1] == \exp) {
-							var min = thisMin[1];
+							min = thisMin[1];
 							if(min == 0) { min = thisExpMins[1]; };
 							if(values[1] > 0) {
 								values[1] = values[1].linexp(
@@ -671,7 +672,7 @@ GMZZ2DSlider : GMXYUserView {
 						};
 
 						if(thisScales[1] == \log) {
-							var min = thisMin[1];
+							min = thisMin[1];
 							if(min == 0) { min = thisExpMins[1]; };
 							if(values[1] > 0) {
 								values[1] = ((((nDivY + 1) / 2) - 1) - values[1]).linexp(
@@ -726,6 +727,7 @@ GMZZ2DSlider : GMXYUserView {
 
 		var offsets = [0, 0];
 		var newValues = [0, 0];
+		var reference;
 
 		offsets[0] = x - thisModReferences[0];
 		offsets[1] = thisModReferences[1] - y;
@@ -749,7 +751,7 @@ GMZZ2DSlider : GMXYUserView {
 		2.do({ |index|
 			if(thisPolarities[index] == \uni) {
 				if(thisModStepsOperators[index] == \mul) {
-					var reference = thisModValuesReferences[index];
+					reference = thisModValuesReferences[index];
 					// Arbitrary problem solving
 					if(reference == 0) { reference = 0.01; };
 
@@ -784,7 +786,7 @@ GMZZ2DSlider : GMXYUserView {
 			} { // Bipolar scale
 
 				if(thisModStepsOperators[index] == \mul) {
-					var reference = thisModValuesReferences[index];
+					reference = thisModValuesReferences[index];
 					// Arbitrary problem solving
 					if(reference == 0) { reference = 0.01; };
 					// Only difference with unipolar scale

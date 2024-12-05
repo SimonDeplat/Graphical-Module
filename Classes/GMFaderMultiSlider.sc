@@ -263,6 +263,7 @@ GMFaderMultiSlider : GMZZMultiSlider {
 
 	prDrawSliders {
 		var caseSize;
+		var thisRectSize, thisRectPos;
 		if(super.orientation == \horizontal)
 		{ caseSize = super.interactionRect.width / super.values.size; }
 		{ caseSize = super.interactionRect.height / super.values.size; };
@@ -302,7 +303,7 @@ GMFaderMultiSlider : GMZZMultiSlider {
 
 			if(super.orientation == \horizontal) {
 				if(super.polarity == \uni) {
-					var thisRectSize = super.getYValueMapping(
+					thisRectSize = super.getYValueMapping(
 						value,
 						super.min,
 						super.max,
@@ -322,7 +323,7 @@ GMFaderMultiSlider : GMZZMultiSlider {
 						)
 					);
 				} {
-					var thisRectPos = super.getYValueMappingBipolar(
+					thisRectPos = super.getYValueMappingBipolar(
 						value,
 						super.min,
 						super.max,
@@ -361,7 +362,7 @@ GMFaderMultiSlider : GMZZMultiSlider {
 				};
 			} {
 				if(super.polarity == \uni) {
-					var thisRectSize = super.getXValueMapping(
+					thisRectSize = super.getXValueMapping(
 						value,
 						super.min,
 						super.max,
@@ -380,7 +381,7 @@ GMFaderMultiSlider : GMZZMultiSlider {
 						)
 					);
 				} {
-					var thisRectPos = super.getXValueMappingBipolar(
+					thisRectPos = super.getXValueMappingBipolar(
 						value,
 						super.min,
 						super.max,
@@ -531,8 +532,8 @@ GMFaderMultiSlider : GMZZMultiSlider {
 	}
 
 	prDrawHighlights {
+		var caseSize, ratio;
 		if(thisHighlights.notNil) {
-			var caseSize, ratio;
 			if(super.orientation == \horizontal) {
 				caseSize =
 				super.interactionRect.width / super.values.size;

@@ -378,11 +378,10 @@ GMCurveEnvView : GMXYUserView {
 			positions[selectedHandle].y,
 			positions[selectedHandle + 1].y
 		) + super.interactionRect.top;
-
+		var curve;
 		y = super.interactionRect.height - y;
 		y = y + super.interactionRect.top;
 		y = y.clip(0, super.interactionRect.height);
-
 		newMidLevel = y.linlin(
 			min, max,
 			0.000001, 0.999999
@@ -395,8 +394,6 @@ GMCurveEnvView : GMXYUserView {
 		) > 0) {
 			thisEnv.curves[selectedHandle] = 0;
 		} {
-			var curve;
-
 			// Thank you internet for this
 			curve = 1 - (2 * newMidLevel);
 			curve = curve + newMidLevel.pow(2);
@@ -413,7 +410,7 @@ GMCurveEnvView : GMXYUserView {
 	}
 
 	prMovePoint { |x, y|
-		var newLevel;
+		var newLevel, positions;
 
 		// Clip X inside view bounds to avoid trouble
 		x = x.clip(super.interactionRect.left, super.interactionRect.right);
@@ -434,7 +431,7 @@ GMCurveEnvView : GMXYUserView {
 		};
 
 		if(selectedPoint > 0) {
-			var positions = this.prGetPointPositions;
+			positions = this.prGetPointPositions;
 			x = max(
 				x,
 				positions[selectedPoint - 1].x
@@ -456,7 +453,7 @@ GMCurveEnvView : GMXYUserView {
 				thisEnv.times[selectedPoint] = (currentTime - x) - 0.0001;
 
 			} { // Else, last point
-				var positions = this.prGetPointPositions;
+				positions = this.prGetPointPositions;
 
 				x = x - positions[positions.size - 2].x;
 
@@ -629,6 +626,7 @@ GMCurveEnvView : GMXYUserView {
 	}
 
 	prFillShape { |positions|
+		var dx, dy, denom, ph, numer, y;
 		var color = super.mainColor.deepCopy;
 		color.alpha = thisShapeAlpha;
 
@@ -650,13 +648,13 @@ GMCurveEnvView : GMXYUserView {
 			{ Pen.lineTo(positions[index]); };
 
 			if((thisEnv.curves[index].abs < 0.0001).not) {
-				var dx = (positions[index + 1].x - positions[index].x);
-				var dy = (positions[index + 1].y - positions[index].y);
-				var denom = 1.0 - exp(thisEnv.curves[index]);
-				var ph = 1 / thisResolution;
+				dx = (positions[index + 1].x - positions[index].x);
+				dy = (positions[index + 1].y - positions[index].y);
+				denom = 1.0 - exp(thisEnv.curves[index]);
+				ph = 1 / thisResolution;
 				while({ ph < (1 - (1 / thisResolution)) }) {
-					var numer = 1.0 - exp(ph * thisEnv.curves[index]);
-					var y = positions[index].y + (dy * (numer / denom));
+					numer = 1.0 - exp(ph * thisEnv.curves[index]);
+					y = positions[index].y + (dy * (numer / denom));
 					Pen.lineTo(
 						Point(
 							positions[index].x + (dx * ph),
@@ -684,6 +682,7 @@ GMCurveEnvView : GMXYUserView {
 	}
 
 	prDrawLine { |positions|
+		var dx, dy, denom, ph, numer, y;
 		// See QcGraph.cpp, case QcGraphElement::Curvature:, line 739
 		Pen.width_(super.outlineSize);
 		Pen.strokeColor_(super.outlineColor);
@@ -693,13 +692,13 @@ GMCurveEnvView : GMXYUserView {
 			Pen.moveTo(positions[index]);
 
 			if((thisEnv.curves[index].abs < 0.0001).not) {
-				var dx = (positions[index + 1].x - positions[index].x);
-				var dy = (positions[index + 1].y - positions[index].y);
-				var denom = 1.0 - exp(thisEnv.curves[index]);
-				var ph = 1 / thisResolution;
+				dx = (positions[index + 1].x - positions[index].x);
+				dy = (positions[index + 1].y - positions[index].y);
+				denom = 1.0 - exp(thisEnv.curves[index]);
+				ph = 1 / thisResolution;
 				while({ ph < (1 - (1 / thisResolution)) }) {
-					var numer = 1.0 - exp(ph * thisEnv.curves[index]);
-					var y = positions[index].y + (dy * (numer / denom));
+					numer = 1.0 - exp(ph * thisEnv.curves[index]);
+					y = positions[index].y + (dy * (numer / denom));
 					Pen.lineTo(
 						Point(
 							positions[index].x + (dx * ph),
@@ -779,9 +778,8 @@ GMCurveEnvView : GMXYUserView {
 	}
 
 	prDrawNewPoint { |positions|
+		var prevPosIndex, point;
 		if(thisEnv.levels.size < thisMaxSize) {
-			var prevPosIndex;
-
 			positions.do({ |pos, index|
 				if(pos.x <= mousePos.x)
 				{ prevPosIndex = index; };
@@ -792,7 +790,7 @@ GMCurveEnvView : GMXYUserView {
 			Pen.fillColor_(thisModColor);
 
 			if(prevPosIndex == (positions.size - 1)) {
-				var point = mousePos;
+				point = mousePos;
 				if(thisLastLevelIsZero)
 				{ point = Point(mousePos.x, super.interactionRect.bottom); };
 				Pen.line(
@@ -837,12 +835,14 @@ GMCurveEnvView : GMXYUserView {
 	}
 
 	prAddPoint {
+		var prevPosIndex, positions, levels, times, curves;
+		var timeRatio, newPrevTime;
 		if(thisEnv.levels.size < thisMaxSize) {
-			var prevPosIndex;
-			var positions = this.prGetPointPositions;
-			var levels = thisEnv.levels.deepCopy;
-			var times = thisEnv.times.deepCopy;
-			var curves = thisEnv.curves.deepCopy;
+			prevPosIndex;
+			positions = this.prGetPointPositions;
+			levels = thisEnv.levels.deepCopy;
+			times = thisEnv.times.deepCopy;
+			curves = thisEnv.curves.deepCopy;
 
 			positions.do({ |pos, index|
 				if(pos.x <= mousePos.x)
@@ -872,13 +872,13 @@ GMCurveEnvView : GMXYUserView {
 				];
 				curves = curves ++ [0];
 			} {
-				var timeRatio = mousePos.x.linlin(
+				timeRatio = mousePos.x.linlin(
 					positions[prevPosIndex].x,
 					positions[prevPosIndex + 1].x,
 					0, 1
 				);
 
-				var newPrevTime;
+				newPrevTime;
 
 				timeRatio.clip(0.0001, 0.9999);
 
