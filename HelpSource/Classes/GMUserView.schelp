@@ -37,16 +37,19 @@ Sets wether both the background and the border of the widget should be apparent.
 subsection::Internal Methods
 
 method:: init
-Associate the default link::Classes/GMStyle:: to this instance. Used at initialisation.
+Associate the default link::Classes/GMStyle:: to this instance.
+Used at initialisation.
 
 method:: drawBorder
 The function that draws every border of the widget.
 
 method:: drawBackground
-The function that draws the background of the widget. The background color must be passed explicitely as argument.
+The function that draws the background of the widget.
+The background color must be passed explicitely as argument.
 
 method:: drawFrame
-The function that draws the background of the widget, then every border. The background color must be passed explicitely as argument.
+The function that draws the background of the widget, then every border.
+The background color must be passed explicitely as argument.
 
 method:: interactionRect
 Returns the surface of the widget that can be interacted with as a link::Classes/Rect::, i.e. the size of the widget minus the borders sizes.
