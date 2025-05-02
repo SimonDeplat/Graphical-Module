@@ -1,63 +1,63 @@
-TITLE:: GMCheckButton
+title:: GMCheckButton
 summary:: A ready made checkbox button, for creating graphical interfaces
 categories:: GUI>Graphical Module
 related:: Classes/GMUserView, Classes/GMStyle
 
-DESCRIPTION::
+description::
 link::Classes/GMCheckButton:: is an easy to use toggle button, that acts as a checkbox.
 
 It alternates between being checked and unchecked, and either displays a circle or a square.
 
 It only responds to mouse down clicks, and does not discriminate button identifiers.
 
-CLASSMETHODS::
+classmethods::
 
-METHOD:: new
+method:: new
 Creates a new instance of link::Classes/GMCheckButton::.
 
 By default, its graphical properties are defined by its associated link::Classes/GMStyle::. It uses both code::outlineColor:: and code::outlineSize:: properties.
 returns:: a link::Classes/GMCheckButton:: instance.
 
-INSTANCEMETHODS::
+instancemethods::
 
 subsection::Interaction
 
-METHOD:: action
+method:: action
 Sets or gets the link::Classes/Function:: to be triggered when the button is pressed down. This link::Classes/Function:: takes the current state of the button as a boolean as argument, i.e. pressing it down once will call the link::Classes/Function:: passing code::true:: as argument, pressing it down a second time will call the link::Classes/Function:: passing code::false:: as argument, etc.
 
-ARGUMENT:: aFunction
+argument:: aFunction
 A Function with one argument, the state of the button as a link::Classes/Boolean::.
 
-METHOD:: mouseDownAction
+method:: mouseDownAction
 Sets or gets the link::Classes/Function:: to be triggered when the button is pressed down. This link::Classes/Function:: takes the current state of the button as a boolean as argument, i.e. pressing it down once will call the link::Classes/Function:: passing code::true:: as argument, pressing it down a second time will call the link::Classes/Function:: passing code::false:: as argument, etc. Equivalent to code::.action:: .
 
-ARGUMENT:: aFunction
+argument:: aFunction
 A link::Classes/Function:: with one argument, the state of the button as a link::Classes/Boolean::.
 
-METHOD:: toggle
+method:: toggle
 Toggles the button, changing its state and evaluating the associated action.
 
-METHOD:: toggleDisplay
+method:: toggleDisplay
 Toggles the button display, changing its state without evaluating the associated action.
 
 subsection::Graphical settings
 
-METHOD:: displaySymbol
+method:: displaySymbol
 Sets or gets the link::Classes/View::'s displayed symbol style, and refreshes the link::Classes/View::.
-ARGUMENT:: aSymbol
+argument:: aSymbol
 The shape of the symbol will be a circle if set as code::\circle::, a square otherwise.
 
-METHOD:: symbolRatio
+method:: symbolRatio
 Sets or gets the symbol size relative to its smallest axis, and refreshes the link::Classes/View::.
 
 subsection::Internal Methods
 
-METHOD:: draw
+method:: draw
 The function associated to the link::Classes/View::'s drawFunc. Shouldn't be modified, use link::Classes/UserView:: instead.
 
-ARGUMENT:: aFunction
+argument:: aFunction
 
-EXAMPLES::
+examples::
 
 code::
 (

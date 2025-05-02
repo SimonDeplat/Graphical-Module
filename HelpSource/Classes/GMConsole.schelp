@@ -1,67 +1,67 @@
-TITLE:: GMConsole
+title:: GMConsole
 summary:: A basic console output simulation to embed into graphical interfaces
 categories:: GUI>Graphical Module
 related:: Classes/GMUserView, Classes/GMStyle
 
-DESCRIPTION::
+description::
 link::Classes/GMConsole:: emulates a console output. It displays a suite of messages along with their timestamp, and allows to cycle through them.
 
-CLASSMETHODS::
+classmethods::
 
-METHOD:: new
+method:: new
 Creates a new instance of link::Classes/GMConsole::.
 
 Its graphical properties are defined by its associated link::Classes/GMStyle::.
 returns:: a link::Classes/GMConsole:: instance.
 
-INSTANCEMETHODS::
+instancemethods::
 
 subsection::Interaction
 
-METHOD:: postMsg
+method:: postMsg
 Post a new message to the console. This will set the console to display this message if the current message was the the last posted message. If the maximum number of messages is reached, this will remove the oldest message. If no string color is provided, the default color will be used.
 
-METHOD:: reset
+method:: reset
 Removes every messages and resets the console.
 
-METHOD:: removeLastMessage
+method:: removeLastMessage
 Removes the last message. This can be useful if you are constantly posting a parameter modification, but only want to keep trace of the most recent modification as long as the modified parameter does not change.
 
-METHOD:: previousMessage
+method:: previousMessage
 Displays the previous message.
 
-METHOD:: nextMessage
+method:: nextMessage
 Displays the next message.
 
-METHOD:: lastMessage
+method:: lastMessage
 Displays the most recent message.
 
-METHOD:: listMaxSize
+method:: listMaxSize
 Sets or gets the maximum number of messages that will be kept in memory. Defaults to code::inf::.
 
-METHOD:: msgList
+method:: msgList
 Returns the full message list.
 
 subsection::Visual Properties
 
-METHOD:: fontRatio
+method:: fontRatio
 Sets or gets the font ratio relative to the height of the widget.
 
-METHOD:: defaultStringColor
+method:: defaultStringColor
 Sets or gets the color that will be used to display messages if no color is specified when posting the message.
 
 subsection::Internal Methods
 
-METHOD:: draw
+method:: draw
 The function associated to the link::Classes/View::'s code::drawFunc::. Shouldn't be modified.
 
-METHOD:: prDrawLastButton
-METHOD:: prDrawNextButton
-METHOD:: prDrawPreviousButton
-METHOD:: prGetColor
-METHOD:: prUpdateFont
+method:: prDrawLastButton
+method:: prDrawNextButton
+method:: prDrawPreviousButton
+method:: prGetColor
+method:: prUpdateFont
 
-EXAMPLES::
+examples::
 
 code::
 (

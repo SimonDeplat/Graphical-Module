@@ -1,48 +1,48 @@
-TITLE:: GMCloseButton
+title:: GMCloseButton
 summary:: A ready made button displaying a cross for creating graphical interfaces
 categories:: GUI>Graphical Module
 related:: Classes/GMUserView, Classes/GMStyle
 
-DESCRIPTION::
+description::
 link::Classes/GMCloseButton:: is an easy to use customisable button.
 
 It natively displays a cross, suggesting pressing it will close the currently displayed link::Classes/View::.
 
 It only responds to mouse down clicks, and does not discriminate button identifiers.
 
-CLASSMETHODS::
+classmethods::
 
-METHOD:: new
+method:: new
 Creates a new instance of link::Classes/GMCloseButton::.
 
 Its graphical properties are defined by its associated link::Classes/GMStyle::.
 
 returns:: a link::Classes/GMCloseButton:: instance.
 
-INSTANCEMETHODS::
+instancemethods::
 
 subsection::Interaction
 
-METHOD:: action
+method:: action
 Sets or gets the link::Classes/Function:: to be triggered when the button is pressed down. Doesn't take argument.
 
-ARGUMENT:: aFunction
+argument:: aFunction
 A link::Classes/Function:: without argument.
 
-METHOD:: mouseDownAction
+method:: mouseDownAction
 Sets or gets the link::Classes/Function:: to be triggered when the button is pressed down. Doesn't take arguments. Equivalent to .action .
 
-ARGUMENT:: aFunction
+argument:: aFunction
 A link::Classes/Function:: without argument.
 
 subsection::Internal Methods
 
-METHOD:: draw
+method:: draw
 The function associated to the link::Classes/View::'s drawFunc. Shouldn't be modified, use link::Classes/UserView:: instead.
 
-ARGUMENT:: aFunction
+argument:: aFunction
 
-EXAMPLES::
+examples::
 
 code::
 (

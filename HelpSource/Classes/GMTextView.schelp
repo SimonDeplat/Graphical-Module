@@ -1,44 +1,44 @@
-TITLE:: GMTextView
+title:: GMTextView
 summary:: A simple text view for creating graphical interfaces
 categories:: GUI>Graphical Module
 related:: Classes/GMUserView, Classes/GMStyle
 
-DESCRIPTION::
+description::
 link::Classes/GMTextView:: is a link::Classes/View:: that displays text.
 
 It only allows for centered text. You can specify the text orientation. It will automatically resize when its container is resized.
 
-CLASSMETHODS::
+classmethods::
 
-METHOD:: new
+method:: new
 Creates a new instance of link::Classes/GMTextView::.
 
 Its graphical properties are defined by its associated link::Classes/GMStyle::. By default, its borders are hidden. Use code::.displayBorder_(true):: to modify this property.
 
 returns:: a link::Classes/GMTextView:: instance.
 
-INSTANCEMETHODS::
+instancemethods::
 
-METHOD:: string
+method:: string
 Sets or gets the displayed text, and refreshes the link::Classes/View::.
 
-METHOD:: orientation
+method:: orientation
 Sets or gets the displayed text orientation, and refreshes the link::Classes/View::. Valid values are : code::\right::, code::\top::, code::\left:: or code::\bottom::.
 
-METHOD:: fontRatio
+method:: fontRatio
 Sets or gets the widget displayed text ratio, relative to the smallest axis of the widget, and refreshes the link::Classes/View::. You'll need to reduce this value if the displayed text is larger than the size of the widget.
 
 Please note that this modifies the font ratio itsel, not the ratio of the displayed string. As such, you might want to divide this value if you are displaying multiple text lines.
 
-METHOD:: maxFontSize
+method:: maxFontSize
 Sets or gets the widget maximum font height, expressed in pixels.
 
 subsection::Internal Methods
 
-METHOD:: draw
+method:: draw
 The function associated to the link::Classes/View::'s code::drawFunc::. Shouldn't be modified.
 
-EXAMPLES::
+examples::
 
 code::
 (

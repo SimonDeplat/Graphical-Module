@@ -1,9 +1,9 @@
-TITLE:: GMSymbolMultiSlider
+title:: GMSymbolMultiSlider
 summary:: A multi slider class that supports sequencer utilities
 categories:: GUI>Graphical Module
 related:: Classes/GMZZSlider, Classes/GMZZMultiSlider, Classes/GMFaderMultiSlider, Classes/GMLineMultiSlider, Classes/GMUserView, Classes/GMStyle
 
-DESCRIPTION::
+description::
 
 link::Classes/GMSymbolMultiSlider:: is an easy to use customisable multi slider.
 
@@ -92,60 +92,60 @@ multiSlider.front;
 
 See the examples below for a complete sequencer setup.
 
-CLASSMETHODS::
+classmethods::
 
-METHOD:: new
+method:: new
 Creates a new instance of link::Classes/GMFaderMultiSlider::.
 
 By default, its graphical properties are defined by its associated link::Classes/GMStyle::. This means that creating multi sliders with different colors implies creating multiples link::Classes/GMStyle::. The sliders color corresponds to the code::mainColor:: property.  The font color of the displayed value corresponds to the code::valueFontColor:: property.
 
 returns:: a link::Classes/GMFaderMultiSlider:: instance.
 
-INSTANCEMETHODS::
+instancemethods::
 
-METHOD:: beat
+method:: beat
 Sets or gets the displayed beat. Set to code::-1:: to disable. This will internally
 defer the graphical update.
 
-METHOD:: displayHighlights
+method:: displayHighlights
 Sets or gets wether the highlights should be displayed.
 
-METHOD:: drawHighlights
+method:: drawHighlights
 Deprecated. Use code::displayHighlights:: instead.
 
-METHOD:: highlightRatio
+method:: highlightRatio
 Sets or gets the highlights maximum ratio relative to the sliders available space.
 
-METHOD:: highlights
+method:: highlights
 Sets or gets the highlights weights. A weight of 1 will cause the highlight to be drawn at the maximum ratio, using the link::Classes/GMStyle:: code::highlightColor:: alpha value. Lower values will linearily decrease both the ratio and the alpha values (see examples).
 
 subsection::GMSymbolSlider Methods
 
 See the link::Classes/GMSymbolSlider:: class documentation for those methods.
 
-METHOD:: symbol
-METHOD:: symbolRatio
-METHOD:: symbolMinSize
-METHOD:: symbolMaxSize
-METHOD:: displayLine
-METHOD:: drawLine
-METHOD:: displayValues
-METHOD:: centerValues
-METHOD:: roundValue
-METHOD:: displayFunction
-METHOD:: fontRatio
-METHOD:: displayHelpers
-METHOD:: drawHelpers
-METHOD:: helpersRatio
+method:: symbol
+method:: symbolRatio
+method:: symbolMinSize
+method:: symbolMaxSize
+method:: displayLine
+method:: drawLine
+method:: displayValues
+method:: centerValues
+method:: roundValue
+method:: displayFunction
+method:: fontRatio
+method:: displayHelpers
+method:: drawHelpers
+method:: helpersRatio
 
 subsection::Internal Methods
 
-METHOD:: draw
-METHOD:: prDrawSliders
-METHOD:: prDrawHighlights
-METHOD:: prDrawValues
+method:: draw
+method:: prDrawSliders
+method:: prDrawHighlights
+method:: prDrawValues
 
-EXAMPLES::
+examples::
 
 A simple interface that allows to shape the harmonics value of a continuous sound :
 

@@ -1,9 +1,9 @@
-TITLE:: GMSymbol2DSlider
+title:: GMSymbol2DSlider
 summary:: A simple 2D slider for creating graphical interfaces.
 categories:: GUI>Graphical Module
 related:: Classes/GMZZ2DSlider, Classes/GMUserView, Classes/GMStyle
 
-DESCRIPTION::
+description::
 link::Classes/GMSymbol2DSlider:: is an easy to use customisable slider.
 
 It inherits from the link::Classes/GMZZ2DSlider:: class, and is only responsible for graphical specifications. See link::Classes/GMZZSlider:: and link::Classes/GMZZ2DSlider:: for non-graphical properties settings.
@@ -83,65 +83,65 @@ GMSymbol2DSlider()
 ::
 
 
-CLASSMETHODS::
+classmethods::
 
-METHOD:: new
+method:: new
 Creates a new instance of link::Classes/GMSymbol2DSlider::.
 
 By default, its graphical properties are defined by its associated link::Classes/GMStyle::. This means that creating sliders with different colors implies creating multiples link::Classes/GMStyle::. The font color of the displayed value corresponds to the code::valueFontColor:: property.
 
 returns:: a link::Classes/GMSymbol2DSlider:: instance.
 
-INSTANCEMETHODS::
+instancemethods::
 
-METHOD:: displayLine
+method:: displayLine
 Sets or gets wether the handle position should be highlighted with lines on each view axis.
 
-METHOD:: drawLine
+method:: drawLine
 Deprecated. Use code::displayLine:: instead.
 
-METHOD:: xDisplayFunction
+method:: xDisplayFunction
 Sets or gets the link::Classes/Function:: that will be used to adapt the value displayed on the horizontal axis if needed. Set to code::nil:: to disable.
 
-METHOD:: yDisplayFunction
+method:: yDisplayFunction
 Sets or gets the link::Classes/Function:: that will be used to adapt the value displayed on the vertical axis if needed. Set to code::nil:: to disable.
 
-METHOD:: svg
+method:: svg
 Sets a path to a valid SVG file to be displayed on top of the widget's background.
 
-METHOD:: svgRatio
+method:: svgRatio
 Sets or gets the background SVG's size ratio relative to the widget size.
 
-METHOD:: free
+method:: free
 Frees the current background SVG, allowing garbage collection.
 
 subsection::GMSymbolSlider Methods
 
 See the link::Classes/GMSymbolSlider:: class documentation for those methods.
 
-METHOD:: symbol
-METHOD:: symbolMinSize
-METHOD:: symbolMaxSize
-METHOD:: symbolRatio
-METHOD:: displayValues
-METHOD:: roundValues
-METHOD:: fontRatio
-METHOD:: displayHelpers
-METHOD:: drawHelpers
-METHOD:: centerHelpers
-METHOD:: helpersRatio
-METHOD:: helpersStyle
+method:: symbol
+method:: symbolMinSize
+method:: symbolMaxSize
+method:: symbolRatio
+method:: displayValues
+method:: roundValues
+method:: fontRatio
+method:: displayHelpers
+method:: drawHelpers
+method:: centerHelpers
+method:: helpersRatio
+method:: helpersStyle
 
 subsection::Internal Methods
 
-METHOD:: draw
-METHOD:: prDrawSlider
-METHOD:: prDrawValues
-METHOD:: prDrawLineHelpers
-METHOD:: prDrawDotHelpers
-METHOD:: prResizeSVG
+method:: draw
+method:: prDrawSlider
+method:: prDrawValues
+method:: prDrawLineHelpers
+method:: prDrawDotHelpers
+method:: prResizeSVG
 
-EXAMPLES::
+examples::
 
 2D sliders are amazing to create simple drone instruments :
 

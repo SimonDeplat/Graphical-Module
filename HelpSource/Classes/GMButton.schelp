@@ -1,78 +1,78 @@
-TITLE:: GMButton
+title:: GMButton
 summary:: A simple button for creating graphical interfaces
 categories:: GUI>Graphical Module
 related:: Classes/GMUserView, Classes/GMStyle
 
-DESCRIPTION::
+description::
 link::Classes/GMButton:: is an easy to use customisable button.
 
 It responds to mouse down and up clicks, but does not discriminate button identifiers.
 
-CLASSMETHODS::
+classmethods::
 
-METHOD:: new
+method:: new
 Creates a new instance of link::Classes/GMButton::.
 
 Its graphical properties are defined by its associated link::Classes/GMStyle::.
 returns:: a link::Classes/GMButton:: instance.
 
-INSTANCEMETHODS::
+instancemethods::
 
 subsection::Interaction
 
-METHOD:: mouseDownAction
+method:: mouseDownAction
 Sets or gets the link::Classes/Function:: to be triggered when the button is pressed down. This link::Classes/Function:: doesn't take arguments.
 
-ARGUMENT:: aFunction
+argument:: aFunction
 A link::Classes/Function:: without argument.
 
-METHOD:: mouseUpAction
+method:: mouseUpAction
 Sets or gets the link::Classes/Function:: to be triggered when the button has been pressed, and is released. This link::Classes/Function:: doesn't take arguments.
 
-ARGUMENT:: aFunction
+argument:: aFunction
 A link::Classes/Function:: without argument.
 
-METHOD:: action
+method:: action
 Sets or gets the link::Classes/Function:: to be triggered when the button is pressed down. Doesn't take arguments. Equivalent to code::.mouseDownAction:: .
 
-ARGUMENT:: aFunction
+argument:: aFunction
 A link::Classes/Function:: without argument.
 
 subsection::Graphical settings
 
-METHOD:: string
+method:: string
 Sets or gets the button displayed text, and refreshes the link::Classes/View::.
 
-METHOD:: stringRatio
+method:: stringRatio
 Deprecated, see fontRatio
 
-METHOD:: fontRatio
+method:: fontRatio
 Sets or gets the widget displayed text ratio, relative to the smallest axis of the widget, and refreshes the link::Classes/View::. You'll need to reduce this value if the displayed text is larger than the size of the widget.
 
-METHOD:: maxFontSize
+method:: maxFontSize
 Sets or gets the maximum allowed font size.
 
-METHOD:: orientation
+method:: orientation
 Sets or gets the button displayed text orientation, and refreshes the link::Classes/View::. Valid values are : code::\right::, code::\top::, code::\left:: or code::\bottom::. This doesn't affect the displayed svg if any.
 
-METHOD:: svg
+method:: svg
 Sets or gets the button displayed svg, and refreshes the link::Classes/View::. Takes a link::Classes/String:: indicating the path to the svg file as argument.
 
-METHOD:: svgRatio
+method:: svgRatio
 Sets or gets the widget displayed svg ratio, relative to the smallest axis of the widget, and refreshes the link::Classes/View::.
 
-METHOD:: free
+method:: free
 Removes the svg and frees its ressources. Refreshes the link::Classes/View::.
 
 subsection::Internal Methods
 
-METHOD:: draw
+method:: draw
 The function associated to the link::Classes/View::'s code::drawFunc::. Shouldn't be modified.
 
-METHOD:: resizeSVG
+method:: resizeSVG
 The function that rescales the svg when needed.
 
-EXAMPLES::
+examples::
 
 code::
 (

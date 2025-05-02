@@ -1,9 +1,9 @@
-TITLE:: GMFeedbackButton
+title:: GMFeedbackButton
 summary:: A simple button with a visual feedback effect for creating graphical interfaces
 categories:: GUI>Graphical Module
 related:: Classes/GMButton, Classes/GMUserView, Classes/GMStyle
 
-DESCRIPTION::
+description::
 GMFeedbackButton is an easy to use customisable button with a visual feedback.
 
 On press, its color switches from a second state back to its default state within a defined period of time.
@@ -12,9 +12,9 @@ It only responds to mouse down clicks, and does not discriminate button identifi
 
 note:: Since the code::.frameRate:: method inherited from the link::Classes/UserView:: class is unreliable, the frame rate of this link::Classes/UserView:: is hardcoded at 60 fps, and changing it will desynchronize the code::blinkTime:: value. ::
 
-CLASSMETHODS::
+classmethods::
 
-METHOD:: new
+method:: new
 Creates a new instance of link::Classes/GMFeedbackButton::.
 
 Its graphical properties are defined by its associated link::Classes/GMStyle::.
@@ -23,74 +23,74 @@ Both the blink color and the font blink color must be set explicitly.
 
 returns:: a link::Classes/GMFeedbackButton:: instance.
 
-INSTANCEMETHODS::
+instancemethods::
 
 subsection::Interaction
 
-METHOD:: action
+method:: action
 Sets or gets the link::Classes/Function:: to be triggered when the button is pressed down. Doesn't take argument.
 
-ARGUMENT:: aFunction
+argument:: aFunction
 A link::Classes/Function:: without argument.
 
-METHOD:: mouseDownAction
+method:: mouseDownAction
 Sets or gets the link::Classes/Function:: to be triggered when the button is pressed down. Doesn't take argument. Equivalent to code::.action:: .
 
-ARGUMENT:: aFunction
+argument:: aFunction
 A link::Classes/Function:: without argument.
 
 subsection::Graphical settings
 
-METHOD:: blink
+method:: blink
 Triggers the button animation, without evaluating associated function. This method allows to simulate the button being pressed using code. Refresh call is internally deferred, so this method can be called safely within a Routine context.
 
-METHOD:: blinkColor
+method:: blinkColor
 Sets or gets the widget back color when it's starting its visual effect.
 
-METHOD:: blinkFontColor
+method:: blinkFontColor
 Sets or gets the widget font color when it's starting its visual effect.
 
-METHOD:: blinkTime
+method:: blinkTime
 Sets or gets the time in seconds it takes for the link::Classes/View::'s to complete its visual effect.
-ARGUMENT:: aNumber
+argument:: aNumber
 A link::Classes/Float:: value, in seconds.
 
-METHOD:: string
+method:: string
 Sets or gets the button displayed text, and refreshes the link::Classes/View::.
 
-METHOD:: fontRatio
+method:: fontRatio
 Sets or gets the widget displayed text ratio, relative to the orientation and size of the widget (not counting the border size). You'll need to reduce this value if the displayed text is larger than the size of the widget.
 
-METHOD:: stringRatio
+method:: stringRatio
 Deprecated, use fontRatio instead.
 
-METHOD:: maxFontSize
+method:: maxFontSize
 Sets or gets the displayed text max height, in pixels.
 
-METHOD:: orientation
+method:: orientation
 Sets or gets the button displayed text orientation, and refreshes the link::Classes/View::. Valid values are : code::\right::, code::\top::, code::\left:: or code::\bottom::. This doesn't affect the displayed svg if any.
 
-METHOD:: direction
+method:: direction
 Equivalent to code::orientation::.
 
-METHOD:: svg
+method:: svg
 Sets or gets the button displayed svg, and refreshes the link::Classes/View::. Takes a link::Classes/String:: indicating the path to the svg file as argument.
 
-METHOD:: svgRatio
+method:: svgRatio
 Sets or gets the widget displayed svg ratio, relative to the smallest axis of the widget, and refreshes the link::Classes/View::.
 
-METHOD:: free
+method:: free
 Removes the svg and frees its ressources. Refreshes the link::Classes/View::.
 
 subsection::Internal Methods
 
-METHOD:: draw
+method:: draw
 The function associated to the link::Classes/View::'s code::drawFunc::. Shouldn't be modified.
 
-METHOD:: resizeSVG
+method:: resizeSVG
 The function that rescales the svg when needed.
 
-EXAMPLES::
+examples::
 
 code::
 (

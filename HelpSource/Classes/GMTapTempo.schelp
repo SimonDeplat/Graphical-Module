@@ -1,9 +1,9 @@
-TITLE:: GMTapTempo
+title:: GMTapTempo
 summary:: A simple tap tempo button for creating graphical interfaces
 categories:: GUI>Graphical Module
 related:: Classes/GMUserView, Classes/GMStyle
 
-DESCRIPTION::
+description::
 link::Classes/GMTapTempo:: is an easy to use customisable button that allows to specify a tempo by clicking it regularly. In addition, it displays its BPM and can display a visual feedback when a new beat is triggered.
 
 subsection::First click & reset
@@ -30,40 +30,40 @@ Time since SC started: code::SystemClock.seconds::
 
 Those two timestamps are concatenated inside an array, and stored within a 'time list', which is passed to the code::action:: function every time it is called, allowing to trace each clicks position in time.
 
-CLASSMETHODS::
+classmethods::
 
-METHOD:: new
+method:: new
 Creates a new instance of link::Classes/GMTapTempo::.
 
-INSTANCEMETHODS::
+instancemethods::
 
 subsection::Interaction
 
-METHOD:: action
+method:: action
 Sets or gets the link::Classes/Function:: to be triggered when the button is pressed down. This link::Classes/Function:: takes two arguments: the current BPM, and a list of events timestamps.
 
-METHOD:: bpm
+method:: bpm
 Sets or gets the current bpm.
 
 subsection::Graphics
 
-METHOD:: blink
+method:: blink
 Triggers a visual feedback used to a indicate a new beat. View's refresh is internally deferred so this method can be called within a link::Classes/Routine:: context.
 
-METHOD:: blinkColor
+method:: blinkColor
 Sets or gets the button color when it blinks.
 
-METHOD:: blinkFontColor
+method:: blinkFontColor
 Sets or gets the string color when it blinks.
 
-METHOD:: stringRatio
+method:: stringRatio
 Sets or gets the string ratio relative to the widget's height.
 
 subsection::Internal Methods
 
-METHOD:: draw
+method:: draw
 
-EXAMPLES::
+examples::
 
 code::
 (

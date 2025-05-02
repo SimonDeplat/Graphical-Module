@@ -1,9 +1,9 @@
-TITLE:: GMZZ2DSlider
+title:: GMZZ2DSlider
 summary:: An abstract class for 2D sliders (Graphical Module)
 categories:: GUI>Graphical Module
 related:: Classes/GMZZSlider, Classes/GMSymbol2DSlider, Classes/GMUserView, Classes/GMStyle
 
-DESCRIPTION::
+description::
 
 link::Classes/GMZZ2DSlider:: is an abstract class that defines 2D sliders behavior within the scope of the Graphical Module. The class name begins with "GMZZ" so it is displayed last in the autocompletion API.
 
@@ -60,19 +60,19 @@ GMSymbol2DSlider()
 )
 ::
 
-CLASSMETHODS::
+classmethods::
 
-METHOD:: new
+method:: new
 Creates a new instance of link::Classes/GMZZMultiSlider::.
 
 returns:: a link::Classes/GMZZMultiSlider:: instance. This method is implicitely internal.
 
-INSTANCEMETHODS::
+instancemethods::
 
-METHOD:: action
+method:: action
 Sets or gets the link::Classes/Function:: to be evaluated when at least one of the values has been changed. This function will be passed two arguments : the value associated to the horizontal axis, and the value associated to the vertical axis.
 
-METHOD:: ctrlShiftBehavior
+method:: ctrlShiftBehavior
 Sets or gets how the widget should behave when both CTRL and SHIFT are held down. Can be either code::\helper:: or code::\modStep::. See the documentation above for further explanations.
 
 subsection::GMZZSlider Methods
@@ -81,25 +81,25 @@ See the link::Classes/GMZZSlider:: class documentation for those methods.
 
 Those methods takes an array of two values as argument in the context of link::Classes/GMZZ2DSlider::.
 
-METHOD:: values
-METHOD:: min
-METHOD:: max
-METHOD:: scales
-METHOD:: expMins
-METHOD:: polarities
-METHOD:: modSteps
-METHOD:: modStepsOperators
-METHOD:: modStepsPixelRanges
-METHOD:: helpersNumbers
-METHOD:: helperSubdivisions
+method:: values
+method:: min
+method:: max
+method:: scales
+method:: expMins
+method:: polarities
+method:: modSteps
+method:: modStepsOperators
+method:: modStepsPixelRanges
+method:: helpersNumbers
+method:: helperSubdivisions
 
 subsection::Internal Methods
 
-METHOD:: prUpdateValue
-METHOD:: prCheckMod
-METHOD:: prGetClosestHelpers
-METHOD:: prGetModStepValues
+method:: prUpdateValue
+method:: prCheckMod
+method:: prGetClosestHelpers
+method:: prGetModStepValues
 
-EXAMPLES::
+examples::
 
 See the link::Classes/GMSymbol2DSlider:: documentation for examples.

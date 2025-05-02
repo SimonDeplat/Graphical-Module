@@ -1,61 +1,61 @@
-TITLE:: GMDuoSequencer
+title:: GMDuoSequencer
 summary:: A simple deterministic sequencer for creating graphical interfaces
 categories:: GUI>Graphical Module
 related:: Classes/GMUserView, Classes/GMStyle, Classes/GMSequencer
 
-DESCRIPTION::
+description::
 link::Classes/GMDuoSequencer:: is an extension of the link::Classes/GMSequencer:: class. It allows to setup probabilistic rythms in conjonction with the code::coin:: method.
 
 One must provide a set of different probabilities for the sound to be played. The widget allows to cycle through those probabilities for each individual beat. For example, code::[0, 0.25, 0.5, 0.75, 1]:: would allow to select a probability of code::0%::, code::25%::, code::50%::, code::75%:: or code::100%:: for a particular beat to be played.
 
 The widget is divided in half vertically. Clicking on the upper side will set the probabilty to the last if it is not the last already, in which case it will be set to the first probability. This allows the top side of the widget to behave like a deterministic sequencer. Clicking the bottom side of the widget will increment the probabilty to the next index, or revert to the second one if the probability is the last.
 
-CLASSMETHODS::
+classmethods::
 
-METHOD:: new
+method:: new
 Creates a new instance of link::Classes/GMDuoSequencer::.
 
 Its graphical properties are defined by its associated link::Classes/GMStyle::.
 
 returns:: a link::Classes/GMDuoSequencer:: instance.
 
-INSTANCEMETHODS::
+instancemethods::
 
-METHOD:: probabilities
+method:: probabilities
 Sets or gets the probabilities the sequencer will cycle through. Takes an link::Classes/Array:: of link::Classes/Float:: as argument.
 
-METHOD:: action
+method:: action
 Sets or gets the link::Classes/Function:: that will be evaluated when the link::Classes/GMDuoSequencer:: has been interacted with. The arguments passed to the function depend on the code::actionMode::.
 
-METHOD:: actionMode
+method:: actionMode
 Sets or gets which arguments are passed to the code::action::'s link::Classes/Function:: when the link::Classes/GMDuoSequencer:: has been interacted with. If set to code::\values::, the associated link::Classes/Array:: will be passed as argument. If set to code::\index::, the index of the modified value and the new value will be passed as arguments.
 
-METHOD:: values
+method:: values
 Sets or gets the sequencer values. Takes an link::Classes/Array:: containing only code::0:: or code::1:: as argument. The size of the array determines the size of the sequencer (i.e. the number of checkboxes).
 
-METHOD:: beat
+method:: beat
 Sets or gets the displayed beat. Set to code::-1:: to disable. This will internally defer the graphical update.
 
-METHOD:: highlights
+method:: highlights
 Sets or gets the policy that highlights checkboxes. Takes an link::Classes/Array:: containing floats between code::0:: and code::1::, that should be the size of the code::values::. The closer the highlight is to code::1::, the larger and opaque the highlight will be.
 
-METHOD:: drawHighlights
+method:: drawHighlights
 Sets or gets wether the highlights should be displayed.
 
-METHOD:: symbol
+method:: symbol
 Sets or gets the shape of the symbol used to display checked indices. Can either be code::\circle::, code::\square::, or code::\diamond::.
 
-METHOD:: symbolRatio
+method:: symbolRatio
 Sets or gets the ratio of the symbol relative to the case size where it is displayed. Valid values are between code::0:: and code::1::.
 
-METHOD:: allowMouseMoveAction
+method:: allowMouseMoveAction
 Sets or gets whether the widget should respond to mouse move action when it is being pressed.
 
 subsection::Internal Methods
 
-METHOD:: draw
+method:: draw
 
-EXAMPLES::
+examples::
 
 code::
 (

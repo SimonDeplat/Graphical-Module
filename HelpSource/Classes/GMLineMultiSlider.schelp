@@ -1,9 +1,9 @@
-TITLE:: GMLineMultiSlider
+title:: GMLineMultiSlider
 summary:: A multi slider class that supports sequencer utilities
 categories:: GUI>Graphical Module
 related:: Classes/GMZZSlider, Classes/GMZZMultiSlider, Classes/GMFaderMultiSlider, Classes/GMSymbolMultiSlider, Classes/GMUserView, Classes/GMStyle
 
-DESCRIPTION::
+description::
 
 link::Classes/GMLineMultiSlider:: is an easy to use customisable multi slider.
 
@@ -96,65 +96,65 @@ multiSlider.front;
 )
 ::
 
-CLASSMETHODS::
+classmethods::
 
-METHOD:: new
+method:: new
 Creates a new instance of link::Classes/GMFaderMultiSlider::.
 
 By default, its graphical properties are defined by its associated link::Classes/GMStyle::. This means that creating multi sliders with different colors implies creating multiples link::Classes/GMStyle::. The sliders color corresponds to the code::mainColor:: property.  The font color of the displayed value corresponds to the code::valueFontColor:: property.
 
 returns:: a link::Classes/GMFaderMultiSlider:: instance.
 
-INSTANCEMETHODS::
+instancemethods::
 
-METHOD:: beat
+method:: beat
 Sets or gets the displayed beat. Set to code::-1:: to disable. This will internally
 defer the graphical update.
 
-METHOD:: drawHighlights
+method:: drawHighlights
 Sets or gets wether the highlights should be displayed.
 
-METHOD:: highlightRatio
+method:: highlightRatio
 Sets or gets the highlights maximum ratio relative to the sliders available space.
 
-METHOD:: highlights
+method:: highlights
 Sets or gets the highlights weights. A weight of 1 will cause the highlight to be drawn at the maximum ratio, using the link::Classes/GMStyle:: code::highlightColor:: alpha value. Lower values will linearily decrease both the ratio and the alpha values.
 
-METHOD:: drawDots
+method:: drawDots
 Sets or gets wether dots should be displayed on the line to highlight the value position.
 
-METHOD:: dotsRatio
+method:: dotsRatio
 Sets or gets the dot size relative to the sliders available space.
 
-METHOD:: fillShape
+method:: fillShape
 Sets or gets wether the surface under the line should be filled. Uses the link::Classes/GMStyle:: code::secondColor:: property.
 
-METHOD:: joinExtremities
+method:: joinExtremities
 Sets or gets wether extremities of the line 'wrap around'. Mostly useful when controlling a looping enveloppe.
 
 subsection::GMFaderSlider Methods
 
 See the link::Classes/GMFaderSlider:: class documentation for those methods.
 
-METHOD:: displayValues
-METHOD:: centerValues
-METHOD:: roundValue
-METHOD:: displayFunction
-METHOD:: fontRatio
-METHOD:: drawHelpers
-METHOD:: helpersStyle
-METHOD:: helpersRatio
-METHOD:: centerHelpers
+method:: displayValues
+method:: centerValues
+method:: roundValue
+method:: displayFunction
+method:: fontRatio
+method:: drawHelpers
+method:: helpersStyle
+method:: helpersRatio
+method:: centerHelpers
 
 subsection::Internal Methods
 
-METHOD:: draw
-METHOD:: prDrawSliders
-METHOD:: prFillShape
-METHOD:: prDrawHighlights
-METHOD:: prDrawValues
+method:: draw
+method:: prDrawSliders
+method:: prFillShape
+method:: prDrawHighlights
+method:: prDrawValues
 
-EXAMPLES::
+examples::
 
 A simple interface that controls the enveloppe of the emitted sound :
 

@@ -1,9 +1,9 @@
-TITLE:: GMPlayButton
+title:: GMPlayButton
 summary:: A simple play/stop button for creating graphical interfaces
 categories:: GUI>Graphical Module
 related:: Classes/GMUserView, Classes/GMStyle
 
-DESCRIPTION::
+description::
 link::Classes/GMPlayButton:: is an easy to use customisable button.
 
 It natively alternates between two visual symbols related to the idea of playing and stopping a sound.
@@ -12,56 +12,56 @@ The second symbol can either be a symbol related to stopping a sound, or related
 
 It only responds to mouse down clicks, and does not discriminate button identifiers.
 
-CLASSMETHODS::
+classmethods::
 
-METHOD:: new
+method:: new
 Creates a new instance of link::Classes/GMPlayButton::.
 
 By default, its graphical properties are defined by its associated link::Classes/GMStyle::. It uses both code::outlineColor:: and code::outlineSize:: properties.
 returns:: a link::Classes/GMPlayButton:: instance.
 
-INSTANCEMETHODS::
+instancemethods::
 
-METHOD:: action
+method:: action
 Sets or gets the link::Classes/Function:: to be triggered when the button is pressed down. This link::Classes/Function:: takes the current state of the button as a boolean as argument, i.e. pressing it down once will call the link::Classes/Function:: passing code::true:: as argument, pressing it down a second time will call the link::Classes/Function:: passing code::false:: as argument, etc.
 
-ARGUMENT:: aFunction
+argument:: aFunction
 A link::Classes/Function:: with one argument, the state of the button as a link::Classes/Boolean::.
 
-METHOD:: mouseDownAction
+method:: mouseDownAction
 Sets or gets the link::Classes/Function:: to be triggered when the button is pressed down. This link::Classes/Function:: takes the current state of the button as a boolean as argument, i.e. pressing it down once will call the link::Classes/Function:: passing code::true:: as argument, pressing it down a second time will call the link::Classes/Function:: passing code::false:: as argument, etc. Equivalent to code::.action:: .
 
-ARGUMENT:: aFunction
+argument:: aFunction
 A link::Classes/Function:: with one argument, the state of the button as a link::Classes/Boolean::.
 
-METHOD:: toggle
+method:: toggle
 Toggles the button, changing its state and evaluating the associated action.
 
-METHOD:: toggleDisplay
+method:: toggleDisplay
 Toggles the button display, changing its state without evaluating the associated action.
 
-METHOD:: setPlaying
+method:: setPlaying
 Sets the button display, changing its state without evaluating the associated action.
 
 subsection::Graphical settings
 
-METHOD:: mode
+method:: mode
 Sets or gets the type of symbol the second state displays. This is only a visual property.
 
-ARGUMENT:: aSymbol
+argument:: aSymbol
 The link::Classes/View:: second state will display two vertical bars if set as code::\pause::, a square otherwise.
 
-METHOD:: symbolRatio
+method:: symbolRatio
 Sets or gets the symbol size relative to its smallest axis, and refreshes the link::Classes/View::.
 
 subsection::Internal Methods
 
-METHOD:: draw
+method:: draw
 The function associated to the link::Classes/View:: code::drawFunc::. Shouldn't be modified.
 
-ARGUMENT:: aFunction
+argument:: aFunction
 
-EXAMPLES::
+examples::
 
 code::
 (

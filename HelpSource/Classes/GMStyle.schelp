@@ -1,9 +1,9 @@
-TITLE:: GMStyle
+title:: GMStyle
 summary:: A palette class to apply styles to the Graphical Module's widgets
 categories:: GUI>Graphical Module
 related:: Classes/GMUserView
 
-DESCRIPTION::
+description::
 link::Classes/GMStyle:: is a placeholder for widgets visual properties specifications, when using the Graphical Module Quark.
 
 It allows to specify colors, border sizes, etc, and to apply those specifications to several widgets at once. Once a style is applied to a widget, modifying the style will update the widget automatically.
@@ -12,92 +12,92 @@ There will always be a default style accessible using code::GMStyle.default::. T
 
 Please note that every widget has different drawings needs, and is unlikely to use every link::Classes/GMStyle:: parameter. For example, a link::Classes/GMFaderSlider:: do not use the code::outlineSize:: parameter.
 
-CLASSMETHODS::
+classmethods::
 
-METHOD:: new
+method:: new
 Creates a new instance of link::Classes/GMStyle::.
 
-METHOD:: default
+method:: default
 Sets or gets the default instance of link::Classes/GMStyle::, which is applied to all widgets by default when they are created. If you do not plan to use more than one style, you can use this instance instead of creating your own.
 
 Setting a new default style won't apply the new style to previously created widgets which are tied to the precedent default style, which is likely to prevent their visual modification.
 
 returns:: the default link::Classes/GMStyle:: instance.
 
-INSTANCEMETHODS::
+instancemethods::
 
-METHOD:: borderSize
+method:: borderSize
 Sets or gets the outer border size, in pixels.
 
-METHOD:: secondBorderSize
+method:: secondBorderSize
 Sets or gets the middle border size, in pixels.
 
-METHOD:: thirdBorderSize
+method:: thirdBorderSize
 Sets or gets the inner border size, in pixels.
 
-METHOD:: borderColor
+method:: borderColor
 Sets or gets the outer border color.
 
-METHOD:: secondBorderColor
+method:: secondBorderColor
 Sets or gets the middle border color.
 
-METHOD:: thirdBorderColor
+method:: thirdBorderColor
 Sets or gets the inner border color.
 
-METHOD:: mainColor
+method:: mainColor
 Sets or gets the style's main color. This color is usually used to highlight the relevant information inside a widget, and should contrast with other colors.
 
-METHOD:: secondColor
+method:: secondColor
 Sets or gets the style's second color. This color is usually used to display informations that are not as relevant as the ones highlighted with the mainColor.
 
-METHOD:: backColor
+method:: backColor
 Sets or gets the style's back color. This color is usually used to fill irrelevant part of the widget, such as frames backgrounds.
 
-METHOD:: backgroundColor
+method:: backgroundColor
 Sets or gets the style's background color. This color is usually used to fill the widgets background.
 
-METHOD:: outlineSize
+method:: outlineSize
 Sets or gets the width of every drawn line.
 
-METHOD:: outlineColor
+method:: outlineColor
 Sets or gets the color of every drawn line.
 
-METHOD:: beatColor
+method:: beatColor
 Sets or gets the color associated to the notion of 'current beat'. This is used by rythm widgets to display which beat is currently playing.
 
-METHOD:: disabledColor
+method:: disabledColor
 Sets or gets the color of disabled widgets.
 
-METHOD:: selectedColor
+method:: selectedColor
 Sets or gets the color of selected widgets.
 
-METHOD:: selectedColor
+method:: selectedColor
 Sets or gets the helpers color.
 
-METHOD:: font
+method:: font
 Sets or gets the style's font.
 
-METHOD:: fontColor
+method:: fontColor
 Sets or gets the style's font color.
 
-METHOD:: fontColorDisabled
+method:: fontColorDisabled
 Sets or gets the style's font color for disabled widgets.
 
-METHOD:: valueFontColor
+method:: valueFontColor
 Sets or gets the font color used to display values on widget such as sliders.
 
-METHOD:: highlightColor
+method:: highlightColor
 Sets or gets the reference color used to display beat helpers.
 
 subsection::Internal Methods
 
-METHOD:: addListener
+method:: addListener
 
-METHOD:: removeListener
+method:: removeListener
 
-METHOD:: refreshListeners
+method:: refreshListeners
 
-EXAMPLES::
+examples::
 
 Use the code::style:: method of a widget to apply your newly created style :
 

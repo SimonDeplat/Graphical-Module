@@ -1,9 +1,9 @@
-TITLE:: GMZZSlider
+title:: GMZZSlider
 summary:: An abstract class for single value sliders (Graphical Module)
 categories:: GUI>Graphical Module
 related:: Classes/GMFaderSlider, Classes/GMSymbolSlider, Classes/GMUserView, Classes/GMStyle
 
-DESCRIPTION::
+description::
 
 subsection::A note on this class hierarchy
 
@@ -221,98 +221,98 @@ Due to the implementation of this algorithm, switching directly between CTRL and
 
 When pressing ALT and a 'mod step' at the same time, the anchor point will be the value at the cursor position.
 
-CLASSMETHODS::
+classmethods::
 
-METHOD:: new
+method:: new
 Creates a new instance of link::Classes/GMZZSlider::.
 
 returns:: a link::Classes/GMZZSlider:: instance. This method is implicitely internal.
 
-INSTANCEMETHODS::
+instancemethods::
 
 subsection::Interaction
 
-METHOD:: action
+method:: action
 Sets or gets the link::Classes/Function:: to be triggered when interacting with the slider changes its value. This link::Classes/Function:: takes the current slider value as argument.
-ARGUMENT:: aFunction
+argument:: aFunction
 A link::Classes/Function:: with an argument, a link::Classes/Float:: which correspond to the sliders current value.
 
-METHOD:: mouseDownAction
+method:: mouseDownAction
 Sets or gets the link::Classes/Function:: to be triggered when interacting with the slider changes its value. This link::Classes/Function:: takes the current slider value as argument. Equivalent to code::.action::.
-ARGUMENT:: aFunction
+argument:: aFunction
 A link::Classes/Function:: with an argument, a link::Classes/Float:: which correspond to the sliders current value.
 
-METHOD:: value
+method:: value
 Sets or gets the current slider value. It will be clipped between code::min:: and code::max:: values.
 
-METHOD:: min
+method:: min
 Sets or gets the slider minimum value.
 
-METHOD:: max
+method:: max
 Sets or gets the slider maximum value.
 
-METHOD:: scale
+method:: scale
 Sets or gets the slider scale. Can be either code::\lin::, code::\exp:: or code::\log::, or a number.
-ARGUMENT:: aScale
+argument:: aScale
 A link::Classes/Symbol:: or a link::Classes/SimpleNumber::.
 
-METHOD:: expMin
+method:: expMin
 Sets or gets safety value the slider will use to perform mapping in the special case where scale is either code::\exp:: or code::\log::, and code::min:: equals 0.
 
-METHOD:: orientation
+method:: orientation
 Sets the link::Classes/View:: direction.
-ARGUMENT:: aSymbol
+argument:: aSymbol
 The link::Classes/View:: will be distributed horizontally if set as code::\horizontal::, vertically otherwise.
 
-METHOD:: polarity
+method:: polarity
 Sets the polarity of the scale. Slider will range from code::min:: to code::max:: if set as code::\uni::, or from code::max.neg:: to code::max::, excluding code::min.neg:: to code::min::, if set as code::\bi::.
-ARGUMENT:: aSymbol
+argument:: aSymbol
 Either code::\uni:: or code::\bi::.
 
-METHOD:: helpersNumber
+method:: helpersNumber
 Sets or gets the slider 'big helpers' number.
 
-METHOD:: helperSubdivisions
+method:: helperSubdivisions
 Sets or gets the number of 'small helpers' between each 'big helpers' pair.
 
-METHOD:: modStep
+method:: modStep
 Sets or gets the step value to use when CTRL is pressed.
 
-METHOD:: modStepOperator
+method:: modStepOperator
 Sets or gets the operator to use when CTRL is pressed.
-ARGUMENT:: aSymbol
+argument:: aSymbol
 Either code::\add:: or code::\mul::.
 
-METHOD:: modStepPixelRange
+method:: modStepPixelRange
 Sets or gets the pixel range to use when CTRL is pressed.
 
-METHOD:: modStep2
+method:: modStep2
 Sets or gets the step value to use when CTRL + SHIFT is pressed.
 
-METHOD:: modStep2Operator
+method:: modStep2Operator
 Sets or gets the operator to use when CTRL + SHIFT is pressed.
-ARGUMENT:: aSymbol
+argument:: aSymbol
 Either code::\add:: or code::\mul::.
 
-METHOD:: modStep2PixelRange
+method:: modStep2PixelRange
 Sets or gets the pixel range to use when CTRL + SHIFT is pressed.
 
-METHOD:: modSteps
+method:: modSteps
 Sets or gets both mod steps values.
 
-METHOD:: modStepsOperators
+method:: modStepsOperators
 Sets or gets both mod steps operators.
 
-METHOD:: modStepsPixelRanges
+method:: modStepsPixelRanges
 Sets or gets both mod steps pixel ranges.
 
 subsection::Internal Methods
 
-METHOD:: prCheckMod
-METHOD:: prGetClosestHelper
-METHOD:: prGetModStepValue
-METHOD:: prUpdateValue
+method:: prCheckMod
+method:: prGetClosestHelper
+method:: prGetModStepValue
+method:: prUpdateValue
 
-EXAMPLES::
+examples::
 
 See the link::Classes/GMFaderSlider:: documentation for examples and templates.

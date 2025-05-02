@@ -1,9 +1,9 @@
-TITLE:: GMFaderSlider
+title:: GMFaderSlider
 summary:: A simple slider for creating graphical interfaces
 categories:: GUI>Graphical Module
 related:: Classes/GMZZSlider, Classes/GMSymbolSlider, Classes/GMUserView, Classes/GMStyle
 
-DESCRIPTION::
+description::
 link::Classes/GMFaderSlider:: is an easy to use customisable slider.
 
 It inherits from the link::Classes/GMZZSlider:: class, and is only responsible for graphical specifications. See link::Classes/GMZZSlider:: for non-graphical properties settings.
@@ -30,72 +30,72 @@ GMFaderSlider()
 )
 ::
 
-CLASSMETHODS::
+classmethods::
 
-METHOD:: new
+method:: new
 Creates a new instance of link::Classes/GMFaderSlider::.
 
 By default, its graphical properties are defined by its associated link::Classes/GMStyle::. This means that creating sliders with different colors implies creating multiples link::Classes/GMStyle::. The slider color corresponds to the code::mainColor:: property.  The font color of the displayed value corresponds to the code::valueFontColor:: property.
 
 returns:: a link::Classes/GMFaderSlider:: instance.
 
-INSTANCEMETHODS::
+instancemethods::
 
 subsection::Graphical settings
 
-METHOD:: minAlpha
+method:: minAlpha
 Sets or gets the minimum alpha value that the slider color can reach when the value is equal to code::min::. Set to 1 to disable the fading effect.
-ARGUMENT:: aNumber
+argument:: aNumber
 A link::Classes/Float:: that should be between 0 and 1.
 
-METHOD:: sliderRatio
+method:: sliderRatio
 Sets or gets the size of the slider relative to the widget size.
-ARGUMENT:: aNumber
+argument:: aNumber
 A link::Classes/Float:: that should be between 0 and 1.
 
-METHOD:: displayValue
+method:: displayValue
 Sets or gets wether the value should be displayed.
 
-METHOD:: centerValue
+method:: centerValue
 Sets or gets wether the value should be centered on the widget.
 
-METHOD:: roundValue
+method:: roundValue
 Sets or gets the number the displayed value is truncated to.
 
-METHOD:: displayFunction
+method:: displayFunction
 Sets or gets the link::Classes/Function:: that will be used to adapt the displayed value if needed (see above). Set to code::nil:: to disable.
 
-METHOD:: fontRatio
+method:: fontRatio
 Sets or gets the size of the displayed value font relative to the widget size.
-ARGUMENT:: aFloat
+argument:: aFloat
 A link::Classes/Float:: that should be between 0 and 1.
 
-METHOD:: displayHelpers
+method:: displayHelpers
 Sets or gets wether helpers should be displayed.
 
-METHOD:: drawHelpers
+method:: drawHelpers
 Deprecated. Use code::displayHelpers:: instead.
 
-METHOD:: helpersStyle
+method:: helpersStyle
 Sets or gets the helpers style. Valid values are either code::\line:: or code::\dot::.
 
-METHOD:: helpersRatio
+method:: helpersRatio
 Sets or gets the size of the displayed helpers relative to the widget size. When using code::\dot:: helpers, the value will be clipped if this would cause the dots to overlap.
-ARGUMENT:: aNumber
+argument:: aNumber
 A link::Classes/Float:: that should be between 0 and 1.
 
-METHOD:: centerHelpers
+method:: centerHelpers
 Sets or gets wether helpers should be centered on the widget. Only relevant with code::line:: helpers.
 
 subsection::Internal Methods
 
-METHOD:: draw
+method:: draw
 The link::Classes/Function:: associated to the link::Classes/View:: code::drawFunc::. Shouldn't be modified.
 
-METHOD:: prDrawSlider
-METHOD:: prDrawValue
+method:: prDrawSlider
+method:: prDrawValue
 
-EXAMPLES::
+examples::
 
 Here's a demo of different helpers configuration :
 

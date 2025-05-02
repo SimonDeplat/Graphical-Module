@@ -1,9 +1,9 @@
-TITLE:: GMLinesButton
+title:: GMLinesButton
 summary:: A simple multi states button for creating graphical interfaces
 categories:: GUI>Graphical Module
 related:: Classes/GMMultiButton, Classes/GMUserView, Classes/GMStyle
 
-DESCRIPTION::
+description::
 link::Classes/GMLinesButton:: is an easy to use customisable multi states button. It allows to order its buttons on multipe lines.
 
 It does not discriminate button identifiers.
@@ -33,47 +33,47 @@ GMLinesButton()
 
 The link::Classes/Function:: associated to the code::action:: will be evaluated with two arguments : first, the index of the selected array, then the index of the button within this array. In the previous example, clicking the "b" button would call the function with code::2, 1:: as arguments.
 
-CLASSMETHODS::
+classmethods::
 
-METHOD:: new
+method:: new
 Creates a new instance of link::Classes/GMLinesButton::.
 
 Its graphical properties are defined by its associated link::Classes/GMStyle::.
 returns:: a link::Classes/GMLinesButton:: instance.
 
-INSTANCEMETHODS::
+instancemethods::
 
 subsection::GMMultiButton methods
 
 See the link::Classes/GMMultiButton:: class documentation for those methods.
 
-METHOD:: action
-METHOD:: mouseDownAction
-METHOD:: mouseMoveAction
-METHOD:: states
-METHOD:: state
-METHOD:: allowRetrigger
-METHOD:: allowMouseMove
-METHOD:: free
-METHOD:: orientation
-METHOD:: desindex
-METHOD:: direction
-METHOD:: drawSelected
-METHOD:: fontRatio
-METHOD:: unselectedRatio
-METHOD:: setColorAll
-METHOD:: setFontColorAll
-METHOD:: displayAltValue
-METHOD:: svgRatio
+method:: action
+method:: mouseDownAction
+method:: mouseMoveAction
+method:: states
+method:: state
+method:: allowRetrigger
+method:: allowMouseMove
+method:: free
+method:: orientation
+method:: desindex
+method:: direction
+method:: drawSelected
+method:: fontRatio
+method:: unselectedRatio
+method:: setColorAll
+method:: setFontColorAll
+method:: displayAltValue
+method:: svgRatio
 
 subsection::Internal Methods
 
-METHOD:: draw
+method:: draw
 The function associated to the link::Classes/View::'s code::drawFunc::. Shouldn't be modified
 
-METHOD:: prResizeSVGs
+method:: prResizeSVGs
 
-EXAMPLES::
+examples::
 
 code::
 (

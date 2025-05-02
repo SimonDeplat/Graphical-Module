@@ -1,9 +1,9 @@
-TITLE:: GMGridButton
+title:: GMGridButton
 summary:: A simple multi states button for creating graphical interfaces
 categories:: GUI>Graphical Module
 related:: Classes/GMMultiButton, Classes/GMUserView, Classes/GMStyle
 
-DESCRIPTION::
+description::
 link::Classes/GMGridButton:: is an easy to use customisable multi states button. It will automatically arrange its buttons according to a grid.
 
 It does not discriminate button identifiers.
@@ -12,48 +12,48 @@ subsection::A note about this documentation
 
 This class is an extension of link::Classes/GMMultiButton::. The only difference between those two classes is their code::drawFunc::. See link::Classes/GMMultiButton:: documentation for methods documentation.
 
-CLASSMETHODS::
+classmethods::
 
-METHOD:: new
+method:: new
 Creates a new instance of link::Classes/GMGridButton::.
 
 Its graphical properties are defined by its associated link::Classes/GMStyle::.
 returns:: a link::Classes/GMGridButton:: instance.
 
-INSTANCEMETHODS::
+instancemethods::
 
 subsection::GMMultiButton methods
 
 See the link::Classes/GMMultiButton:: class documentation for those methods.
 
-METHOD:: action
-METHOD:: mouseDownAction
-METHOD:: mouseMoveAction
-METHOD:: states
-METHOD:: state
-METHOD:: allowRetrigger
-METHOD:: allowMouseMove
-METHOD:: free
-METHOD:: orientation
-METHOD:: desindex
-METHOD:: direction
-METHOD:: drawSelected
-METHOD:: fontRatio
-METHOD:: unselectedRatio
-METHOD:: setColorAll
-METHOD:: setFontColorAll
-METHOD:: displayAltValue
-METHOD:: svgRatio
+method:: action
+method:: mouseDownAction
+method:: mouseMoveAction
+method:: states
+method:: state
+method:: allowRetrigger
+method:: allowMouseMove
+method:: free
+method:: orientation
+method:: desindex
+method:: direction
+method:: drawSelected
+method:: fontRatio
+method:: unselectedRatio
+method:: setColorAll
+method:: setFontColorAll
+method:: displayAltValue
+method:: svgRatio
 
 subsection::Internal Methods
 
-METHOD:: draw
+method:: draw
 The function associated to the link::Classes/View::'s code::drawFunc::. Shouldn't be modified
 
-METHOD:: prResizeSVGs
-METHOD:: prGetGridOrga
+method:: prResizeSVGs
+method:: prGetGridOrga
 
-EXAMPLES::
+examples::
 
 Used as a rudimentary keyboard :
 

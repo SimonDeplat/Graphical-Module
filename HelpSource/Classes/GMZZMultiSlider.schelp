@@ -1,9 +1,9 @@
-TITLE:: GMZZMultiSlider
+title:: GMZZMultiSlider
 summary:: An abstract class for sliders with multiple values (Graphical Module)
 categories:: GUI>Graphical Module
 related:: Classes/GMZZSlider, Classes/GMFaderMultiSlider, Classes/GMSymbolMultiSlider, Classes/GMLineMultiSlider, Classes/GMUserView, Classes/GMStyle
 
-DESCRIPTION::
+description::
 
 link::Classes/GMZZMultiSlider:: is an abstract class that defines multiple values sliders behavior within the scope of the Graphical Module. The class name begins with "GMZZ" so it is displayed last in the autocompletion API.
 
@@ -42,56 +42,56 @@ subsection::Sequencer API
 
 link::Classes/GMZZMultiSlider:: can be used as a sequencer. As such, it is possible to highlight certain sliders, and to use a link::Classes/Routine:: to highlight the current beat. Since those are graphical properties only, those methods are documented within the documentation of the classes that inherit from link::Classes/GMZZMultiSlider::.
 
-CLASSMETHODS::
+classmethods::
 
-METHOD:: new
+method:: new
 Creates a new instance of link::Classes/GMZZMultiSlider::.
 
 returns:: a link::Classes/GMZZMultiSlider:: instance. This method is implicitely internal.
 
-INSTANCEMETHODS::
+instancemethods::
 
-METHOD:: values
+method:: values
 Sets or gets the values the multislider is manipulating. The size of the array defines how many sliders are displayed.
 
-METHOD:: action
+method:: action
 Sets or gets the link::Classes/Function:: to be evaluated when interacting with the multislider changes one its value. Depending on the selected code::actionMode::, this link::Classes/Function:: either takes the current values as argument, or the last modified value with its index.
 
-METHOD:: actionMode
+method:: actionMode
 Sets or gets the argument format the code::action:: function is expecting. Can be either code::\values:: or code::\index:: (see above).
 
-METHOD:: orientation
+method:: orientation
 Sets or gets the orientation of the multislider. This refers to the orientation of the sliders distribution, not the orientation they are interacted with. Can be either code::\horizontal:: or code::\vertical::.
 
 subsection::GMZZSlider Methods
 
 See the link::Classes/GMZZSlider:: class documentation for those methods.
 
-METHOD:: min
-METHOD:: max
-METHOD:: expMin
-METHOD:: scale
-METHOD:: polarity
-METHOD:: mouseDownAction
-METHOD:: helpersNumber
-METHOD:: helperSubdivisions
-METHOD:: modStep
-METHOD:: modStepOperator
-METHOD:: modStepPixelRange
-METHOD:: modStep2
-METHOD:: modStep2Operator
-METHOD:: modStep2PixelRange
-METHOD:: modSteps
-METHOD:: modStepsOperators
-METHOD:: modStepsPixelRanges
+method:: min
+method:: max
+method:: expMin
+method:: scale
+method:: polarity
+method:: mouseDownAction
+method:: helpersNumber
+method:: helperSubdivisions
+method:: modStep
+method:: modStepOperator
+method:: modStepPixelRange
+method:: modStep2
+method:: modStep2Operator
+method:: modStep2PixelRange
+method:: modSteps
+method:: modStepsOperators
+method:: modStepsPixelRanges
 
 subsection::Internal Methods
 
-METHOD:: prUpdateValue
-METHOD:: prCheckMod
-METHOD:: prGetClosestHelper
-METHOD:: prGetModStepValue
+method:: prUpdateValue
+method:: prCheckMod
+method:: prGetClosestHelper
+method:: prGetModStepValue
 
-EXAMPLES::
+examples::
 
 See the link::Classes/GMFaderMultiSlider:: documentation for examples.

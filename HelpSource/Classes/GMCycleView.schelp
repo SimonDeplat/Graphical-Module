@@ -1,9 +1,9 @@
-TITLE:: GMCycleView
+title:: GMCycleView
 summary:: A simple visual display to keep track of the current beat
 categories:: GUI>Graphical Module
 related:: Classes/GMUserView, Classes/GMStyle
 
-DESCRIPTION::
+description::
 
 Numerous musical styles subdivide time in several layers, which are also sudbivided by a certain numerical value.
 
@@ -60,29 +60,29 @@ cycleView.front;
 )
 ::
 
-CLASSMETHODS::
+classmethods::
 
-METHOD:: new
+method:: new
 Creates a new instance of link::Classes/GMCycleView::.
 
 Its graphical properties are defined by its associated link::Classes/GMStyle::.
 returns:: a link::Classes/GMCycleView:: instance.
 
-INSTANCEMETHODS::
+instancemethods::
 
-METHOD:: cycles
+method:: cycles
 Sets or gets the number of cycles, and theirs subdivisions (see example above). This will code::reset:: the view.
 
-METHOD:: advance
+method:: advance
 Advances the link::Classes/GMCycleView:: by one beat. Internally defers the code::refresh:: call.
 
-METHOD:: reset
+method:: reset
 Resets the link::Classes/GMCycleView:: backs to the very first beat. Internally defers the code::refresh:: call.
 
-METHOD:: states
+method:: states
 Sets or gets the current beat position in every cycle. Can be used to advance manually. Internally defers the code::refresh:: call.
 
 subsection::Internal Methods
 
-METHOD:: draw
+method:: draw
 The function associated to the link::Classes/View::'s code::drawFunc::. Shouldn't be modified.

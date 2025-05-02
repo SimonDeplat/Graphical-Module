@@ -1,124 +1,124 @@
-TITLE:: GMKeyboard
+title:: GMKeyboard
 summary:: A widget that displays a keyboard and can interface a HID
 categories:: GUI>Graphical Module
 related:: Classes/GMUserView, Classes/GMStyle
 
-DESCRIPTION::
+description::
 link::Classes/GMKeyboard:: is a strong::piano keyboard:: emulation widget, with visual feedback.
 
 It includes two displays modes : code::diatonic:: or code::chromatic::.
 
 It also provides an easy way to be controlled by a HID (a computer keyboard or a MIDI device). See the example section for a detailed example of this functionality.
 
-CLASSMETHODS::
+classmethods::
 
-METHOD:: new
+method:: new
 Creates a new instance of link::Classes/GMKeyboard::.
 
 Its graphical properties are defined by its associated link::Classes/GMStyle::.
 
-INSTANCEMETHODS::
+instancemethods::
 
 subsection::Interaction
 
-METHOD:: action
+method:: action
 Sets or gets the link::Classes/Function:: to be triggered when the button is pressed down. This link::Classes/Function:: takes an link::Classes/Integer:: argument: the index of the pressed key. If code::sustainMode:: is set to code::true::, the action will take a second argument : a link::Classes/Boolean:: indicating if the key has been pressed or released.
 
-METHOD:: sustainMode
+method:: sustainMode
 Sets or gets wether the keyboard only responds to code::mouseDownAction::, or if it emits two different actions when pressed or released (see code::action::).
 
-METHOD:: keyNumber
+method:: keyNumber
 Sets or gets the number of displayed keys.
 
 subsection::Graphics
 
-METHOD:: mode
+method:: mode
 Sets or gets the keyboard display mode. Valid values are either code::\diatonic:: or code::\chromatic::.
 
 Changing mode will reset names and highlights.
 
-METHOD:: chromaticStartNote
+method:: chromaticStartNote
 In code::chromatic:: mode, sets or gets the offset of the keyboard representation.
 
 For example, with a value of 3, the keyboard representation would start with the 'Eb' key instead of the 'C' key.
 
-METHOD:: displayNames
+method:: displayNames
 Sets or gets wether labels should be displayed on the keyboard.
 
-METHOD:: names
+method:: names
 Sets or gets the labels displayed on keys.
 
 When using code::chromatic:: mode, code::chromaticStartNote:: is used to offset the index of labels. This means that, in code::chromatic:: mode, when names are overriden, the first index of the array still corresponds to the 'C' key of the keyboard, even if the keyboard display has been offset.
 
-METHOD:: displayHighlights
+method:: displayHighlights
 Sets or gets wether certain notes should be highlighted.
 
-METHOD:: highlights
+method:: highlights
 Sets or gets the key highlighting policy. The array will be wrapped around if its size is shorter than the number of keys. As an example, in code::diatonic:: mode, code::[1, 0.5, 0.75, 0.5, 0.75, 0.5 , 0.5]:: will highlight the fundamental, the third and the fifth of the scale.
 
-METHOD:: names
+method:: names
 Sets or gets the labels displayed on keys.
 
-METHOD:: keyColor
+method:: keyColor
 Sets or gets the link::Classes/Color:: that will be used to draw 'white' keys.
 
-METHOD:: keyOutlineColor
+method:: keyOutlineColor
 Sets or gets the border link::Classes/Color:: that will be used to draw 'white' keys.
 
-METHOD:: blackKeyColor
+method:: blackKeyColor
 Sets or gets the link::Classes/Color:: that will be used to draw 'black' keys.
 
-METHOD:: blackKeyOutlineColor
+method:: blackKeyOutlineColor
 Sets or gets the border link::Classes/Color:: that will be used to draw 'black' keys.
 
-METHOD:: blinkColor
+method:: blinkColor
 Sets or gets the link::Classes/Color:: that will be used to draw keys when they've been pressed.
 
-METHOD:: blinkFontColor
+method:: blinkFontColor
 Sets or gets the link::Classes/Color:: that will be used to draw labels on keys when they've been pressed.
 
-METHOD:: fontRatio
+method:: fontRatio
 Sets or gets the relative size of labels displayed on keys.
 
-METHOD:: margins
+method:: margins
 Sets or gets the margins size between keys, in pixel.
 
-METHOD:: outlineKeys
+method:: outlineKeys
 Sets or gets wether keys borders should be drawn.
 
-METHOD:: blackKeyRatio
+method:: blackKeyRatio
 Sets or gets the height of 'black' keys relative to the size of 'white' keys.
 
 subsection::HID interfacing
 
-METHOD:: playKey
+method:: playKey
 Plays the key at specified index, starting its blinking animation. If code::doAction:: is code::true::, this will also evaluate the associated code::action::, passing only the key index as argument.
 
-METHOD:: sustainKey
+method:: sustainKey
 Plays the key at specified index, toggling its color. If code::doAction:: is code::true::, this will also evaluate the associated code::action::, passing the key index as argument, and code::true::, meaning the key has been pressed.
 
-METHOD:: releaseKey
+method:: releaseKey
 Stops the key at specified index, starting its blinking animation. If code::doAction:: is code::true::, this will also evaluate the associated code::action::, passing the key index as argument, and code::false::, meaning the key has been released.
 
 subsection::Internal methods
 
-METHOD:: draw
+method:: draw
 The function associated to the link::Classes/View::'s code::drawFunc::. Shouldn't be modified.
 
-METHOD:: prAddBlink
-METHOD:: prDetectChromaKey
-METHOD:: prDrawChromatic
-METHOD:: prDrawDiatonic
-METHOD:: prDrawKey
-METHOD:: prDrawLeftKey
-METHOD:: prDrawMiddleKey
-METHOD:: prDrawRightKey
-METHOD:: prGetChromaticCaseSize
-METHOD:: prGetTimerColor
-METHOD:: prGetWhiteKeysNumber
-METHOD:: prUpdateBlinks
+method:: prAddBlink
+method:: prDetectChromaKey
+method:: prDrawChromatic
+method:: prDrawDiatonic
+method:: prDrawKey
+method:: prDrawLeftKey
+method:: prDrawMiddleKey
+method:: prDrawRightKey
+method:: prGetChromaticCaseSize
+method:: prGetTimerColor
+method:: prGetWhiteKeysNumber
+method:: prUpdateBlinks
 
-EXAMPLES::
+examples::
 
 strong::Simple setup example:::
 
@@ -234,7 +234,7 @@ s.waitForBoot({
 
 strong::HID interfacing example:::
 
-WARNING::This functionality is currently unavailable when using computer keyboard (unless using 'hacks'), due to the current implementation of Qts keyboard response to held keys. See https://github.com/supercollider/supercollider/issues/6466 .::
+warning::This functionality is currently unavailable when using computer keyboard (unless using 'hacks'), due to the current implementation of Qts keyboard response to held keys. See https://github.com/supercollider/supercollider/issues/6466 .::
 
 code::playKey::, code::sustainKey:: and code::releaseKey:: allow to use link::Classes/GMKeyboard:: as an interface, using a link::Classes/HID::.
 

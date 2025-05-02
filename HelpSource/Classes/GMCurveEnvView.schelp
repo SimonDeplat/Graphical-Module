@@ -1,9 +1,9 @@
-TITLE:: GMCurveEnvView
+title:: GMCurveEnvView
 summary:: A graphical interface that controls an Env
 categories:: GUI>Graphical Module
 related:: Classes/GMUserView, Classes/GMStyle
 
-DESCRIPTION::
+description::
 link::Classes/GMCurveEnvView:: is a widget that allows interaction with an link::Classes/Env::.
 
 It provides strong::handles on every level:: of the link::Classes/Env::, allowing to reshape it with the cursor. It also provides strong::handles on every segment::, allowing to change the curvature of the selected segment. The CTRL + LEFT MOUSE BUTTON will strong::add new points::, RIGHT MOUSE BUTTON will strong::delete points::.
@@ -18,105 +18,105 @@ link::Classes/GMCurveEnvView::s code::drawFunc:: relies heavily on code::mouseMo
 
 Currrently, link::Classes/GMCurveEnvView:: only supports linear distribution on its Y axis.
 
-CLASSMETHODS::
+classmethods::
 
-METHOD:: new
+method:: new
 Creates a new instance of link::Classes/GMCurveEnvView::.
 
 Its graphical properties are defined by its associated link::Classes/GMStyle::.
 
-INSTANCEMETHODS::
+instancemethods::
 
 subsection::Interaction
 
-METHOD:: env
+method:: env
 Sets or gets the manipulated link::Classes/Env::.
 
 Two checks are passed on the new env : if the new env is longer than the allowed max size, it will be shrunk to the max allowed size. Then, for every segment of the env, if its curvature is not an integer (or not \lin), it will be set to a 0 curvature.
 
 Since those checks might have modified the env, this would mean the displayed env is not in sync with the original env. code::env:: takes an additional boolean argument which, if set to code::true::, will reevaluate the code::action:: if the env has been modified, to ensure synchronicity.
 
-METHOD:: action
+method:: action
 Sets or gets the function to evaluate when the widget is used. This link::Classes/Function:: takes a single link::Classes/Env:: argument. Please note that the env passed as argument will be a copy of link::Classes/GMCurveEnvView:: internal env.
 
-ARGUMENT:: aFunction
+argument:: aFunction
 A link::Classes/Function:: with a single argument.
 
-METHOD:: actionOnMove
+method:: actionOnMove
 Sets or gets wether the associated code::action:: should be evaluated every time the user moves a point or a curvature. If set to code::false::, code::action:: will only evaluate on mouse up and down actions.
 
-METHOD:: timeScale
+method:: timeScale
 Sets or gets the portion of time the width of the widget represents, in seconds. For example, a value of 2.0 means that a point on the right border of the widget defines the level of the env 2.0 seconds after it started playing. In the same way, a point exactly in the middle of the widgets horizontal axis would represent the level of the env 1 second after it started playing. Setting this value too low can prevent selecting points which time are greater than the current code::timeScale::.
 
-ARGUMENT:: aNumber
+argument:: aNumber
 
-METHOD:: yMin
+method:: yMin
 Sets or gets the value the vertical axis bottom border corresponds to. This is purely visual and won't affect envs levels. Setting this value too high might prevent selecting points which level is lower. Will disable code::lastLevelIsZero:: is different from 0.
 
-ARGUMENT:: aNumber
+argument:: aNumber
 
-METHOD:: yMax
+method:: yMax
 Sets or gets the value the vertical axis top border corresponds to. This is purely visual and won't affect envs levels. Setting this value too low might prevent selecting points which level is higher
 
-ARGUMENT:: aNumber
+argument:: aNumber
 
-METHOD:: lastLevelIsZero
+method:: lastLevelIsZero
 Sets or gets wether the last point should be constrained to a value of 0. This is mostly useful for enveloppes that control an amplitude parameter.
 
-METHOD:: maxSize
+method:: maxSize
 Sets or gets the max number of points that the widget allows to create. Since link::Classes/SynthDef:: have a fixed maximum enveloppe size defined at creation, this allows to adapt the link::Classes/GMCurveEnvView:: accordingly. Addition of new points will be disabled once this maximum is reached.
 
-ARGUMENT:: anInteger
+argument:: anInteger
 An link::Classes/Integer::.
 
 subsection::Grahics
 
-METHOD:: modColor
+method:: modColor
 Sets or gets the link::Classes/Color:: used to display new point preview and highlight hovered handles.
 
-METHOD:: displayHelpers
+method:: displayHelpers
 Sets or gets wether helpers should be drawn. Helpers will display a grid pattern on the background of the widget to ease point placement.
 
-METHOD:: xHelpers
+method:: xHelpers
 Sets or gets the number of vertical lines displayed on the background of the widget, not counting extremities, when helpers are displayed.
 
-METHOD:: yHelpers
+method:: yHelpers
 Sets or gets the number of horizontal lines displayed on the background of the widget, not counting extremities, when helpers are displayed.
 
-METHOD:: helpersWidth
+method:: helpersWidth
 Sets or gets the helpers grid width, in pixel.
 
-METHOD:: helpersFontSize
+method:: helpersFontSize
 Sets or gets the font size of helpers labels, in pixel.
 
-METHOD:: xRoundValue
+method:: xRoundValue
 Sets or gets the rounding value of horizontal helpers labels.
 
-METHOD:: yRoundValue
+method:: yRoundValue
 Sets or gets the rounding value of vertical helpers labels.
 
 subsection::Internal Methods
 
-METHOD:: draw
+method:: draw
 The function associated to the link::Classes/View::s code::drawFunc::. Shouldn't be modified.
 
-METHOD:: prAddPoint
-METHOD:: prCheckHovering
-METHOD:: prCollideWith
-METHOD:: prDrawHandles
-METHOD:: prDrawHelpers
-METHOD:: prDrawLine
-METHOD:: prDrawNewPoint
-METHOD:: prDrawPoints
-METHOD:: prFillShape
-METHOD:: prGetHandlePositions
-METHOD:: prGetPointPositions
-METHOD:: prMousePosInbounds
-METHOD:: prMoveHandle
-METHOD:: prMovePoint
-METHOD:: prRemovePoint
+method:: prAddPoint
+method:: prCheckHovering
+method:: prCollideWith
+method:: prDrawHandles
+method:: prDrawHelpers
+method:: prDrawLine
+method:: prDrawNewPoint
+method:: prDrawPoints
+method:: prFillShape
+method:: prGetHandlePositions
+method:: prGetPointPositions
+method:: prMousePosInbounds
+method:: prMoveHandle
+method:: prMovePoint
+method:: prRemovePoint
 
-EXAMPLES::
+examples::
 
 A simple example, with a link::Classes/GMCurveEnvView:: controlling a sine wave amplitude:
 

@@ -1,43 +1,43 @@
-TITLE:: GMXYUserView
+title:: GMXYUserView
 summary:: An abstract class that contains private methods for canvas utilities
 categories:: GUI>Graphical Module
 related:: Classes/GMUserView
 
-DESCRIPTION::
+description::
 link::Classes/GMXYUserView:: is an abstract class used to centralize methods that some link::Classes/Class:: from the Graphical Module are using.
 
 It makes no sense instanciating this class, as it won't display anything, and it is not possible to interact with it.
 
 Internal methods defined within this class are either coordinates mapping utilities or drawing functions.
 
-CLASSMETHODS::
+classmethods::
 
-METHOD:: new
+method:: new
 Creates a new instance of link::Classes/GMXYUserView::.
 
-INSTANCEMETHODS::
+instancemethods::
 
 subsection:: Internal Methods
 
-METHOD:: getXMousePos
-METHOD:: getYMousePos
-METHOD:: getXMouseMapping
-METHOD:: getYMouseMapping
-METHOD:: getXMouseMappingBipolar
-METHOD:: getYMouseMappingBipolar
-METHOD:: getXIndex
-METHOD:: getYIndex
-METHOD:: getCase
+method:: getXMousePos
+method:: getYMousePos
+method:: getXMouseMapping
+method:: getYMouseMapping
+method:: getXMouseMappingBipolar
+method:: getYMouseMappingBipolar
+method:: getXIndex
+method:: getYIndex
+method:: getCase
 
-METHOD:: getXValueMapping
-METHOD:: getYValueMapping
-METHOD:: getXValueMappingBipolar
-METHOD:: getYValueMappingBipolar
+method:: getXValueMapping
+method:: getYValueMapping
+method:: getXValueMappingBipolar
+method:: getYValueMappingBipolar
 
-METHOD:: drawCircle
-METHOD:: drawRect
-METHOD:: drawDiamond
+method:: drawCircle
+method:: drawRect
+method:: drawDiamond
 
-METHOD:: drawLineHelpers
-METHOD:: drawDotHelpers
-METHOD:: drawMultiDotHelpers
+method:: drawLineHelpers
+method:: drawDotHelpers
+method:: drawMultiDotHelpers

@@ -1,9 +1,9 @@
-TITLE:: GMMultiButton
+title:: GMMultiButton
 summary:: A simple multi states button for creating graphical interfaces
 categories:: GUI>Graphical Module
 related:: Classes/GMUserView, Classes/GMStyle
 
-DESCRIPTION::
+description::
 link::Classes/GMMultiButton:: is an easy to use customisable button.
 
 It allows to chose between multiple states.
@@ -49,92 +49,92 @@ mButton.front;
 )
 ::
 
-CLASSMETHODS::
+classmethods::
 
-METHOD:: new
+method:: new
 Creates a new instance of link::Classes/GMMultiButton::.
 
 Its graphical properties are defined by its associated link::Classes/GMStyle::.
 returns:: a link::Classes/GMMultiButton:: instance.
 
-INSTANCEMETHODS::
+instancemethods::
 
 subsection::Interaction
 
-METHOD:: action
+method:: action
 Sets or gets the link::Classes/Function:: to be triggered when the button is pressed. This link::Classes/Function:: takes the current index of the button as argument, i.e. pressing the first button on the left (or the top if set as vertical) will call the link::Classes/Function:: passing 0 as argument. Reclicking a previously selected button will call the link::Classes/Function:: again if the code::retrigger:: parameter has been set to code::true::.
 
-ARGUMENT:: aFunction
+argument:: aFunction
 A link::Classes/Function:: with one argument, the current index of the button as an link::Classes/Integer::. The case control structure allows to easily define what actions it should trigger (see example below).
 
-METHOD:: mouseDownAction
+method:: mouseDownAction
 Equivalent to code::.action::.
 
-METHOD:: mouseMoveAction
+method:: mouseMoveAction
 Equivalent to code::.action::.
 
-METHOD:: states
+method:: states
 Sets or gets the link::Classes/View:: states array, and refreshes the link::Classes/View::. Resets the current index to 0.
 
-ARGUMENT:: anArray
+argument:: anArray
 An link::Classes/Array::. By default, this method is expecting an array filled with dictionaries, each containing a code::\string::, a code::\color:: and a code::\fontColor:: values. This allows to make the differents buttons easier to distinguish.
 It is also possible to pass an array of strings as arguments. In this case, the link::Classes/GMStyle:: code::backgroundColor:: and code::valueFontColor:: parameters will be used.
 
-METHOD:: state
+method:: state
 Sets or gets the link::Classes/View:: current selected index.
 
-METHOD:: allowRetrigger
+method:: allowRetrigger
 Sets or gets wether the code::action:: should be evaluated again it the selected button is pressed down again.
 
-METHOD:: allowMouseMove
+method:: allowMouseMove
 Sets or gets wether moving the mouse while the multibutton is pressed down should update its state.
 
-METHOD:: free
+method:: free
 Frees the svg files currently used by the view.
 
 subsection::Graphical settings
 
-METHOD:: orientation
+method:: orientation
 Sets the link::Classes/View:: direction. The link::Classes/View:: will be distributed horizontally if set as code::\horizontal::, vertically otherwise.
 
-METHOD:: desindex
+method:: desindex
 Sets the button state equal to code::-1::, which will display the multibutton as if no button was selected.
 
-METHOD:: direction
+method:: direction
 Sets or gets the direction of the displayed strings. Valid values are : code::\right::, code::\top::, code::\left:: and code::\bottom::.
 
-METHOD:: drawSelected
+method:: drawSelected
 Sets or gets whether the selected button should be highlighted.
 
-METHOD:: fontRatio
+method:: fontRatio
 Sets or gets the font ratio relative to the height of its case size.
 
-METHOD:: maxFontSize
+method:: maxFontSize
 Sets or gets the maximum allowed font size, in pixels.
 
-METHOD:: unselectedRatio
+method:: unselectedRatio
 Sets or gets the ratio of unselected buttons. If this value is less than one, they'll be smaller than the selected button.
 
-METHOD:: setColorAll
+method:: setColorAll
 Sets the background color of every widget at once, when they are unselected.
 
-METHOD:: setFontColorAll
+method:: setFontColorAll
 Sets the font color of every widget at once, when they are unselected.
 
-METHOD:: displayAltValue
+method:: displayAltValue
 Sets or gets wether the stored value should be highlighted when using the ALT key modifier. The color used is the link::Classes/GMStyle:: code::secondColor:: parameter.
 
-METHOD:: svgRatio
+method:: svgRatio
 Sets or gets the svg ratio relative to the height of its case size.
 
 subsection::Internal Methods
 
-METHOD:: draw
+method:: draw
 The function associated to the link::Classes/View::'s code::drawFunc::. Shouldn't be modified
 
-METHOD:: prResizeSVGs
+method:: prResizeSVGs
 
-EXAMPLES::
+examples::
 
 Used as a rudimentary keyboard :
 

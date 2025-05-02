@@ -1,76 +1,76 @@
-TITLE:: GMSwitchButton
+title:: GMSwitchButton
 summary:: A simple multi states button for creating graphical interfaces
 categories:: GUI>Graphical Module
 related:: Classes/GMUserView, Classes/GMStyle
 
-DESCRIPTION::
+description::
 link::Classes/GMSwitchButton:: is an easy to use customisable button.
 
 It allows to switch between multiple states, behaving like a looping counter.
 
 It only responds to mouse down clicks, and does not discriminate button identifiers.
 
-CLASSMETHODS::
+classmethods::
 
-METHOD:: new
+method:: new
 Creates a new instance of link::Classes/GMSwitchButton::.
 
 By default, its graphical properties are defined by its associated link::Classes/GMStyle::.
 
 returns:: a link::Classes/GMSwitchButton:: instance.
 
-INSTANCEMETHODS::
+instancemethods::
 
 subsection::Interaction
 
-METHOD:: action
+method:: action
 Sets or gets the link::Classes/Function:: to be triggered when the button is pressed down. This link::Classes/Function:: takes the current index of the button as argument, i.e. pressing it down from its first state to its second state will call the link::Classes/Function:: passing 1 as argument.
-ARGUMENT:: aFunction
+argument:: aFunction
 A link::Classes/Function:: with one argument, the current index of the button as an link::Classes/Integer::. The case control structure allows to easily define what actions it should trigger (see example below).
 
-METHOD:: mouseDownAction
+method:: mouseDownAction
 Sets or gets the link::Classes/Function:: to be triggered when the button is pressed down. This link::Classes/Function:: takes the current index of the button as argument, i.e. pressing it down from its first state to its second state will call the link::Classes/Function:: passing 1 as argument. Equivalent to code::.action:: .
-ARGUMENT:: aFunction
+argument:: aFunction
 A link::Classes/Function:: with one argument, the current index of the button as an link::Classes/Integer::. The case control structure allows to easily define what actions it should trigger (see example below).
 
-METHOD:: states
+method:: states
 Sets or gets the link::Classes/View::'s states array, and refreshes the link::Classes/View::. Resets the current index to 0.
-ARGUMENT:: anArray
+argument:: anArray
 An link::Classes/Array:: containing an arbitrary number of link::Classes/IdentityDictionary::, each containing at least a code::\string:: key, and optionnals code::\color:: and code::\fontColor:: keys (see example below). Lastly, a code::\svg:: key containing a valid path to an SVG file can be provided to display said SVG on the state.
 
 It is also possible to only provide an link::Classes/Array:: of strings. In this case, the link::Classes/GMStyle:: code::backgroundColor:: will be used as the state background, and the code::valueFontColor:: will be used as font color (see example below).
 
-METHOD:: state
+method:: state
 Sets or gets the link::Classes/View::'s current index, and refreshes the link::Classes/View::. This doesn't trigger the associated action.
 
-METHOD:: free
+method:: free
 Frees every SVG, allowing garbage collection.
 
 subsection::Graphic settings
 
-METHOD:: fontRatio
+method:: fontRatio
 Sets or gets the font ratio relative to the widget size (depends on code::direction::).
 
-METHOD:: svgRatio
+method:: svgRatio
 Sets or gets the svg ratio relative to the widget size.
 
-METHOD:: direction
+method:: direction
 Sets or gets the string direction. Valid values are: code::\right::, code::\top::, code::\left::, code::\bottom::.
 
-METHOD:: setColorAll
+method:: setColorAll
 Sets every states background colors at once.
 
-METHOD:: setFontColorAll
+method:: setFontColorAll
 Sets every states font colors at once.
 
 subsection::Internal Methods
 
-METHOD:: draw
+method:: draw
 The function associated to the link::Classes/View::'s code::drawFunc::. Shouldn't be modified.
 
-METHOD:: prResizeSVGs
+method:: prResizeSVGs
 
-EXAMPLES::
+examples::
 
 code::
 (
