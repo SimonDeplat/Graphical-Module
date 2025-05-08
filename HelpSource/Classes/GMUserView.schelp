@@ -8,9 +8,9 @@ link::Classes/GMUserView:: is an abstract class used to centralize some methods 
 
 It inherits from the link::Classes/UserView:: class.
 
-Its main usage is to provide common functions to it's children, notably the code::.drawFrame:: method that is used to draw the background of the widgets, and allow communication between the code::.drawFunc:: and the link::Classes/GMStyle:: associated to the widget.
+Its main usage is to provide common functions to its children, notably the code::.drawFrame:: method that is used to draw the background of the widgets, and allow communication between the code::.drawFunc:: and the link::Classes/GMStyle:: associated to the widget.
 
-It can be used to draw an empty frame, but it is designed as if each of it's method was internal.
+It can be used to draw an empty frame, but it is designed as if each of its method was internal.
 
 classmethods::
 
