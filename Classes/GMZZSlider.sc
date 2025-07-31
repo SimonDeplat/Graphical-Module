@@ -61,7 +61,15 @@ GMZZSlider : GMXYUserView {
 	}
 
 	value_ { |aNumber|
-		aNumber = aNumber.clip(thisMin, thisMax);
+		if(thisPolarity != \bi) {
+			aNumber = aNumber.clip(thisMin, thisMax);
+		} {
+			if(aNumber >= 0) {
+				aNumber = aNumber.clip(thisMin, thisMax);
+			} {
+				aNumber = aNumber.clip(thisMax.neg, thisMin.neg);
+			};
+		};
 		thisValue = aNumber;
 		this.refresh;
 	}
