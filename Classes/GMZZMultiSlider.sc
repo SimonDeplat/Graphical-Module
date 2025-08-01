@@ -65,7 +65,7 @@ GMZZMultiSlider : GMXYUserView {
 	values_ { |anArray|
 		anArray.do({ |item, index|
 			if(thisPolarity != \bi) {
-				anArray[index] = index.clip(thisMin, thisMax);
+				anArray[index] = item.clip(thisMin, thisMax);
 			} {
 				if(item >= 0) {
 					anArray[index] = item.clip(thisMin, thisMax);
