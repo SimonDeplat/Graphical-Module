@@ -3,6 +3,7 @@ GMFaderMultiSlider : GMZZMultiSlider {
 	var thisMinAlpha = 0.2;
 	var thisAlpha = 0;
 	var thisSlidersRatio = 0.8;
+	var thisSlidersColors = nil;
 
 	var thisDisplayValues = true;
 	var thisFontRatio = 0.3;
@@ -46,6 +47,18 @@ GMFaderMultiSlider : GMZZMultiSlider {
 	slidersRatio_ { |aNumber|
 		thisSlidersRatio = aNumber;
 		this.refresh;
+	}
+
+	slidersColors_ { |colors|
+		if(colors.isKindOf(Color)) {
+			colors = [colors];
+		};
+		thisSlidersColors = colors;
+		this.refresh;
+	}
+
+	slidersColors {
+		^thisSlidersColors
 	}
 
 	fontRatio {
@@ -292,14 +305,25 @@ GMFaderMultiSlider : GMZZMultiSlider {
 				};
 			};
 
-			Pen.fillColor_(
-				Color(
-					super.mainColor.red,
-					super.mainColor.green,
-					super.mainColor.blue,
-					thisAlpha
+			if(thisSlidersColors.isNil) {
+				Pen.fillColor_(
+					Color(
+						super.mainColor.red,
+						super.mainColor.green,
+						super.mainColor.blue,
+						thisAlpha
+					);
 				);
-			);
+			} {
+				Pen.fillColor_(
+					Color(
+						thisSlidersColors[index % thisSlidersColors.size].red,
+						thisSlidersColors[index % thisSlidersColors.size].green,
+						thisSlidersColors[index % thisSlidersColors.size].blue,
+						thisAlpha
+					);
+				);
+			};
 
 			if(super.orientation == \horizontal) {
 				if(super.polarity == \uni) {

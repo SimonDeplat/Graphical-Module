@@ -4,6 +4,7 @@ GMSymbolMultiSlider : GMZZMultiSlider {
 	var thisSymbolRatio = 0.5;
 	var thisSymbolMinSize = 24;
 	var thisSymbolMaxSize = 128;
+	var thisSlidersColors = nil;
 
 	var symbolPosition = 0;
 	var thisDisplayLine = \value;
@@ -66,6 +67,18 @@ GMSymbolMultiSlider : GMZZMultiSlider {
 	symbolMaxSize_ { |aNumber|
 		thisSymbolMaxSize = aNumber;
 		this.refresh;
+	}
+
+	slidersColors_ { |colors|
+		if(colors.isKindOf(Color)) {
+			colors = [colors];
+		};
+		thisSlidersColors = colors;
+		this.refresh;
+	}
+
+	slidersColors {
+		^thisSlidersColors
 	}
 
 	displayLine {
@@ -342,10 +355,18 @@ GMSymbolMultiSlider : GMZZMultiSlider {
 				);
 			};
 
-			Pen.strokeColor_(super.mainColor);
-			Pen.width_(super.outlineSize);
-
 			if(thisDisplayLine != \none) {
+
+				if(thisSlidersColors.isNil) {
+					Pen.strokeColor_(super.mainColor);
+				} {
+					Pen.strokeColor_(
+						thisSlidersColors[index % thisSlidersColors.size]
+					);
+				};
+
+				Pen.width_(super.outlineSize);
+
 				if(thisDisplayLine == \full) {
 					if(super.orientation == \horizontal) {
 						Pen.line(
@@ -429,13 +450,22 @@ GMSymbolMultiSlider : GMZZMultiSlider {
 
 			Pen.stroke;
 
-			Pen.fillColor_(super.mainColor);
+			if(thisSlidersColors.isNil) {
+				Pen.fillColor_(super.mainColor);
+			} {
+				Pen.fillColor_(
+					thisSlidersColors[index % thisSlidersColors.size]
+				);
+			};
+
 			Pen.strokeColor_(super.backgroundColor);
 
-			if(thisSymbol == \circle)
-			{ super.drawCircle(symbolPosition, symbolSize) };
-			if(thisSymbol == \diamond)
-			{ super.drawDiamond(symbolPosition, symbolSize) };
+			if(thisSymbol == \circle) {
+				super.drawCircle(symbolPosition, symbolSize)
+			};
+			if(thisSymbol == \diamond) {
+				super.drawDiamond(symbolPosition, symbolSize)
+			};
 			if(thisSymbol == \square) {
 				super.drawRect(
 					symbolPosition,

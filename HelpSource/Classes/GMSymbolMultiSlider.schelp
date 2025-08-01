@@ -103,6 +103,13 @@ returns:: a link::Classes/GMFaderMultiSlider:: instance.
 
 instancemethods::
 
+method:: slidersColors
+Sets or gets individual sliders colors.
+Pass a single link::Classes/Color:: to override the style's main color.
+Pass a link::Classes/Collection:: of link::Classes/Color::s to assign different colors to each slider.
+If the link::Classes/Collection:: size is shorter than the number of sliders, colors will loop around.
+Set to code::nil:: to revert back to the syle's main color.
+
 method:: beat
 Sets or gets the displayed beat. Set to code::-1:: to disable. This will internally
 defer the graphical update.
