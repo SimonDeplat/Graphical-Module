@@ -173,7 +173,7 @@ GMTapTempo : GMUserView {
 
 	bpm_ { |newBPM|
 		thisTempo = newBPM;
-		thisString = thisTempo.asInteger.asString;
+		thisString = thisTempo.round.asInteger.asString;
 		thisBlinkTime = 60 / newBPM;
 		this.refresh;
 	}
