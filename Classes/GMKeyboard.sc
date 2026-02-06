@@ -16,7 +16,7 @@ GMKeyboard : GMXYUserView {
 	var thisBlinkColor;
 	var thisBlinkFontColor;
 	var thisFontRatio = 0.3;
-	var font;
+	var thisFont;
 
 	var thisCurrentKeyColor;
 	var thisCurrentFontColor;
@@ -421,7 +421,7 @@ GMKeyboard : GMXYUserView {
 		caseSize = caseSize - (thisMargins * (thisKeyNumber + 1));
 		caseSize = caseSize / thisKeyNumber;
 
-		font = super.font.deepCopy.size_(caseSize * thisFontRatio);
+		thisFont = super.font.deepCopy.size_(caseSize * thisFontRatio);
 
 		if(thisOutlineKeys.not) { outlineSize = 0; };
 
@@ -446,7 +446,7 @@ GMKeyboard : GMXYUserView {
 		var octave, notePos, realNotePos, noteType;
 		var noteRect;
 
-		font = super.font.deepCopy.size_(caseSize * thisFontRatio);
+		thisFont = super.font.deepCopy.size_(caseSize * thisFontRatio);
 
 		if(
 			[1, 3, 6, 8, 10]
@@ -706,7 +706,7 @@ GMKeyboard : GMXYUserView {
 					aRect.width,
 					aRect.width
 				),
-				font,
+				thisFont,
 				thisCurrentFontColor
 			);
 		};
@@ -820,7 +820,7 @@ GMKeyboard : GMXYUserView {
 					aRect.width,
 					aRect.width
 				),
-				font,
+				thisFont,
 				thisCurrentFontColor
 			);
 		};
@@ -1097,7 +1097,7 @@ GMKeyboard : GMXYUserView {
 					aRect.width,
 					aRect.width
 				),
-				font,
+				thisFont,
 				thisCurrentFontColor
 			);
 		};
