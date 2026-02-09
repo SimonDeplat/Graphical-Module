@@ -284,5 +284,4 @@ GMStyle {
 			view.refresh;
 		});
 	}
-
 }

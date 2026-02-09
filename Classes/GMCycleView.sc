@@ -43,9 +43,9 @@ GMCycleView : GMUserView {
 	}
 
 	states_ { |anArray|
-		while
-		{ anArray.size < thisCycles.size }
-		{ anArray = anArray ++ [0] };
+		while { anArray.size < thisCycles.size } {
+			anArray = anArray ++ [0];
+		};
 		thisStates = anArray;
 		// Defer the refresh call
 		// because we're probably inside a routine
@@ -67,8 +67,9 @@ GMCycleView : GMUserView {
 				thisStates[index + 1] = thisStates[index + 1] + 1;
 			};
 		});
-		if(thisStates[thisStates.size - 1] == thisCycles[thisCycles.size - 1])
-		{ thisStates[thisStates.size - 1] = 0 };
+		if(thisStates[thisStates.size - 1] == thisCycles[thisCycles.size - 1]) {
+			thisStates[thisStates.size - 1] = 0;
+		};
 
 		// Defer the refresh call
 		// because we're probably inside a routine

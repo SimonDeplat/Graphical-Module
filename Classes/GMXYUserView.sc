@@ -19,7 +19,9 @@ GMXYUserView : GMUserView {
 			super.interactionRect.right,
 			0, 1
 		);
-		if(invert) { mousePos = 1 - mousePos; };
+		if(invert) {
+			mousePos = 1 - mousePos;
+		};
 		^mousePos
 	}
 
@@ -30,7 +32,9 @@ GMXYUserView : GMUserView {
 			super.interactionRect.bottom,
 			0, 1
 		);
-		if(invert) { mousePos = 1 - mousePos; };
+		if(invert) {
+			mousePos = 1 - mousePos;
+		};
 		^mousePos
 	}
 
@@ -41,8 +45,12 @@ GMXYUserView : GMUserView {
 		mousePos = this.getXMousePos(mousePos, invert);
 
 		// Special cases first
-		if(mousePos == 0) { mousePos = min; } {
-			if(mousePos == 1) { mousePos = max; } {
+		if(mousePos == 0) {
+			mousePos = min;
+		} {
+			if(mousePos == 1) {
+				mousePos = max;
+			} {
 				if(scale.isKindOf(Symbol)) {
 
 					if(scale == \lin) {
@@ -53,7 +61,9 @@ GMXYUserView : GMUserView {
 					};
 
 					if(scale == \exp) {
-						if(min == 0) { min = expMin; };
+						if(min == 0) {
+							min = expMin;
+						};
 						mousePos = mousePos.linexp(
 							0, 1,
 							min, max
@@ -61,7 +71,9 @@ GMXYUserView : GMUserView {
 					};
 
 					if(scale == \log) {
-						if(min == 0) { min = expMin; };
+						if(min == 0) {
+							min = expMin;
+						};
 						mousePos = (1 - mousePos).linexp(
 							0, 1,
 							min, max
@@ -86,8 +98,12 @@ GMXYUserView : GMUserView {
 		mousePos = this.getYMousePos(mousePos, invert);
 
 		// Special cases first
-		if(mousePos == 0) { mousePos = min; } {
-			if(mousePos == 1) { mousePos = max; } {
+		if(mousePos == 0) {
+			mousePos = min;
+		} {
+			if(mousePos == 1) {
+				mousePos = max;
+			} {
 				if(scale.isKindOf(Symbol)) {
 					if(scale == \lin) {
 						mousePos = mousePos.linlin(
@@ -97,7 +113,9 @@ GMXYUserView : GMUserView {
 					};
 
 					if(scale == \exp) {
-						if(min == 0) { min = expMin; };
+						if(min == 0) {
+							min = expMin;
+						};
 						mousePos = mousePos.linexp(
 							0, 1,
 							min, max
@@ -105,7 +123,9 @@ GMXYUserView : GMUserView {
 					};
 
 					if(scale == \log) {
-						if(min == 0) { min = expMin; };
+						if(min == 0) {
+							min = expMin;
+						};
 						mousePos = (1 - mousePos).linexp(
 							0, 1,
 							min, max
@@ -115,7 +135,10 @@ GMXYUserView : GMUserView {
 					};
 				} {
 					mousePos = mousePos.lincurve(
-						0, 1, min, max, scale);
+						0, 1,
+						min, max,
+						scale
+					);
 				};
 			};
 		};
@@ -130,52 +153,53 @@ GMXYUserView : GMUserView {
 		mousePos = this.getXMousePos(mousePos, invert);
 
 		// Special cases first
-		if(mousePos == 0) { mousePos = max.neg; } {
-			if(mousePos == 0.5) { mousePos = min; } {
-				if(mousePos == 1) { mousePos = max; } {
-
+		if(mousePos == 0) {
+			mousePos = max.neg;
+		} {
+			if(mousePos == 0.5) {
+				mousePos = min;
+			} {
+				if(mousePos == 1) {
+					mousePos = max;
+				} {
 					if(scale.isKindOf(Symbol)) {
 						if(scale == \lin) {
 							if(mousePos < 0.5) {
 								mousePos = 0.5 - mousePos;
 								mousePos = mousePos.linlin(
-									0,
-									0.5,
-									min.neg,
-									max.neg
+									0, 0.5,
+									min.neg, max.neg
 								);
 							} {
 								mousePos = mousePos.linlin(
-									0.5,
-									1,
-									min,
-									max
+									0.5, 1,
+									min, max
 								);
 							};
 						};
 
 						if(scale == \exp) {
-							if(min == 0) { min = expMin; };
+							if(min == 0) {
+								min = expMin;
+							};
 							if(mousePos < 0.5) {
 								mousePos = 0.5 - mousePos;
 								mousePos = mousePos.linexp(
-									0,
-									0.5,
-									min.neg,
-									max.neg
+									0, 0.5,
+									min.neg, max.neg
 								);
 							} {
 								mousePos = mousePos.linexp(
-									0.5,
-									1,
-									min,
-									max
+									0.5, 1,
+									min, max
 								);
 							};
 						};
 
 						if(scale == \log) {
-							if(min == 0) { min = expMin; };
+							if(min == 0) {
+								min = expMin;
+							};
 							if(mousePos < 0.5) {
 								mousePos = mousePos.linexp(
 									0, 0.5,
@@ -196,19 +220,15 @@ GMXYUserView : GMUserView {
 						if(mousePos < 0.5) {
 							mousePos = (0.5 - mousePos) * 2;
 							mousePos = mousePos.lincurve(
-								0,
-								1,
-								min,
-								max,
+								0, 1,
+								min, max,
 								scale
 							).neg;
 						} {
 							mousePos = (mousePos - 0.5) * 2;
 							mousePos = mousePos.lincurve(
-								0,
-								1,
-								min,
-								max,
+								0, 1,
+								min, max,
 								scale
 							);
 						};
@@ -228,51 +248,53 @@ GMXYUserView : GMUserView {
 		mousePos = this.getYMousePos(mousePos, invert);
 
 		// Special cases first
-		if(mousePos == 0) { mousePos = max.neg; } {
-			if(mousePos == 0.5) { mousePos = min; } {
-				if(mousePos == 1) { mousePos = max; } {
+		if(mousePos == 0) {
+			mousePos = max.neg;
+		} {
+			if(mousePos == 0.5) {
+				mousePos = min;
+			} {
+				if(mousePos == 1) {
+					mousePos = max;
+				} {
 					if(scale.isKindOf(Symbol)) {
 						if(scale == \lin) {
 							if(mousePos < 0.5) {
 								mousePos = 0.5 - mousePos;
 								mousePos = mousePos.linlin(
-									0,
-									0.5,
-									min.neg,
-									max.neg
+									0, 0.5,
+									min.neg, max.neg
 								);
 							} {
 								mousePos = mousePos.linlin(
-									0.5,
-									1,
-									min,
-									max
+									0.5, 1,
+									min, max
 								);
 							};
 						};
 
 						if(scale == \exp) {
-							if(min == 0) { min = expMin; };
+							if(min == 0) {
+								min = expMin;
+							};
 							if(mousePos < 0.5) {
 								mousePos = 0.5 - mousePos;
 								mousePos = mousePos.linexp(
-									0,
-									0.5,
-									min.neg,
-									max.neg
+									0, 0.5,
+									min.neg, max.neg
 								);
 							} {
 								mousePos = mousePos.linexp(
-									0.5,
-									1,
-									min,
-									max
+									0.5, 1,
+									min, max
 								);
 							};
 						};
 
 						if(scale == \log) {
-							if(min == 0) { min = expMin; };
+							if(min == 0) {
+								min = expMin;
+							};
 							if(mousePos < 0.5) {
 								mousePos = mousePos.linexp(
 									0, 0.5,
@@ -293,19 +315,15 @@ GMXYUserView : GMUserView {
 						if(mousePos < 0.5) {
 							mousePos = (0.5 - mousePos) * 2;
 							mousePos = mousePos.lincurve(
-								0,
-								1,
-								min,
-								max,
+								0, 1,
+								min, max,
 								scale
 							).neg;
 						} {
 							mousePos = (mousePos - 0.5) * 2;
 							mousePos = mousePos.lincurve(
-								0,
-								1,
-								min,
-								max,
+								0, 1,
+								min, max,
 								scale
 							);
 						};
@@ -330,8 +348,12 @@ GMXYUserView : GMUserView {
 			mousePos = mousePos - caseSize
 		};
 
-		if(index > (maxIndex - 1)) { index = maxIndex - 1; };
-		if(invert) { index = maxIndex - index - 1; };
+		if(index > (maxIndex - 1)) {
+			index = maxIndex - 1;
+		};
+		if(invert) {
+			index = maxIndex - index - 1;
+		};
 
 		^index
 	}
@@ -349,8 +371,12 @@ GMXYUserView : GMUserView {
 			mousePos = mousePos - caseSize
 		};
 
-		if(index > (maxIndex - 1)) { index = maxIndex - 1; };
-		if(invert) { index = maxIndex - index - 1; };
+		if(index > (maxIndex - 1)) {
+			index = maxIndex - 1;
+		};
+		if(invert) {
+			index = maxIndex - index - 1;
+		};
 
 		^index
 	}
@@ -377,8 +403,8 @@ GMXYUserView : GMUserView {
 	getXValueMapping { |value, min, max, scale, expMin = 0.001|
 
 		if(scale.isKindOf(Symbol)) {
-			if(scale == \lin) { value =
-				value.linlin(
+			if(scale == \lin) {
+				value = value.linlin(
 					min,
 					max,
 					0,
@@ -386,34 +412,39 @@ GMXYUserView : GMUserView {
 			};
 
 			if(scale == \exp) {
-				if(value == min) { value = 0; } {
-					if(min == 0) { min = expMin; };
+				if(value == min) {
+					value = 0;
+				} {
+					if(min == 0) {
+						min = expMin;
+					};
 					value = value.explin(
 						min,
 						max,
 						0,
 						super.interactionRect.width
-				); };
+					);
+				};
 			};
 
 			if(scale == \log) {
-				if(value == min) { value = 0; } {
-					if(min == 0) { min = expMin; };
+				if(value == min) {
+					value = 0;
+				} {
+					if(min == 0) {
+						min = expMin;
+					};
 					value = max - value;
 					value = value.explin(
-						min,
-						max,
-						super.interactionRect.width,
-						0
+						min, max,
+						super.interactionRect.width, 0
 					);
 				};
 			};
 		} { // elif value is a number
 			value = value.curvelin(
-				min,
-				max,
-				0,
-				super.interactionRect.width,
+				min, max,
+				0, super.interactionRect.width,
 				scale
 			);
 		};
@@ -428,42 +459,43 @@ GMXYUserView : GMUserView {
 		if(scale.isKindOf(Symbol)) {
 			if(scale == \lin) {
 				value = value.linlin(
-					min,
-					max,
-					0,
-					super.interactionRect.height
-			); };
+					min, max,
+					0, super.interactionRect.height
+				);
+			};
 
 			if(scale == \exp) {
-				if(value == min)
-				{ value = 0; } {
-					if(min == 0) { min = expMin; };
+				if(value == min) {
+					value = 0;
+				} {
+					if(min == 0) {
+						min = expMin;
+					};
 					value = value.explin(
-						min,
-						max,
-						0,
-						super.interactionRect.height
-				); };
+						min, max,
+						0, super.interactionRect.height
+					);
+				};
 			};
 
 			if(scale == \log) {
-				if(value == min) { value = 0; } {
-					if(min == 0) { min = expMin; };
+				if(value == min) {
+					value = 0;
+				} {
+					if(min == 0) {
+						min = expMin;
+					};
 					value = max - value;
 					value = value.explin(
-						min,
-						max,
-						super.interactionRect.height,
-						0
+						min, max,
+						super.interactionRect.height, 0
 					);
 				};
 			};
 		} { // elif value is a number
 			value = value.curvelin(
-				min,
-				max,
-				0,
-				super.interactionRect.height,
+				min, max,
+				0, super.interactionRect.height,
 				scale
 			);
 		};

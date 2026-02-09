@@ -54,15 +54,20 @@ GMConsole : GMUserView {
 			if(x >= (super.interactionRect.right - buttonSize)) {
 				if(x <= super.interactionRect.right) {
 					if(y >= super.interactionRect.top) {
-						if(y <= (super.interactionRect.top + buttonSize))
-						{ this.previousMessage; }
-						{ if(y <= (super.interactionRect.top + (buttonSize * 2)))
-							{ this.nextMessage; }
-							{ if(y <= (super.interactionRect.top + (buttonSize * 3)))
-								{ this.lastMessage; };
+						if(y <= (super.interactionRect.top + buttonSize)) {
+							this.previousMessage
+						} {
+							if(y <= (super.interactionRect.top + (buttonSize * 2))) {
+								this.nextMessage
+							} {
+								if(y <= (super.interactionRect.top + (buttonSize * 3))) {
+									this.lastMessage
+								};
 							};
 						};
-			}; }; };
+					};
+				};
+			};
 		});
 	}
 
@@ -74,25 +79,27 @@ GMConsole : GMUserView {
 			timeStamp: Date.getDate.format("%H:%M:%S");
 		);
 		thisMsgList.add(dict);
-		if(thisMsgList.size > thisListMaxSize)
-		{
+		if(thisMsgList.size > thisListMaxSize) {
 			thisMsgList.removeAt(0);
 			dictFull = true;
 		};
 
-		if(locked.not)
-		{
+		if(locked.not) {
 			if(dictFull.not) { index = index + 1; };
 			currentString = aString;
 			currentTimeStamp = dict[\timeStamp];
-			if(aColor != nil)
-			{ currentColor = aColor; }
-			{ currentColor = thisDefaultStringColor; };
+			if(aColor != nil) {
+				currentColor = aColor;
+			} {
+				currentColor = thisDefaultStringColor;
+			};
 			this.refresh;
 		} {
 			if(dictFull) {
 				if(index > - 1) {
-					index = index - 1; }; };
+					index = index - 1;
+				};
+			};
 		};
 	}
 
@@ -114,13 +121,17 @@ GMConsole : GMUserView {
 			index = index + 1;
 			currentString = thisMsgList[index][\string];
 			currentTimeStamp = thisMsgList[index][\timeStamp];
-			if(thisMsgList[index][\color] != nil)
-			{ currentColor = thisMsgList[index][\color]; }
-			{ currentColor = thisDefaultStringColor; };
+			if(thisMsgList[index][\color] != nil) {
+				currentColor = thisMsgList[index][\color];
+			} {
+				currentColor = thisDefaultStringColor;
+			};
 			this.refresh;
-			if(index == (thisMsgList.size - 1))
-			{ locked = true; }
-			{ locked = false; };
+			if(index == (thisMsgList.size - 1)) {
+				locked = true;
+			} {
+				locked = false;
+			};
 		}
 	}
 
@@ -129,27 +140,31 @@ GMConsole : GMUserView {
 			index = thisMsgList.size - 1;
 			currentString = thisMsgList[index][\string];
 			currentTimeStamp = thisMsgList[index][\timeStamp];
-			if(thisMsgList[index][\color] != nil)
-			{ currentColor = thisMsgList[index][\color]; }
-			{ currentColor = thisDefaultStringColor; };
+			if(thisMsgList[index][\color] != nil) {
+				currentColor = thisMsgList[index][\color];
+			} {
+				currentColor = thisDefaultStringColor;
+			};
 			this.refresh;
 			locked = false;
 		};
 	}
 
 	removeLastMessage {
-		if(thisMsgList.size == 1)
-		{ this.reset }
-		{
+		if(thisMsgList.size == 1) {
+			this.reset
+		} {
 			if(thisMsgList.size != 0) {
 				thisMsgList.pop;
 				if(index == thisMsgList.size) {
 					index = index - 1;
 					currentString = thisMsgList[index][\string];
 					currentTimeStamp = thisMsgList[index][\timeStamp];
-					if(thisMsgList[index][\color] != nil)
-					{ currentColor = thisMsgList[index][\color]; }
-					{ currentColor = thisDefaultStringColor; };
+					if(thisMsgList[index][\color] != nil) {
+						currentColor = thisMsgList[index][\color];
+					} {
+						currentColor = thisDefaultStringColor;
+					};
 					this.refresh;
 					locked = false;
 				};
@@ -171,12 +186,11 @@ GMConsole : GMUserView {
 
 	listMaxSize_ { |anInteger|
 		thisListMaxSize = anInteger;
-		while
-		{ thisMsgList.size > thisListMaxSize }
-		{
+		while { thisMsgList.size > thisListMaxSize } {
 			thisMsgList.removeAt(0);
-			if(index > -1)
-			{ index = index - 1; };
+			if(index > -1) {
+				index = index - 1;
+			};
 		};
 	}
 
@@ -201,7 +215,8 @@ GMConsole : GMUserView {
 	prUpdateFont {
 		thisFontInstance = super.font.deepCopy;
 		thisFontInstance.size_(
-			super.interactionRect.height * thisFontRatio);
+			super.interactionRect.height * thisFontRatio
+		);
 		this.refresh;
 	}
 
@@ -211,9 +226,11 @@ GMConsole : GMUserView {
 
 	// Internal method
 	prGetColor { |aBoolean|
-		if(aBoolean)
-		{ ^super.mainColor }
-		{ ^disabledColor };
+		if(aBoolean) {
+			^super.mainColor
+		} {
+			^disabledColor
+		};
 	}
 
 	// Custom drawFunc

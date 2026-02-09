@@ -23,8 +23,9 @@ GMButton : GMUserView {
 			QObject.mouseDblClickEvent, \mouseDownEvent, false);
 		this.drawFunc_({ this.draw });
 		this.onResize_({
-			if((thisSVGPath == "").not)
-			{ this.resizeSVG; };
+			if((thisSVGPath == "").not) {
+				this.resizeSVG;
+			};
 		});
 	}
 
@@ -99,8 +100,9 @@ GMButton : GMUserView {
 
 	svgRatio_ { |aFloat|
 		thisSVGRatio = aFloat;
-		if((thisSVGPath == "").not)
-		{ this.resizeSVG; };
+		if((thisSVGPath == "").not) {
+			this.resizeSVG;
+		};
 	}
 
 	svg {
@@ -108,8 +110,9 @@ GMButton : GMUserView {
 	}
 
 	svg_ { |aPath|
-		if((thisSVGPath == "").not)
-		{ thisSVG.free; };
+		if((thisSVGPath == "").not) {
+			thisSVG.free;
+		};
 		thisSVGPath = aPath;
 		thisSVG = Image.openSVG(thisSVGPath);
 		thisSVGSize = Point(thisSVG.width, thisSVG.height);

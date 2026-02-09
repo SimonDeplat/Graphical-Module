@@ -36,8 +36,9 @@ GMCloseButton : GMUserView {
 	draw {
 		crossHalfSize = super.interactionRect.width * 0.33;
 
-		if(super.interactionRect.height < super.interactionRect.width)
-		{ crossHalfSize = super.interactionRect.height * 0.33 };
+		if(super.interactionRect.height < super.interactionRect.width) {
+			crossHalfSize = super.interactionRect.height * 0.33;
+		};
 
 		Pen.width_(crossHalfSize * 0.5);
 
@@ -62,5 +63,4 @@ GMCloseButton : GMUserView {
 		Pen.strokeColor_(super.mainColor);
 		Pen.stroke;
 	}
-
 }

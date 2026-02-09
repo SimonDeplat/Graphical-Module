@@ -221,10 +221,12 @@ GMColorPicker : GMUserView {
 			r,
 			max(g, b)
 		);
+
 		var cmin = min(
 			r,
 			min(g, b)
 		);
+
 		var diff = cmax - cmin;
 
 		if(cmax == cmin) {
@@ -244,9 +246,11 @@ GMColorPicker : GMUserView {
 			};
 		};
 
-		if(cmax == 0)
-		{ hsv[1] = 0; }
-		{ hsv[1] = (diff / cmax); };
+		if(cmax == 0) {
+			hsv[1] = 0;
+		} {
+			hsv[1] = (diff / cmax);
+		};
 
 		hsv[2] = cmax;
 
