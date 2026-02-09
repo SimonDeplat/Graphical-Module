@@ -25,16 +25,24 @@ GMSequencer : GMXYUserView {
 
 		this.setEventHandler(
 			QObject.mouseUpEvent,
-			\mouseDownEvent, true);
+			\mouseDownEvent,
+			true
+		);
 		this.setEventHandler(
 			QObject.mouseUpEvent,
-			\mouseUpEvent, false);
+			\mouseUpEvent,
+			false
+		);
 		this.setEventHandler(
 			QObject.mouseDblClickEvent,
-			\mouseDownEvent, false);
+			\mouseDownEvent,
+			false
+		);
 		this.setEventHandler(
 			QObject.mouseMoveEvent,
-			\mouseMoveEvent, true);
+			\mouseMoveEvent,
+			true
+		);
 
 		this.action_({});
 		this.drawFunc_({ this.draw });
@@ -49,8 +57,12 @@ GMSequencer : GMXYUserView {
 	values_ { |anArray|
 		thisValues = anArray;
 		thisValues.do({ |value, index|
-			if((value != 0) and: { value != 1 })
-			{ thisValues[index] = 0; };
+			if(
+				(value != 0)
+				and: { value != 1 }
+			) {
+				thisValues[index] = 0;
+			};
 		});
 		this.refresh;
 	}
@@ -90,8 +102,9 @@ GMSequencer : GMXYUserView {
 
 	highlights_ { |anArray|
 		thisHighlights = anArray;
-		if(thisDisplayHighlights)
-		{ this.refresh };
+		if(thisDisplayHighlights) {
+			this.refresh;
+		};
 	}
 
 	symbol {
@@ -120,7 +133,9 @@ GMSequencer : GMXYUserView {
 		thisAllowMouseMoveAction = aBoolean;
 		this.setEventHandler(
 			QObject.mouseMoveEvent,
-			\mouseMoveEvent, aBoolean);
+			\mouseMoveEvent,
+			aBoolean
+		);
 	}
 
 	actionMode {
@@ -136,13 +151,17 @@ GMSequencer : GMXYUserView {
 		this.mouseDownAction = { |view, mousePosX, mousePosY|
 			xIndex = super.getXIndex(
 				mousePosX, thisValues.size);
-			if(thisValues[xIndex] == 0)
-			{ thisValues[xIndex] = 1; }
-			{ thisValues[xIndex] = 0; };
+			if(thisValues[xIndex] == 0) {
+				thisValues[xIndex] = 1;
+			} {
+				thisValues[xIndex] = 0;
+			};
 
-			if(thisActionMode == \values)
-			{ aFunction.value(thisValues); }
-			{ aFunction.value(xIndex, thisValues[xIndex]); };
+			if(thisActionMode == \values) {
+				aFunction.value(thisValues);
+			} {
+				aFunction.value(xIndex, thisValues[xIndex]);
+			};
 
 			thisCurrentIndex = xIndex;
 			this.refresh;
@@ -155,14 +174,17 @@ GMSequencer : GMXYUserView {
 				xIndex = super.getXIndex(
 					mousePosX, thisValues.size);
 				if(thisCurrentIndex != xIndex) {
-					if(thisValues[xIndex] == 0)
-					{ thisValues[xIndex] = 1; }
-					{ thisValues[xIndex] = 0; };
+					if(thisValues[xIndex] == 0) {
+						thisValues[xIndex] = 1;
+					} {
+						thisValues[xIndex] = 0;
+					};
 
-					if(thisActionMode == \values)
-					{ aFunction.value(thisValues); }
-					{ aFunction.value(
-						xIndex, thisValues[xIndex]); };
+					if(thisActionMode == \values) {
+						aFunction.value(thisValues);
+					} { aFunction.value(
+						xIndex, thisValues[xIndex]);
+					};
 
 					thisCurrentIndex = xIndex;
 					this.refresh;

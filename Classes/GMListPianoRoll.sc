@@ -24,16 +24,24 @@ GMListPianoRoll : GMXYUserView {
 
 		this.setEventHandler(
 			QObject.mouseUpEvent,
-			\mouseDownEvent, true);
+			\mouseDownEvent,
+			true
+		);
 		this.setEventHandler(
 			QObject.mouseUpEvent,
-			\mouseUpEvent, false);
+			\mouseUpEvent,
+			false
+		);
 		this.setEventHandler(
 			QObject.mouseDblClickEvent,
-			\mouseDownEvent, false);
+			\mouseDownEvent,
+			false
+		);
 		this.setEventHandler(
 			QObject.mouseMoveEvent,
-			\mouseMoveEvent, true);
+			\mouseMoveEvent,
+			true
+		);
 
 		this.action_({});
 		this.drawFunc_({ this.draw });
@@ -94,8 +102,9 @@ GMListPianoRoll : GMXYUserView {
 
 	highlights_ { |anArray|
 		thisHighlights = anArray;
-		if(thisDisplayHighlights)
-		{ this.refresh; };
+		if(thisDisplayHighlights) {
+			this.refresh;
+		};
 	}
 
 	displayHighlights {
@@ -124,8 +133,9 @@ GMListPianoRoll : GMXYUserView {
 
 	vHighlights_ { |anArray|
 		thisVHighlights = anArray;
-		if(thisDisplayVHighlights)
-		{ this.refresh; };
+		if(thisDisplayVHighlights) {
+			this.refresh;
+		};
 	}
 
 	displayVHighlights {
@@ -164,7 +174,9 @@ GMListPianoRoll : GMXYUserView {
 		thisAllowMouseMoveAction = aBoolean;
 		this.setEventHandler(
 			QObject.mouseMoveEvent,
-			\mouseMoveEvent, aBoolean);
+			\mouseMoveEvent,
+			aBoolean
+		);
 	}
 
 	boxRatio {
@@ -192,9 +204,11 @@ GMListPianoRoll : GMXYUserView {
 			var yIndex = super.getYIndex(
 				mousePosY, thisEntries.size, true);
 			this.prUpdateValues(xIndex, yIndex);
-			if(thisActionMode == \values)
-			{ aFunction.value(thisValues); }
-			{ aFunction.value(xIndex, thisValues[xIndex]); };
+			if(thisActionMode == \values) {
+				aFunction.value(thisValues);
+			} {
+				aFunction.value(xIndex, thisValues[xIndex]);
+			};
 			this.refresh;
 			currentPos = Point(xIndex, yIndex);
 		};
@@ -208,9 +222,11 @@ GMListPianoRoll : GMXYUserView {
 					mousePosY, thisEntries.size, true);
 				if(currentPos != Point(xIndex, yIndex)) {
 					this.prUpdateValues(xIndex, yIndex);
-					if(thisActionMode == \values)
-					{ aFunction.value(thisValues); }
-					{ aFunction.value(xIndex, thisValues[xIndex]); };
+					if(thisActionMode == \values) {
+						aFunction.value(thisValues);
+					} {
+						aFunction.value(xIndex, thisValues[xIndex]);
+					};
 					this.refresh;
 					currentPos = Point(xIndex, yIndex);
 				};
@@ -238,14 +254,17 @@ GMListPianoRoll : GMXYUserView {
 	draw {
 		super.drawFrame(super.backgroundColor);
 
-		if(thisDisplayHighlights)
-		{ this.prDrawHighlights; };
+		if(thisDisplayHighlights) {
+			this.prDrawHighlights;
+		};
 
-		if(thisDisplayVHighlights)
-		{ this.prDrawVHighlights; };
+		if(thisDisplayVHighlights) {
+			this.prDrawVHighlights;
+		};
 
-		if(thisCurrentBeat > -1)
-		{ this.prDrawBeat; };
+		if(thisCurrentBeat > -1) {
+			this.prDrawBeat;
+		};
 
 		this.prDrawGrid;
 

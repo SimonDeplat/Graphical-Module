@@ -25,16 +25,24 @@ GMDuoSequencer : GMXYUserView {
 
 		this.setEventHandler(
 			QObject.mouseUpEvent,
-			\mouseDownEvent, true);
+			\mouseDownEvent,
+			true
+		);
 		this.setEventHandler(
 			QObject.mouseUpEvent,
-			\mouseUpEvent, false);
+			\mouseUpEvent,
+			false
+		);
 		this.setEventHandler(
 			QObject.mouseDblClickEvent,
-			\mouseDownEvent, false);
+			\mouseDownEvent,
+			false
+		);
 		this.setEventHandler(
 			QObject.mouseMoveEvent,
-			\mouseMoveEvent, true);
+			\mouseMoveEvent,
+			true
+		);
 
 		this.action_({});
 		this.drawFunc_({ this.draw });
@@ -50,8 +58,9 @@ GMDuoSequencer : GMXYUserView {
 	values_ { |anArray|
 		thisValues = anArray;
 		thisValues.do({ |value, index|
-			if(thisProbabilities.includesEqual(value).not)
-			{ thisValues[index] = thisProbabilities[0]; };
+			if(thisProbabilities.includesEqual(value).not) {
+				thisValues[index] = thisProbabilities[0];
+			};
 		});
 		this.refresh;
 	}
@@ -63,8 +72,9 @@ GMDuoSequencer : GMXYUserView {
 	probabilities_ { |anArray|
 		thisProbabilities = anArray;
 		thisValues.do({ |value, index|
-			if(thisProbabilities.includesEqual(value).not)
-			{ thisValues[index] = thisProbabilities[0]; };
+			if(thisProbabilities.includesEqual(value).not) {
+				thisValues[index] = thisProbabilities[0];
+			};
 		});
 		this.refresh;
 	}
@@ -104,8 +114,9 @@ GMDuoSequencer : GMXYUserView {
 
 	highlights_ { |anArray|
 		thisHighlights = anArray;
-		if(thisDisplayHighlights)
-		{ this.refresh };
+		if(thisDisplayHighlights) {
+			this.refresh;
+		};
 	}
 
 	symbol {
@@ -134,7 +145,9 @@ GMDuoSequencer : GMXYUserView {
 		thisAllowMouseMoveAction = aBoolean;
 		this.setEventHandler(
 			QObject.mouseMoveEvent,
-			\mouseMoveEvent, aBoolean);
+			\mouseMoveEvent,
+			aBoolean
+		);
 	}
 
 	actionMode {
@@ -149,16 +162,20 @@ GMDuoSequencer : GMXYUserView {
 		var index, xIndex, yIndex, probaMax;
 		this.mouseDownAction = { |view, mousePosX, mousePosY|
 			xIndex = super.getXIndex(
-				mousePosX, thisValues.size);
+				mousePosX, thisValues.size
+			);
 			yIndex = super.getYIndex(
-				mousePosY, 2, false);
+				mousePosY, 2, false
+			);
 
 			if(yIndex == 0) {
 				probaMax = thisProbabilities[
 					thisProbabilities.size - 1];
-				if(thisValues[xIndex] == probaMax)
-				{ thisValues[xIndex] = thisProbabilities[0]; }
-				{ thisValues[xIndex] = probaMax; };
+				if(thisValues[xIndex] == probaMax) {
+					thisValues[xIndex] = thisProbabilities[0];
+				} {
+					thisValues[xIndex] = probaMax;
+				};
 			} {
 				probaMax = thisProbabilities[
 					thisProbabilities.size - 1];
@@ -166,14 +183,17 @@ GMDuoSequencer : GMXYUserView {
 					thisValues[xIndex] = thisProbabilities[1];
 				} {
 					index = thisProbabilities.detectIndex({ |item|
-						item == thisValues[xIndex]; });
+						item == thisValues[xIndex];
+					});
 					thisValues[xIndex] = thisProbabilities[index + 1];
 				};
 			};
 
-			if(thisActionMode == \values)
-			{ aFunction.value(thisValues); }
-			{ aFunction.value(xIndex, thisValues[xIndex]); };
+			if(thisActionMode == \values) {
+				aFunction.value(thisValues);
+			} {
+				aFunction.value(xIndex, thisValues[xIndex]);
+			};
 
 			thisCurrentIndex = xIndex;
 			this.refresh;
@@ -183,17 +203,21 @@ GMDuoSequencer : GMXYUserView {
 			var index, xIndex, yIndex, probaMax;
 			if(thisAllowMouseMoveAction) {
 				xIndex = super.getXIndex(
-					mousePosX, thisValues.size);
+					mousePosX, thisValues.size
+				);
 				if(thisCurrentIndex != xIndex) {
 					yIndex = super.getYIndex(
-						mousePosY, 2, false);
+						mousePosY, 2, false
+					);
 
 					if(yIndex == 0) {
 						probaMax = thisProbabilities[
 							thisProbabilities.size - 1];
-						if(thisValues[xIndex] == probaMax)
-						{ thisValues[xIndex] = thisProbabilities[0]; }
-						{ thisValues[xIndex] = probaMax; };
+						if(thisValues[xIndex] == probaMax) {
+							thisValues[xIndex] = thisProbabilities[0];
+						} {
+							thisValues[xIndex] = probaMax;
+						};
 					} {
 						probaMax = thisProbabilities[
 							thisProbabilities.size - 1];
@@ -201,14 +225,17 @@ GMDuoSequencer : GMXYUserView {
 							thisValues[xIndex] = thisProbabilities[1];
 						} {
 							index = thisProbabilities.detectIndex({ |item|
-								item == thisValues[xIndex]; });
+								item == thisValues[xIndex];
+							});
 							thisValues[xIndex] = thisProbabilities[index + 1];
 						};
 					};
 
-					if(thisActionMode == \values)
-					{ aFunction.value(thisValues); }
-					{ aFunction.value(xIndex, thisValues[xIndex]); };
+					if(thisActionMode == \values) {
+						aFunction.value(thisValues);
+					} {
+						aFunction.value(xIndex, thisValues[xIndex]);
+					};
 
 					thisCurrentIndex = xIndex;
 					this.refresh;
