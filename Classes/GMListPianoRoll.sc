@@ -5,9 +5,9 @@ GMListPianoRoll : GMXYUserView {
 	var thisGridWidth = 4;
 
 	var thisHighlights = nil;
-	var thisDrawHighlights = true;
+	var thisDisplayHighlights = true;
 	var thisVHighlights = nil;
-	var thisDrawVHighlights = true;
+	var thisDisplayVHighlights = true;
 
 	var thisActionMode = \values;
 	var thisAllowMouseMoveAction = true;
@@ -94,16 +94,27 @@ GMListPianoRoll : GMXYUserView {
 
 	highlights_ { |anArray|
 		thisHighlights = anArray;
-		if(thisDrawHighlights)
+		if(thisDisplayHighlights)
 		{ this.refresh; };
 	}
 
+	displayHighlights {
+		^thisDisplayHighlights
+	}
+
+	displayHighlights_ { |aBoolean|
+		thisDisplayHighlights = aBoolean;
+		this.refresh;
+	}
+
 	drawHighlights {
-		^thisDrawHighlights
+		"GMListPianoRoll: drawHighlights will be deprecated soon, please use displayHighlights instead.".warn;
+		^thisDisplayHighlights
 	}
 
 	drawHighlights_ { |aBoolean|
-		thisDrawHighlights = aBoolean;
+		"GMListPianoRoll: drawHighlights will be deprecated soon, please use displayHighlights instead.".warn;
+		thisDisplayHighlights = aBoolean;
 		this.refresh;
 	}
 
@@ -113,16 +124,27 @@ GMListPianoRoll : GMXYUserView {
 
 	vHighlights_ { |anArray|
 		thisVHighlights = anArray;
-		if(thisDrawVHighlights)
+		if(thisDisplayVHighlights)
 		{ this.refresh; };
 	}
 
+	displayVHighlights {
+		^thisDisplayVHighlights
+	}
+
+	displayVHighlights_ { |aBoolean|
+		thisDisplayVHighlights = aBoolean;
+		this.refresh;
+	}
+
 	drawVHighlights {
-		^thisDrawVHighlights
+		"GMListPianoRoll: drawVHighlights will be deprecated soon, please use displayVHighlights instead.".warn;
+		^thisDisplayVHighlights
 	}
 
 	drawVHighlights_ { |aBoolean|
-		thisDrawVHighlights = aBoolean;
+		"GMListPianoRoll: drawVHighlights will be deprecated soon, please use displayVHighlights instead.".warn;
+		thisDisplayVHighlights = aBoolean;
 		this.refresh;
 	}
 
@@ -216,10 +238,10 @@ GMListPianoRoll : GMXYUserView {
 	draw {
 		super.drawFrame(super.backgroundColor);
 
-		if(thisDrawHighlights)
+		if(thisDisplayHighlights)
 		{ this.prDrawHighlights; };
 
-		if(thisDrawVHighlights)
+		if(thisDisplayVHighlights)
 		{ this.prDrawVHighlights; };
 
 		if(thisCurrentBeat > -1)

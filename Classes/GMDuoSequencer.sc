@@ -7,7 +7,7 @@ GMDuoSequencer : GMXYUserView {
 
 	var thisCurrentBeat = -1;
 
-	var thisDrawHighlights = true;
+	var thisDisplayHighlights = true;
 	var thisHighlights;
 
 	var thisCurrentIndex = -1;
@@ -78,12 +78,23 @@ GMDuoSequencer : GMXYUserView {
 		{ this.refresh }.defer;
 	}
 
+	displayHighlights {
+		^thisDisplayHighlights
+	}
+
+	displayHighlights_ { |aBoolean|
+		thisDisplayHighlights = aBoolean;
+		this.refresh;
+	}
+
 	drawHighlights {
-		^thisDrawHighlights
+		"GMDuoSequencer: drawHighlights will be deprecated soon, please use displayHighlights instead.".warn;
+		^thisDisplayHighlights
 	}
 
 	drawHighlights_ { |aBoolean|
-		thisDrawHighlights = aBoolean;
+		"GMDuoSequencer: drawHighlights will be deprecated soon, please use displayHighlights instead.".warn;
+		thisDisplayHighlights = aBoolean;
 		this.refresh;
 	}
 
@@ -93,7 +104,7 @@ GMDuoSequencer : GMXYUserView {
 
 	highlights_ { |anArray|
 		thisHighlights = anArray;
-		if(thisDrawHighlights)
+		if(thisDisplayHighlights)
 		{ this.refresh };
 	}
 
@@ -225,7 +236,7 @@ GMDuoSequencer : GMXYUserView {
 		super.drawFrame(super.backgroundColor);
 
 		// Draw highlights
-		if(thisDrawHighlights) {
+		if(thisDisplayHighlights) {
 			if(thisHighlights.notNil) {
 				min(
 					thisValues.size,
