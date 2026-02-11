@@ -21,9 +21,9 @@ GMStyle {
 
 	thisBorderSize = 4,
 	thisBorderColor,
-	thisSecondBorderSize = 4,
+	thisSecondBorderSize = 0,
 	thisSecondBorderColor,
-	thisThirdBorderSize = 8,
+	thisThirdBorderSize = 0,
 	thisThirdBorderColor,
 
 	thisHelpersColor,
