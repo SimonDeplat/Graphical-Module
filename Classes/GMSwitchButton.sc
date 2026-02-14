@@ -5,6 +5,7 @@ GMSwitchButton : GMUserView {
 	var thisDirection = \right;
 	var thisFontRatio = 0.4;
 	var thisSVGRatio = 0.8;
+	var thisMaxFontSize = 32;
 
 	*new {
 		^super.new.init;
@@ -173,6 +174,15 @@ GMSwitchButton : GMUserView {
 		this.refresh;
 	}
 
+	maxFontSize {
+		^thisMaxFontSize
+	}
+
+	maxFontSize_ { |anInteger|
+		thisMaxFontSize = anInteger;
+		this.refresh;
+	}
+
 	svgRatio {
 		^thisSVGRatio
 	}
@@ -222,10 +232,19 @@ GMSwitchButton : GMUserView {
 	draw {
 		var fontSize;
 
-		if((thisDirection == \right)
-			or: { thisDirection == \left })
-		{ fontSize = super.interactionRect.height * thisFontRatio }
-		{ fontSize = super.interactionRect.width * thisFontRatio };
+		if(
+			(thisDirection == \right)
+			or: { thisDirection == \left }
+		) {
+			fontSize = super.interactionRect.height * thisFontRatio;
+		} {
+			fontSize = super.interactionRect.width * thisFontRatio;
+		};
+
+		fontSize = min(
+			fontSize,
+			thisMaxFontSize
+		);
 
 		super.drawFrame(thisStates[currentState][\color]);
 
