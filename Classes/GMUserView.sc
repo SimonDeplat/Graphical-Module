@@ -33,6 +33,7 @@ GMUserView : UserView {
 		thisStyle = aGMStyle;
 		// Add itself to the new style's listeners
 		aGMStyle.addListener(this);
+		{ this.refresh; }.defer;
 	}
 
 	displayBorder {
